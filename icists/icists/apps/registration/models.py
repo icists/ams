@@ -7,6 +7,7 @@ class Application(models.Model):
     SubmitStatus = models.CharField(max_length = 45) #Draft/Submitted
     ApplicationCategory = models.CharField(max_length = 45) #Early/Regular/Late
     ScreeningResults = models.CharField(max_length = 45) #Accepted/Dismissed/Pending(Default)
+    ResultsEmbargo = models.BooleanField(default=True) #To synchronise the announcement of ScreeningResults
     Email = models.CharField(max_length = 45)
     Password = models.CharField(max_length = 45)
     FirstName = models.CharField(max_length = 45)
@@ -41,7 +42,7 @@ class Participant(models.Model):
 
 
 class Accommodation(models.Model):
-    AccommodationID = models.IntegerField()
+    AccommodationID = models.IntegerField(primary_key=True)
     HotelName = models.CharField(max_length = 45)
     HotelRoom = models.CharField(max_length = 45)
     AccommodationPayment = models.IntegerField()
@@ -50,7 +51,7 @@ class Accommodation(models.Model):
 
     
 class Discount(models.Model):
-    DiscountCode = models.CharField(max_length = 10)
+    DiscountCode = models.CharField(max_length = 10, primary_key=True)
     DiscountValue = models.IntegerField()
     DiscountPercent = models.FloatField()
 
