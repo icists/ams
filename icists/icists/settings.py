@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'icists.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ os.path.join(PROJECT_DIR, 'icists/templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,9 +109,3 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
-
-# Template files (HTML)
-
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'templates'),
-)
