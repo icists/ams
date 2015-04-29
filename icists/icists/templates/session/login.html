@@ -1,0 +1,43 @@
+{% extends "session/base.html" %}
+
+{% block htitle %}ICISTS Login{% endblock %}
+
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/session.css">
+{% endblock %}
+
+{% block content %}
+<h1>ICISTS Login</h1>
+<form class="form-horizontal" action="/session/login/" method="post">
+	<fieldset>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% if msg %}
+        <div class="form-group">
+            <div class="col-xs-offset-1 col-xs-10">
+                <div class="alert alert-danger">
+                    {{ msg }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <div class="col-xs-offset-1 col-xs-10">
+                <input type="email" class="form-control" name="email" placeholder="Email" required="required">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-1 col-xs-10">
+                <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a class="btn btn-warning" href="/session/signup/">Sign Up</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
+

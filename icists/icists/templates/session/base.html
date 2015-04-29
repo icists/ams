@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>{% block htitle %} {% endblock %}</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	{% block header %} {% endblock %}
+</head>
+<body>
+    <section class="container">
+        {% block content %}
+        {% endblock %}
+    </section>
+</body>
+</html>
