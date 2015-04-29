@@ -2,9 +2,14 @@
 
 {% block htitle %}ICISTS Login{% endblock %}
 
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/session.css">
+{% endblock %}
+
 {% block content %}
+<h1>ICISTS Login</h1>
 <form class="form-horizontal" action="/session/login/" method="post">
-    <fieldset>
+	<fieldset>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {% if msg %}
