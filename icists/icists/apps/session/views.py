@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from icists.apps.session.models import UserProfile
+from icists.apps.session.forms import UserForm, UserProfileForm
 
 # Create your views here.
 def get_username(email):
@@ -40,28 +41,36 @@ def logout(request):
 
 
 def signup(request):
-    if request.method == 'POST':
-        email = request.POST.get('email', '')
-        password = request.POST.get('password', '')
-        first_name = request.POST.get('first_name', '')
-        last_name = request.POST.get('last_name', '')
-        birthday = request.POST.get('birthday', '')
-        nationality = request.POST.get('nationality', '')
-        gender = request.POST.get('gender', '')
-        major = request.POST.get('major', '')
-        university = request.POST.get('university', '')
-        phone = request.POST.get('phone', '')
-        # picture = request.POST.get('picture', '')
-        how_you_found_us = request.POST.get('howyoufoundus', '')
-        
-        username = make_password(email)[:20]
-        user = User.objects.create_user(username=username, first_name=first_name,
-                last_name=last_name, email=email, password=password)
+    if request.user.is_authenticated():
+        return redirect('/')
 
-        user_profile = UserProfile(user=user, birthday=birthday, nationality=nationality,
-                gender=gender, major=major, university=university, phone=phone,
+    if request.method == 'POST':
+        user_f = UserForm(request.POST)
+        user_profile_f = UserProfileForm(request.POST, request.FILES)
+
+        if user_f.is_valid() and user_profile_f.is_valid():
+            email = user_f.cleaned_data['email']
+            password = user_f.cleaned_data['password']
+            first_name = user_f.cleaned_data['first_name']
+            last_name = user_f.cleaned_data['last_name']
+            birthday = user_profile_f.cleaned_data['birthday']
+            nationality = user_profile_f.cleaned_data['nationality']
+            gender = user_profile_f.cleaned_data['gender']
+            major = user_profile_f.cleaned_data['major']
+            university = user_profile_f.cleaned_data['university']
+            phone = user_profile_f.cleaned_data['phone']
+            picture = user_profile_f.cleaned_data['picture']
+            how_you_found_us = user_profile_f.cleaned_data['how_you_found_us']
+        
+            username = make_password(email)[-21:-1]
+            user = User.objects.create_user(username=username, first_name=first_name,
+                last_name=last_name, email=email, password=password)
+            user.save()
+
+            user_profile = UserProfile(user=user, birthday=birthday, nationality=nationality,
+                gender=gender, major=major, university=university, phone=phone, picture=picture,
                 how_you_found_us=how_you_found_us)
-        user_profile.save()
+            user_profile.save()
         return redirect('/')
 
     return render(request, 'session/signup.html')
