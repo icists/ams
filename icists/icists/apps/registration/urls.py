@@ -7,4 +7,5 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'icists.apps.registration.views.home', name='home'),
+    url(r'^form/$', 'icists.apps.registration.views.form'),
 ]

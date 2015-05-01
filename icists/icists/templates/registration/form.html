@@ -1,0 +1,67 @@
+{% extends "registration/base.html" %}
+
+{% block htitle %}ICISTS-KAIST 2015 Application Form{% endblock %}
+
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/session.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h1>ICISTS-KAIST 2015 Application Form</h1>
+<form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Project Topic</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="project_topic" required="required"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Essay Topic</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="essay_topic" required="required"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Essay</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="essay_text" placeholder="essay_text" required="required" maxlength="500">
+            </div>
+		</div>
+
+		<div class="form-group">
+				<label class="col-sm-3 control-label">Visa Supporting Letter Required</label>
+				<div class="col-sm-3">
+						<label class="radio-inline">
+								<input type="radio" id="visa-options" name="visa_letter" value="yes">Yes
+						</label>
+						<label class="radio-inline">
+								<input type="radio" id="visa-options" name="visa_letter" value="no" checked="checked">No
+						</label>
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="col-sm-3 control-label">Applying for Financial Aid</label>
+				<div class="col-sm-3">
+						<label class="radio-inline">
+								<input type="radio" id="f_aid-options" name="financial_aid" value="yes">Yes
+						</label>
+						<label class="radio-inline">
+								<input type="radio" id="f_aid-options" name="financial_aid" value="no" checked="checked">No
+						</label>
+				</div>
+		</div>
+
+
+	<div class="form-group">
+			<div class="col-sm-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a class="btn btn-warning" href="/registration/">Back</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
