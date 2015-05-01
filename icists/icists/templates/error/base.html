@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>ICISTS - ERROR</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/error.css">
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <section>
+        <h1>{% block title %} {% endblock %}</h1>
+        <p class="err-code">HTTP/1.1 {% block code %}{% endblock %}</p>
+        <ul class="list-unstyled">
+            {% block try %}{% endblock %}
+        </ul>
+        <p>
+            <a href="javascript:window.history.go(-1)" class="btn btn-warning">Go Back</a> &nbsp;
+            <a href="/" class="btn btn-default">Main</a>
+        </p>
+    </section>
+</body>
+</html>

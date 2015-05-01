@@ -1,10 +1,13 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import SuspiciousOperation, PermissionDenied
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserForm, UserProfileForm
+import os
 
 # Create your views here.
 def get_username(email):
@@ -62,7 +65,7 @@ def signup(request):
             picture = user_profile_f.cleaned_data['picture']
             how_you_found_us = user_profile_f.cleaned_data['how_you_found_us']
         
-            username = make_password(email)[-21:-1]
+            username = os.urandom(25).encode('hex')
             user = User.objects.create_user(username=username, first_name=first_name,
                 last_name=last_name, email=email, password=password)
             user.save()
@@ -71,10 +74,32 @@ def signup(request):
                 gender=gender, major=major, university=university, phone=phone, picture=picture,
                 how_you_found_us=how_you_found_us)
             user_profile.save()
+        else:
+            raise SuspiciousOperation()
         return redirect('/')
 
     return render(request, 'session/signup.html')
 
 
+@login_required()
+def profile(request, uid = ''):
+    cuser = request.user
+    if uid == '':
+        uid = cuser.username
+    
+    if not cuser.is_staff and cuser.username != uid:
+        raise PermissionDenied()
+
+    userl = User.objects.filter(username=uid)
+    if len(userl) < 1:
+        raise Http404()
+    user = userl[0]
+    
+    userprofile = UserProfile.objects.get(user=user)
+    return render(request, 'session/profile.html', { 'user': user, 'userprofile': userprofile })
+    
+
 def main(request):
-    return HttpResponse('Hello, Session!')
+    if request.user.is_authenticated():
+        return redirect('/session/profile/')
+    return redirect('/session/login/')
