@@ -20,4 +20,18 @@ p {
 .help-block {
     float:left;
     font-size:14px;
+	margin-bottom:0px;
+}
+
+.help-block > ul {
+	margin-bottom:0px;
+}
+
+.form-group > .form-group {
+	margin-left:0px;
+	margin-right:0px;
+}
+
+.has-error .control-label {
+	color:black;
 }
