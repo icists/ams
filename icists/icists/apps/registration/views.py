@@ -3,10 +3,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-def home(request):
-    return HttpResponse('Hello, Registration!')
 
-def status(request): # write/edit/view_results for ICISTS-KAIST 2015
+def main(request): # write/edit/view_results for ICISTS-KAIST 2015
     """
     if :#user has to create a new application form.
 
@@ -14,7 +12,7 @@ def status(request): # write/edit/view_results for ICISTS-KAIST 2015
 
     else #user has submitted application.
     """
-    return HttpResponse("your application status!")
+    return render(request, 'registration/main.html')
 
 
 def form(request):
