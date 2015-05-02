@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -27,10 +28,13 @@ class Application(models.Model):
                                         choices=SCREENING_RESULT, default=PENDING)
     results_embargo = models.BooleanField(default=True)
     project_topic = models.CharField(max_length=45)
-    essay_topic = models.TextField(max_length=200)
-    essay = models.TextField()
-    visa_support_letter_required = models.BooleanField(default=False)
-    financial_aid_apply = models.BooleanField(default=False)
+    essay_topic = models.CharField(max_length=500)
+    essay_text = models.CharField(max_length=5000, default='text')
+    visa_letter_required = models.BooleanField(default=False)
+    financial_aid = models.BooleanField(default=False)
+    year = models.IntegerField(default=2015)
+    #user = models.ForeignKey(User, related_name='application')
+    user = models.OneToOneField(User)
 
 
 class Participant(models.Model):

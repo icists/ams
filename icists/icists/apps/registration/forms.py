@@ -2,9 +2,9 @@ from django import forms
 
 class ApplicationForm(forms.Form):
     project_topic = forms.CharField(max_length=45)
-    essay_topic = forms.TextField(max_length=200)
-    essay = forms.TextField()
-    visa_support_letter_required = forms.BooleanField(default=False)
-    financial_aid_apply = forms.BooleanField(default=False)
+    essay_topic = forms.CharField(max_length=500)
+    essay_text = forms.CharField(widget = forms.Textarea)
+    visa_letter_required = forms.BooleanField()
+    financial_aid = forms.BooleanField()
 
 

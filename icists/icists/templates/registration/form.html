@@ -16,13 +16,21 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Project Topic</label>
             <div class="col-sm-9">
-                <select class="form-control" name="project_topic" required="required"></select>
+                <select class="form-control" name="project_topic" required="required">
+                <option>1. </option>
+                <option>2. </option>
+                <option>3. </option>
+                </select>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay Topic</label>
             <div class="col-sm-9">
-                <select class="form-control" name="essay_topic" required="required"></select>
+                <select class="form-control" name="essay_topic" required="required">
+                <option>1. </option>
+                <option>2. </option>
+                <option>3. </option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -30,35 +38,36 @@
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="essay_text" placeholder="essay_text" required="required" maxlength="500">
             </div>
-		</div>
+        </div>
 
-		<div class="form-group">
-				<label class="col-sm-3 control-label">Visa Supporting Letter Required</label>
-				<div class="col-sm-3">
-						<label class="radio-inline">
-								<input type="radio" id="visa-options" name="visa_letter" value="yes">Yes
-						</label>
-						<label class="radio-inline">
-								<input type="radio" id="visa-options" name="visa_letter" value="no" checked="checked">No
-						</label>
-				</div>
-		</div>
-		<div class="form-group">
-				<label class="col-sm-3 control-label">Applying for Financial Aid</label>
-				<div class="col-sm-3">
-						<label class="radio-inline">
-								<input type="radio" id="f_aid-options" name="financial_aid" value="yes">Yes
-						</label>
-						<label class="radio-inline">
-								<input type="radio" id="f_aid-options" name="financial_aid" value="no" checked="checked">No
-						</label>
-				</div>
-		</div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Visa Supporting Letter Required</label>
+            <div class="col-sm-3">
+                <label class="radio-inline">
+                    <input type="radio" id="visa-options" name="visa_letter_required" value="yes">Yes
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="visa-options" name="visa_letter_required" value="no" checked="checked">No
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Applying for Financial Aid</label>
+            <div class="col-sm-3">
+                <label class="radio-inline">
+                    <input type="radio" id="f_aid-options" name="financial_aid" value="yes">Yes
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="f_aid-options" name="financial_aid" value="no" checked="checked">No
+                </label>
+            </div>
+        </div>
 
 
-	<div class="form-group">
-			<div class="col-sm-12">
+        <div class="form-group">
+            <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Save Draft</button>
                 <a class="btn btn-warning" href="/registration/">Back</a>
             </div>
         </div>

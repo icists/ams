@@ -1,32 +1,44 @@
-from django.shortcuts import render
+from django.contrib import auth
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from icists.apps.session.models import UserProfile
+from icists.apps.registration.models import Application
+from icists.apps.registration.forms import ApplicationForm
 
 # Create your views here.
 
 
 def main(request): # write/edit/view_results for ICISTS-KAIST 2015
-    """
-    if :#user has to create a new application form.
+    if not request.user.is_authenticated():
+        return redirect('/session/login/')
 
-    else if :#user has a draft.
-
-    else #user has submitted application.
-    """
-    return render(request, 'registration/main.html')
-
+    if Application.objects.filter(user=request.user).exists():
+        print "app exists!"
+        return render(request, 'registration/status.html')
+    else:
+        print "app does not exist!"
+        return render(request, 'registration/main.html')
 
 def form(request):
     if request.method == "GET":
         return render(request, 'registration/form.html')
     elif request.method == "POST":
         app_f = ApplicationForm(request.POST)
-        project_topic = app_f.cleaned_data['project_topic']
-        essay_topic = app_f.cleaned_data['essay_topic']
-        essay_text = app_f.cleaned_data['essay_text']
-        visa_letter = app_f.cleaned_data['visa_letter']
-        financial_aid = app_f.cleaned_data['financial_aid']
 
-        app = Application(project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter=visa_letter, financial_aid=financial_aid)
-        app.save()
-        return redirect('/')
+        if app_f.is_valid():
+            project_topic = app_f.cleaned_data['project_topic']
+            essay_topic = app_f.cleaned_data['essay_topic']
+            essay_text = app_f.cleaned_data['essay_text']
+            visa_letter_required = app_f.cleaned_data['visa_letter_required']
+            financial_aid = app_f.cleaned_data['financial_aid']
+            user = request.user
+
+            app = Application(project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user)
+            app.save()
+            print "saved"
+        else :
+            print "app_f is not valid"
+        return redirect('/registration/')
     return render(request, 'registration/form.html')
