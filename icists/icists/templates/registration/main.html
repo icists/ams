@@ -10,13 +10,14 @@
 
 {% block content %}
 <h1>ICISTS-KAIST 2015 Application</h1>
-<p>You can either write a new application, or edit application.</p>
+<p>Application has not been submitted yet. </p>
+<p>You can either write a new application, or edit the draft.</p>
 <form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
         <div class="form-group">
             <div class="col-sm-12">
-                <a class="btn btn-warning" href="/registration/form">Write</a>
+                <a class="btn btn-warning" href="/registration/form">Write/Edit</a>
             </div>
         </div>
     </fieldset>

@@ -61,6 +61,7 @@ class Participant(models.Model):
     dietary_option = models.CharField(max_length=45) # Vegetarian, Halal, Others (Optional text input)
     pretour = models.BooleanField(default=False)
     posttour = models.BooleanField(default=False)
+    group_name = models.CharField(max_length=45, null=True)
 
 
 class Accommodation(models.Model):

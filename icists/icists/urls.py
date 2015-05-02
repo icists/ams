@@ -3,13 +3,14 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
+from django.views.generic import RedirectView
 
 urlpatterns = [
     # Examples:
     # url(r'^$', 'icists.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', lambda request: HttpResponse('Hello, World!')),
+    url(r'^$', include('icists.apps.session.urls')),
     url(r'^registration/', include('icists.apps.registration.urls')),
     url(r'^session/', include('icists.apps.session.urls')),
     url(r'^admin/', include(admin.site.urls)),

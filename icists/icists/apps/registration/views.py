@@ -16,9 +16,15 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
 
     if Application.objects.filter(user=request.user).exists():
         print "app exists!"
-        return render(request, 'registration/status.html')
+        app = Application.objects.get(user=request.user)
+        if app.submit_status:
+            print "submitted! pending results."
+            return render(request, 'registration/status.html')
+        else :
+            print "can edit the draft."
+            return render(request, 'registration/main.html')
     else:
-        print "app does not exist!"
+        #print "app does not exist!" write new.
         return render(request, 'registration/main.html')
 
 def form(request):
@@ -37,8 +43,4 @@ def form(request):
 
             app = Application(project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user)
             app.save()
-            print "saved"
-        else :
-            print "app_f is not valid"
         return redirect('/registration/')
-    return render(request, 'registration/form.html')
