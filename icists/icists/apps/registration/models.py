@@ -76,3 +76,12 @@ class Discount(models.Model):
     discount_value = models.IntegerField()
     disocunt_percent = models.FloatField()
 
+
+
+class survey(models.Model):
+    application = ForeignKey("Application", related_name='survey')
+    q1 = models.CharField(maxlength=3000) 
+    q2 = models.CharField(maxlength=3000) 
+    q3 = models.CharField(maxlength=3000) 
+    q4 = models.CharField(maxlength=3000) 
+    q5 = models.CharField(maxlength=3000) 
