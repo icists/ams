@@ -29,7 +29,7 @@ class Application(models.Model):
     results_embargo = models.BooleanField(default=True)
     project_topic = models.CharField(max_length=45)
     essay_topic = models.CharField(max_length=500)
-    essay_text = models.CharField(max_length=5000, default='text')
+    essay_text = models.TextField(default='text')
     visa_letter_required = models.BooleanField(default=False)
     financial_aid = models.BooleanField(default=False)
     year = models.IntegerField(default=2015)
@@ -79,9 +79,9 @@ class Discount(models.Model):
 
 
 class survey(models.Model):
-    application = ForeignKey("Application", related_name='survey')
-    q1 = models.CharField(maxlength=3000) 
-    q2 = models.CharField(maxlength=3000) 
-    q3 = models.CharField(maxlength=3000) 
-    q4 = models.CharField(maxlength=3000) 
-    q5 = models.CharField(maxlength=3000) 
+    application = models.ForeignKey("Application", related_name='survey')
+    q1 = models.TextField()
+    q2 = models.TextField()
+    q3 = models.TextField()
+    q4 = models.TextField()
+    q5 = models.TextField()

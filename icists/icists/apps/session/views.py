@@ -18,7 +18,7 @@ def get_username(email):
 
 def login(request):
     if request.user.is_authenticated():
-        return redirect('/')
+        return redirect('/registration/')
 
     if request.method == 'POST':
         email = request.POST.get('email', 'none')
@@ -32,7 +32,7 @@ def login(request):
             return redirect(nexturl)
         else:
             return render(request, 'session/login.html', {'next': nexturl, 'msg': 'Invalid Account Info'})
-    return render(request, 'session/login.html', {'next': request.GET.get('next', '/')})
+    return render(request, 'session/login.html', {'next': request.GET.get('next', '/registration')})
 
 
 def logout(request):
