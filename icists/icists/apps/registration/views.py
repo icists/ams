@@ -42,5 +42,7 @@ def form(request):
             user = request.user
 
             app = Application(project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user)
-            app.save()
+            if Application.objects.filter(user=request.user).exists():
+                Application.objects.get(user=request.user).delete()
+                app.save()
         return redirect('/registration/')

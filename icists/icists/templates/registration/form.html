@@ -3,7 +3,7 @@
 {% block htitle %}ICISTS-KAIST 2015 Application Form{% endblock %}
 
 {% block header %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/session.css">
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/registration.css">
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 {% endblock %}
@@ -36,7 +36,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="essay_text" placeholder="essay_text" required="required" maxlength="500">
+                <textarea class="form-control" rows="40" name="essay_text" placeholder="write your essay here" required="required" maxlength="2000"></textarea>
             </div>
         </div>
 
@@ -66,8 +66,7 @@
 
         <div class="form-group">
             <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="submit" class="btn btn-primary">Save Draft</button>
+                <button type="submit" class="btn btn-primary">Save</button>
                 <a class="btn btn-warning" href="/registration/">Back</a>
             </div>
         </div>
