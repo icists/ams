@@ -12,4 +12,4 @@ class UserProfile(models.Model):
     university = models.CharField(max_length = 70)
     picture = models.ImageField(upload_to = 'profilepicture') #size limit to 2000*2000
     how_you_found_us = models.CharField(max_length = 100)
-    address = models.CharField(max_length = 200)
+    address = models.CharField(max_length = 200, null=True)
