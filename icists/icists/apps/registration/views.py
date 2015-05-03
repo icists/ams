@@ -53,9 +53,10 @@ def form(request):
             essay_text = app_f.cleaned_data['essay_text']
             visa_letter_required = app_f.cleaned_data['visa_letter_required']
             financial_aid = app_f.cleaned_data['financial_aid']
+            previously_participated = app_f.cleaned_data['previously_participated']
             user = request.user
 
-            app = Application(group_name=group_name, project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user)
+            app = Application(group_name=group_name, project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user, previously_participated=previously_participated)
             if Application.objects.filter(user=request.user).exists():
                 Application.objects.get(user=request.user).delete()
             app.save()

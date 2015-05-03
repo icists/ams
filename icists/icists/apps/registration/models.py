@@ -36,6 +36,7 @@ class Application(models.Model):
     #user = models.ForeignKey(User, related_name='application')
     user = models.OneToOneField(User)
     group_name = models.CharField(max_length=45, null=True)
+    previously_participated =  models.BooleanField(default=False)
 
 
 class Participant(models.Model):
