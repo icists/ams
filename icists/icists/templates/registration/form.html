@@ -2,7 +2,54 @@
 
 {% block htitle %}ICISTS-KAIST 2015 Application Form{% endblock %}
 
-{% block header %}{% endblock %}
+{% block header %}
+<script type="text/javascript">
+    counter = function() {
+        var value = $('#essay_textarea').val();
+
+        if (value.length == 0) {
+            $('#word_count').html(0);
+            $('#total_chars').html(0);
+            return;
+        }
+
+        var regex = /\s+/gi;
+        var word_count = value.trim().replace(regex, ' ').split(' ').length;
+        var total_chars = value.length;
+
+        $('#word_count').html(word_count);
+            $('#total_chars').html(total_chars);
+    };
+
+    $(document).ready(function() {
+        $('#essay_textarea').change(counter);
+        $('#essay_textarea').keydown(counter);
+        $('#essay_textarea').keypress(counter);
+        $('#essay_textarea').keyup(counter);
+        $('#essay_textarea').blur(counter);
+        $('#essay_textarea').focus(counter);
+            
+        $('select[name=project_topic]').val('{{ application.project_topic }}').attr("selected", "selected");
+        $('select[name=essay_topic]').val('{{ application.essay_topic }}').attr("selected", "selected");
+        $("input[name=visa_letter_required][value='{{ application.visa_letter_required }}']").prop("checked", true);
+        $("input[name=financial_aid][value='{{ application.financial_aid }}']").prop("checked", true);
+        $("input[name=previously_participated][value='{{ application.previously_participated }}']").prop("checked", true);
+
+        var submitTime = '{{application.submit_time}}';
+        if (submitTime.length > 0 && submitTime !== 'None') {
+            $("input:text").attr('disabled', '');
+            $("input:radio").attr('disabled', '');
+            $("textarea").attr('disabled', '');
+            $("select").attr('disabled', '');
+            $("button:submit").hide();
+            $("#btn-delete").show();
+        } else {
+            $("button:submit").show();
+            $("#btn-delete").hide();
+        }
+    });
+</script>
+{% endblock %}
 
 {% block content %}
 <h1>ICISTS-KAIST 2015 Application Form</h1>
@@ -157,41 +204,9 @@
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary">Save</button>
                 <a class="btn btn-warning" href="/registration/">Back</a>
+                <a class="btn btn-danger" id="btn-delete" href="/registration/cancel/">Delete and Cancel Registration</a>
             </div>
         </div>
     </fieldset>
 </form>
-<script type="text/javascript">
-counter = function() {
-    var value = $('#essay_textarea').val();
-
-    if (value.length == 0) {
-        $('#word_count').html(0);
-        $('#total_chars').html(0);
-        return;
-    }
-
-    var regex = /\s+/gi;
-    var word_count = value.trim().replace(regex, ' ').split(' ').length;
-    var total_chars = value.length;
-
-    $('#word_count').html(word_count);
-	$('#total_chars').html(total_chars);
-};
-
-$(document).ready(function() {
-    $('#essay_textarea').change(counter);
-    $('#essay_textarea').keydown(counter);
-    $('#essay_textarea').keypress(counter);
-    $('#essay_textarea').keyup(counter);
-    $('#essay_textarea').blur(counter);
-    $('#essay_textarea').focus(counter);
-	
-	$('select[name=project_topic]').val('{{ application.project_topic }}').attr("selected", "selected");
-	$('select[name=essay_topic]').val('{{ application.essay_topic }}').attr("selected", "selected");
-	$("input[name=visa_letter_required][value='{{ application.visa_letter_required }}']").prop("checked", true);
-	$("input[name=financial_aid][value='{{ application.financial_aid }}']").prop("checked", true);
-	$("input[name=previously_participated][value='{{ application.previously_participated }}']").prop("checked", true);
-});
-</script>
 {% endblock %}
