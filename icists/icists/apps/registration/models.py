@@ -82,7 +82,7 @@ class Discount(models.Model):
 
 
 
-class survey(models.Model):
+class Survey(models.Model):
     application = models.ForeignKey("Application", related_name='survey')
     q1 = models.TextField(null=True)
     q2 = models.TextField(null=True)
