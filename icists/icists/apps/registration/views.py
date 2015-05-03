@@ -65,7 +65,6 @@ def form(request):
         user = User.objects.get(username=request.user.username)
 
         userprofile = UserProfile.objects.get(user=user)
-
         try:
             application = app_f.save()
         except:

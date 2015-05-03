@@ -71,15 +71,14 @@
             </div>
 
         </div>
-
         <div class="form-group">
             <label class="col-sm-3 control-label">Visa Supporting Letter Required</label>
             <div class="col-sm-3">
                 <label class="radio-inline">
-                    <input type="radio" id="visa-options" name="visa_letter_required" value="yes">Yes
+                    <input type="radio" id="visa-options" name="visa_letter_required" value="Y">Yes
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="visa-options" name="visa_letter_required" value="no" checked="checked">No
+                    <input type="radio" id="visa-options" name="visa_letter_required" value="N" checked="checked">No
                 </label>
             </div>
         </div>
@@ -87,10 +86,10 @@
             <label class="col-sm-3 control-label">Applying for Financial Aid</label>
             <div class="col-sm-3">
                 <label class="radio-inline">
-                    <input type="radio" id="f_aid-options" name="financial_aid" value="yes">Yes
+                    <input type="radio" id="f_aid-options" name="financial_aid" value="Y">Yes
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="f_aid-options" name="financial_aid" value="no" checked="checked">No
+                    <input type="radio" id="f_aid-options" name="financial_aid" value="N" checked="checked">No
                 </label>
             </div>
         </div>
@@ -98,10 +97,10 @@
             <label class="col-sm-3 control-label">Previous Participation in ICISTS-KAIST</label>
             <div class="col-sm-3">
                 <label class="radio-inline">
-                    <input type="radio" id="f_aid-options" name="previously_participated" value="yes">Yes
+					<input type="radio" id="f_aid-options" name="previously_participated" value="Y">Yes
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="f_aid-options" name="previously_participated" value="no" checked="checked">No
+                    <input type="radio" id="f_aid-options" name="previously_participated" value="N" checked="checked">No
                 </label>
             </div>
         </div>
@@ -177,7 +176,7 @@ counter = function() {
     var total_chars = value.length;
 
     $('#word_count').html(word_count);
-    $('#total_chars').html(total_chars);
+	$('#total_chars').html(total_chars);
 };
 
 $(document).ready(function() {
@@ -187,6 +186,12 @@ $(document).ready(function() {
     $('#essay_textarea').keyup(counter);
     $('#essay_textarea').blur(counter);
     $('#essay_textarea').focus(counter);
+	
+	$('select[name=project_topic]').val('{{ application.project_topic }}').attr("selected", "selected");
+	$('select[name=essay_topic]').val('{{ application.essay_topic }}').attr("selected", "selected");
+	$("input[name=visa_letter_required][value='{{ application.visa_letter_required }}']").prop("checked", true);
+	$("input[name=financial_aid][value='{{ application.financial_aid }}']").prop("checked", true);
+	$("input[name=previously_participated][value='{{ application.previously_participated }}']").prop("checked", true);
 });
 </script>
 {% endblock %}
