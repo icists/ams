@@ -3,12 +3,12 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 # Create your models here.
+def validate_image(image_obj):
+    filesize = image_obj.file.size
+    if filesize > 2 * 1024 * 1024:
+        raise ValidationError("Size of image should less than 2MB")
+
 class UserProfile(models.Model):
-    def validate_image(image_obj):
-        filesize = image_obj.file.size
-        if filesize > 2 * 1024 * 1024:
-            raise ValidationError("Size of image should less than 2MB")
-			
     user = models.OneToOneField(User)
     birthday = models.DateField()
     nationality = models.CharField(max_length=45)
