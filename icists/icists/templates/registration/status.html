@@ -10,15 +10,5 @@
 
 {% block content %}
 <h1>ICISTS-KAIST 2015 Application</h1>
-<p>Your application is pending. For more information about ICISTS-KAIST, visit www.icists.org</p>
-<form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
-    <fieldset>
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="col-sm-12">
-                <a class="btn btn-warning" href="/registration/form">Write</a>
-            </div>
-        </div>
-    </fieldset>
-</form>
+<p>Your application has been submitted for review. For more information about ICISTS-KAIST, visit www.icists.org</p>
 {% endblock %}

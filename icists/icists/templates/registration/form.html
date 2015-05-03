@@ -13,13 +13,21 @@
 <form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
+        <p> please specify the name of the group if you are applying as a group.</p> 
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Group Name</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="group_name" placeholder="junwoo_and_friends" required="required" maxlength="100">
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-3 control-label">Project Topic</label>
             <div class="col-sm-9">
                 <select class="form-control" name="project_topic" required="required">
-                <option>1. </option>
-                <option>2. </option>
-                <option>3. </option>
+                <option>1. Robotics </option>
+                <option>2. Personalised Medicine </option>
+                <option>3. Science Communication </option>
                 </select>
             </div>
         </div>

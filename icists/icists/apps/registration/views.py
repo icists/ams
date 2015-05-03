@@ -21,11 +21,24 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
             print "submitted! pending results."
             return render(request, 'registration/status.html')
         else :
-            print "can edit the draft."
-            return render(request, 'registration/main.html')
+            print "can edit the draft." #app_saved.html
+            return render(request, 'registration/app_saved.html')
     else:
-        #print "app does not exist!" write new.
-        return render(request, 'registration/main.html')
+        #print "app does not exist!" write new. welcome.html
+        return render(request, 'registration/welcome.html')
+
+def submit(request):
+    if not request.user.is_authenticated():
+        return redirect('/session/login/')
+    app = Application.objects.get(user=request.user)
+    app.submit_status = True
+    app.save()
+    if app.submit_status:
+        print "submitted!"
+    else:
+        print "not submitted~!"
+    return redirect('/registration/')
+
 
 def form(request):
     if request.method == "GET":
@@ -34,6 +47,7 @@ def form(request):
         app_f = ApplicationForm(request.POST)
 
         if app_f.is_valid():
+            group_name = app_f.cleaned_data['group_name']
             project_topic = app_f.cleaned_data['project_topic']
             essay_topic = app_f.cleaned_data['essay_topic']
             essay_text = app_f.cleaned_data['essay_text']
@@ -41,8 +55,8 @@ def form(request):
             financial_aid = app_f.cleaned_data['financial_aid']
             user = request.user
 
-            app = Application(project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user)
+            app = Application(group_name=group_name, project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user)
             if Application.objects.filter(user=request.user).exists():
                 Application.objects.get(user=request.user).delete()
-                app.save()
+            app.save()
         return redirect('/registration/')
