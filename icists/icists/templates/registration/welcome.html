@@ -11,10 +11,11 @@
 {% block content %}
 <h1>ICISTS-KAIST 2015 Application</h1>
 <p> Welcome! You can start filling in the application form now. </p>
-<p>You can either write a new application, or edit the draft.</p>
 <form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
+
+        <iframe id="application_policy" src="https://docs.google.com/document/d/1uu9kdNf4G_BIuz23I0tNkBcBtvugTBy1XFdDH_rmKQk/pub?embedded=true" scrolling='yes'  height="400" width="90%" marginwidth="5px"></iframe>
         <div class="form-group">
             <div class="col-sm-12">
                 <a class="btn btn-warning" href="/registration/form">Write Application</a>
