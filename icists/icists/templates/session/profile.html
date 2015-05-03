@@ -11,8 +11,17 @@
 
 {% block content %}
 <h1>ICISTS Profile</h1>
-<form id="profile" class="form-horizontal" action="/session/profile/{{ user.username}}/" method="post" enctype="multipart/form-data" data-toggle="validator">
+<form id="profile" class="form-horizontal" action="/session/profile/{{ user.username }}/" method="post" enctype="multipart/form-data">
 	<fieldset>
+		{% if msg %}
+		<div class="form-group">
+			<div class="col-sm-12">
+				<div class="alert alert-success">
+				{{ msg }}
+				</div>
+			</div>
+		</div>
+		{% endif %}
         {% csrf_token %}
         <div class="form-group">
 			<label class="col-sm-3 control-label">Email <span class="required"></span></label>

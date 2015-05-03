@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation, PermissionDenied
 from django.shortcuts import render, redirect
@@ -25,11 +25,10 @@ def is_valid_email(email, exclude=''):
     if len(users) > 0:
         return False
     return True
-    
+
 
 def vcheck(request):
-    if is_valid_email(request.GET.get('email', ''),
-		request.GET.get('exclude', '')):
+    if is_valid_email(request.GET.get('email', ''), request.GET.get('exclude', '')):
         return HttpResponse(status=200)
     return HttpResponse(status=400)
 
@@ -91,9 +90,7 @@ def signup(request):
     return render(request, 'session/signup.html')
 
 
-@login_required
-def profile(request, uid = ''):
-    cuser = request.user
+def process_user_select(cuser, uid=''):
     if uid == '':
         uid = cuser.username
     
@@ -103,9 +100,15 @@ def profile(request, uid = ''):
     userl = User.objects.filter(username=uid)
     if len(userl) < 1:
         raise Http404()
-    user = userl[0]
+    return userl[0]
+	
+	
+@login_required
+def profile(request, uid=''):
+    user = process_user_select(request.user, uid)
     userprofile = UserProfile.objects.get(user=user)
     
+    msg = ''
     if request.method == "POST":
         user_f = UserForm(request.POST)
         user_profile_f = UserProfileForm(request.POST, request.FILES, instance=userprofile)
@@ -117,9 +120,29 @@ def profile(request, uid = ''):
 	    user.last_name = user_f.cleaned_data['last_name']
 	    user.save()
 	    userprofile = user_profile_f.save()
+            msg = 'Your profile was successfully modified!'
 			
-    return render(request, 'session/profile.html', { 'user': user, 'userprofile': userprofile })
+    return render(request, 'session/profile.html', { 'user': user, 'userprofile': userprofile, 'msg': msg })
     
+
+@login_required
+def changepw(request, uid=''):
+    user = process_user_select(request.user, uid)
+
+    msg = ''
+    if request.method == "POST":
+        oldpw = request.POST.get('oldpassword', '')
+        newpw = request.POST.get('password', 'P@55w0rd!#$')
+        
+        if check_password(oldpw, user.password):
+            user.password = make_password(newpw)
+            user.save()
+            return redirect('/session/login')
+        else:
+            msg = 'Wrong current password.'
+
+    return render(request, 'session/changepw.html', { 'user': user, 'msg': msg })
+
 
 def main(request):
     if request.user.is_authenticated():

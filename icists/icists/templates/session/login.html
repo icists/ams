@@ -19,8 +19,6 @@ If you are new, please sign up first.
 
 <form class="form-horizontal" action="/session/login/" method="post">
 	<fieldset>
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
         {% if msg %}
         <div class="form-group">
             <div class="col-xs-offset-1 col-xs-10">
@@ -30,6 +28,8 @@ If you are new, please sign up first.
             </div>
         </div>
         {% endif %}
+		{% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
         <div class="form-group">
             <div class="col-xs-offset-1 col-xs-10">
                 <input type="email" class="form-control" name="email" placeholder="Email" required="required">
