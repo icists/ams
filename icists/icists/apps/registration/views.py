@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from icists.apps.session.models import UserProfile
-from icists.apps.registration.models import Application
+from icists.apps.registration.models import Application, Survey
 from icists.apps.registration.forms import ApplicationForm
 
 # Create your views here.
@@ -58,6 +58,16 @@ def form(request):
 
         if app_f.is_valid():
             application = app_f.save()
+
+            
+            if Survey.objects.filter(application=application).exists():
+                survey = Survey.objects.get(application=application)
+            else:
+                survey = Survey(application=application)
+            survey.q1 = app_f.cleaned_data['financial_aid_q1']
+            survey.q2 = app_f.cleaned_data['financial_aid_q2']
+            survey.save()
+            
             print "application saved!!!"
 
         return redirect('/registration/')
