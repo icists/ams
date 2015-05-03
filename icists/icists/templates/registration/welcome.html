@@ -17,7 +17,7 @@
                 $("a").removeAttr("href");
             }
         });
-        $("a").click(function() {
+        $("#write-button>a").click(function() {
             if (!$("input:checkbox").checked) {
                 $(".alert").fadeIn("slow", function() {
                     clearTimeout(timeout);
@@ -50,7 +50,7 @@
             By writing and submitting an application, you agree to all the terms and conditions described in the "Application Policies for ICISTS-KAIST 2015."
         </span>
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12" id="write-button">
         <a class="btn btn-warning">Write Application</a>
     </div>
 </div>
