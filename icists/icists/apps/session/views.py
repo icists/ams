@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserForm, UserProfileForm
-import os
+import re, os
 
 # Create your views here.
 def get_username(email):
@@ -15,6 +15,23 @@ def get_username(email):
     if len(user) > 0:
         return user[0].username
     return ''
+
+
+def is_valid_email(email):
+    if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+        return False
+
+    users = User.objects.filter(email=email)
+    if len(users) > 0:
+        return False
+    return True
+    
+
+def vcheck(request):
+    if is_valid_email(request.GET.get('email', '')):
+        return HttpResponse(status=200)
+    return HttpResponse(status=400)
+
 
 def login(request):
     if request.user.is_authenticated():
@@ -32,7 +49,7 @@ def login(request):
             return redirect(nexturl)
         else:
             return render(request, 'session/login.html', {'next': nexturl, 'msg': 'Invalid Account Info'})
-    return render(request, 'session/login.html', {'next': request.GET.get('next', '/registration')})
+    return render(request, 'session/login.html', {'next': request.GET.get('next', '/registration/')})
 
 
 def logout(request):
@@ -50,8 +67,9 @@ def signup(request):
     if request.method == 'POST':
         user_f = UserForm(request.POST)
         user_profile_f = UserProfileForm(request.POST, request.FILES)
+        raw_email = request.POST.get('email', '')
 
-        if user_f.is_valid() and user_profile_f.is_valid():
+        if is_valid_email(raw_email) and user_f.is_valid() and user_profile_f.is_valid():
             email = user_f.cleaned_data['email']
             password = user_f.cleaned_data['password']
             first_name = user_f.cleaned_data['first_name']
@@ -65,7 +83,7 @@ def signup(request):
             picture = user_profile_f.cleaned_data['picture']
             how_you_found_us = user_profile_f.cleaned_data['how_you_found_us']
         
-            username = os.urandom(25).encode('hex')
+            username = os.urandom(10).encode('hex')
             user = User.objects.create_user(username=username, first_name=first_name,
                 last_name=last_name, email=email, password=password)
             user.save()

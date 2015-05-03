@@ -20,18 +20,26 @@ p {
 .help-block {
     float:left;
     font-size:14px;
-	margin-bottom:0px;
+    margin-bottom:0px;
 }
 
 .help-block > ul {
-	margin-bottom:0px;
+    margin-bottom:0px;
 }
 
 .form-group > .form-group {
-	margin-left:0px;
-	margin-right:0px;
+    margin-left:0px;
+    margin-right:0px;
 }
 
 .has-error .control-label {
-	color:black;
+    color:black;
+}
+
+span.required {
+    color: red;
+    font-size:12px;
+}
+span.required:before {
+    content: "*";
 }

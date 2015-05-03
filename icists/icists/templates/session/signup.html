@@ -15,13 +15,13 @@
 	<fieldset>
         {% csrf_token %}
         <div class="form-group">
-			<label class="col-sm-3 control-label">Email</label>
+			<label class="col-sm-3 control-label">Email <span class="required"></span></label>
 			<div class="col-sm-9">
-                <input type="email" class="form-control" name="email" placeholder="asdf@example.com" required="required" maxlength="50">
+                <input type="email" class="form-control" name="email" placeholder="asdf@example.com" required="required" maxlength="50" data-remote="/session/vcheck/">
             </div>
         </div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Password</label>
+			<label class="col-sm-3 control-label">Password <span class="required"></span></label>
 			<div class="form-group col-sm-4">
 				<input type="password" class="form-control" name="password" placeholder="pAss0wd!" id="password" required="required" maxlength="50" data-minlength="7">
 				<span class="help-block">Password must be at least 7 characters</span>
@@ -34,7 +34,7 @@
 			</div>	
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Name</label>
+			<label class="col-sm-3 control-label">Name <span class="required"></span></label>
 			<div class="form-group col-sm-6">
 				<input type="text" class="form-control" name="first_name" placeholder="First Name" required="required" maxlength="30">
 			</div>
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Gender, Birthday</label>
+			<label class="col-sm-3 control-label">Gender, Birthday <span class="required"></span></label>
 			<div class="form-group col-sm-3">
 				<label class="radio-inline">
 					<input type="radio" id="gender-options" name="gender" value="male" required="required">Male
@@ -57,13 +57,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Nationality</label>
+			<label class="col-sm-3 control-label">Nationality <span class="required"></span></label>
 			<div class="col-sm-9">
 				<select class="form-control" name="nationality" required="required"></select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">University, Major</label>
+			<label class="col-sm-3 control-label">University, Major <span class="required"></span></label>
 			<div class="form-group col-sm-6">
 				<input type="text" class="form-control" name="university" placeholder="University" required="required" maxlength="70">
 			</div>
@@ -72,22 +72,22 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Phone</label>
+			<label class="col-sm-3 control-label">Phone <span class="required"></span></label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" name="phone" placeholder="Phone" required="required" value="+93" maxlength="45">
+				<input type="text" class="form-control" name="phone" placeholder="Phone" required="required" maxlength="45">
 				<p class="help-block">example: +821012345678</p>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Picture</label>
 			<div class="col-sm-9">
-				<input type="file" class="form-control" name="picture" required="required">
+				<input type="file" class="form-control" name="picture">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">How You Found Us</label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" name="how_you_found_us" placeholder="How You Found Us?" required="required" maxlength="100">
+				<input type="text" class="form-control" name="how_you_found_us" placeholder="How You Found Us?" maxlength="100">
 			</div>
 		</div>
         <div class="form-group">
@@ -111,7 +111,8 @@ $(function() {
 			value: p[0], text: p[0]
 		}));
 	});
-	
+	$("select[name=nationality]").prop('selectedIndex', -1);
+
 	$("select[name=nationality]").change(function() {
 		var v = $("select[name=nationality]").val();
 		$.each(map, function(i, item) {

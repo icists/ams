@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^login/$', 'icists.apps.session.views.login'),
     url(r'^logout/$', 'icists.apps.session.views.logout'),
     url(r'^signup/$', 'icists.apps.session.views.signup'),
+    url(r'^vcheck/$', 'icists.apps.session.views.vcheck'),
 ]
