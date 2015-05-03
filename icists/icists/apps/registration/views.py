@@ -30,10 +30,10 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
 def submit(request):
     if not request.user.is_authenticated():
         return redirect('/session/login/')
-    app = Application.objects.get(user=request.user)
-    app.submit_status = True
-    app.save()
-    if app.submit_status:
+    application = Application.objects.get(user=request.user)
+    application.submit_status = True
+    application.save()
+    if application.submit_status:
         print "submitted!"
     else:
         print "not submitted~!"
@@ -41,23 +41,23 @@ def submit(request):
 
 
 def form(request):
+    if Application.objects.filter(user=request.user).exists():
+        print "this is editing"
+        application = Application.objects.get(user=request.user)
+    else:
+        print "this is new app."
+        application = Application(user=request.user)
+
     if request.method == "GET":
-        return render(request, 'registration/form.html')
+        print "it's a get"
+        app_f = ApplicationForm(instance=application)
+        return render(request, 'registration/form.html', {'application':application, 'user':request.user})
+
     elif request.method == "POST":
-        app_f = ApplicationForm(request.POST)
+        app_f = ApplicationForm(data=request.POST, instance=application)
 
         if app_f.is_valid():
-            group_name = app_f.cleaned_data['group_name']
-            project_topic = app_f.cleaned_data['project_topic']
-            essay_topic = app_f.cleaned_data['essay_topic']
-            essay_text = app_f.cleaned_data['essay_text']
-            visa_letter_required = app_f.cleaned_data['visa_letter_required']
-            financial_aid = app_f.cleaned_data['financial_aid']
-            previously_participated = app_f.cleaned_data['previously_participated']
-            user = request.user
+            application = app_f.save()
+            print "application saved!!!"
 
-            app = Application(group_name=group_name, project_topic=project_topic, essay_topic=essay_topic, essay_text=essay_text, visa_letter_required=visa_letter_required, financial_aid=financial_aid, user=user, previously_participated=previously_participated)
-            if Application.objects.filter(user=request.user).exists():
-                Application.objects.get(user=request.user).delete()
-            app.save()
         return redirect('/registration/')

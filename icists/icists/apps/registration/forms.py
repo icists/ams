@@ -1,12 +1,13 @@
-from django import forms 
+from django.forms import ModelForm
+from icists.apps.registration.models import Application
 
-class ApplicationForm(forms.Form):
-    group_name = forms.CharField(max_length=45)
-    project_topic = forms.CharField(max_length=45)
-    essay_topic = forms.CharField(max_length=500)
-    essay_text = forms.CharField(max_length=5000)
-    visa_letter_required = forms.BooleanField()
-    financial_aid = forms.BooleanField()
-    previously_participated = forms.BooleanField()
-
+class ApplicationForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        # first call parent's constructor
+        super(ApplicationForm, self).__init__(*args, **kwargs)
+        # there's a `fields` property now
+        self.fields['group_name'].required = False
+    class Meta:
+        model = Application
+        fields = ('group_name', 'project_topic', 'essay_topic', 'essay_text', 'visa_letter_required', 'financial_aid', 'previously_participated') 
 
