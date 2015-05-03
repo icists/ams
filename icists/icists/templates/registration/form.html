@@ -5,7 +5,7 @@
 {% block header %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/registration.css">
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"> </script>
 {% endblock %}
 
 {% block content %}
@@ -67,8 +67,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay</label>
             <div class="col-sm-9">
-                <textarea class="form-control" rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False></textarea>
+                <textarea class="form-control" id='essay_textarea' rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False></textarea>
             </div>
+            <div id="result" class="col-sm-12 control-label">
+                Words used : <span id='word_count'>0</span><br/>
+                Total Characters : <span id='total_chars'>0</span><br/>
+            </div>
+
         </div>
 
         <div class="form-group">
@@ -114,4 +119,32 @@
         </div>
     </fieldset>
 </form>
+
+<script type="text/javascript">
+counter = function() {
+    var value = $('#essay_textarea').val();
+
+    if (value.length == 0) {
+        $('#word_count').html(0);
+        $('#total_chars').html(0);
+        return;
+    }
+
+    var regex = /\s+/gi;
+    var word_count = value.trim().replace(regex, ' ').split(' ').length;
+    var total_chars = value.length;
+
+    $('#word_count').html(word_count);
+    $('#total_chars').html(total_chars);
+};
+
+$(document).ready(function() {
+    $('#essay_textarea').change(counter);
+    $('#essay_textarea').keydown(counter);
+    $('#essay_textarea').keypress(counter);
+    $('#essay_textarea').keyup(counter);
+    $('#essay_textarea').blur(counter);
+    $('#essay_textarea').focus(counter);
+});
+</script>
 {% endblock %}
