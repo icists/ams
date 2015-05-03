@@ -23,7 +23,7 @@ class Application(models.Model):
 
     submit_status = models.BooleanField(default=False)
     application_category = models.CharField(max_length=1,
-                                            choices=APPLICATION_CATEGORY, default=REGULAR)
+                                            choices=APPLICATION_CATEGORY, default=EARLY)
     screening_result = models.CharField(max_length=1,
                                         choices=SCREENING_RESULT, default=PENDING)
     results_embargo = models.BooleanField(default=True)
@@ -37,6 +37,8 @@ class Application(models.Model):
     user = models.OneToOneField(User)
     group_name = models.CharField(max_length=45, null=True)
     previously_participated =  models.BooleanField(default=False)
+    last_updated_time = models.DateTimeField(auto_now=True, null=True)
+    submit_time = models.DateTimeField(null=True)
 
 
 class Participant(models.Model):
@@ -87,3 +89,8 @@ class survey(models.Model):
     q3 = models.TextField()
     q4 = models.TextField()
     q5 = models.TextField()
+    q6 = models.TextField()
+    q7 = models.TextField()
+    q8 = models.TextField()
+    q9 = models.TextField()
+    q10 = models.TextField()
