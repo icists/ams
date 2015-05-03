@@ -43,3 +43,9 @@ span.required {
 span.required:before {
     content: "*";
 }
+
+img.profile {
+    height:200px;
+    width:auto;
+    float:left;
+}

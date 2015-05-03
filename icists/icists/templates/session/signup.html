@@ -11,7 +11,7 @@
 
 {% block content %}
 <h1>ICISTS Signup</h1>
-<form class="form-horizontal" action="/session/signup/" method="post" enctype="multipart/form-data" data-toggle="validator">
+<form id="signup" class="form-horizontal" action="/session/signup/" method="post" enctype="multipart/form-data">
 	<fieldset>
         {% csrf_token %}
         <div class="form-group">
@@ -81,35 +81,36 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Picture</label>
 			<div class="col-sm-9">
-				<input type="file" class="form-control" name="picture">
+				<input type="file" class="form-control" name="picture" data-vimage="vimage">
+				<p class="help-block">max size: 2MB</p>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">How You Found Us</label>
 			<div class="form-group col-sm-9">
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Facebook Posts" required="required">Facebook Posts
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Facebook Posts">Facebook Posts
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Facebook Ads" required="required">Facebook Ads
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Facebook Ads">Facebook Ads
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Notice from University Website" required="required">Notice from University Website
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Notice from University Website">Notice from University Website
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Conference Poster" required="required">Conference Poster
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Conference Poster">Conference Poster
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Information Session" required="required">Information Session
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Information Session">Information Session
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Partnership Organization" required="required">Partnership Organization
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Partnership Organization">Partnership Organization
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Newspaper & Megazine" required="required">Newspaper &amp Megazine
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Newspaper & Megazine">Newspaper &amp; Megazine
 				</label>
 				<label class="radio-inline">
-					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Friends" required="required">Friends
+					<input type="radio" id="how_you_found_us-options" name="how_you_found_us" value="Friends">Friends
 				</label>
 			</div>
 		</div>
@@ -136,6 +137,17 @@ $(function() {
 	});
 	$("select[name=nationality]").prop('selectedIndex', -1);
 
+	var option = {
+		disable: true,
+		custom: {
+			vimage: function(el) { return el[0].files.length < 1 || el[0].files[0].size < 2 * 1024 * 1024; }
+		},
+		errors: {
+			vimage: "Size should be less than 2MB"
+		}
+	};
+	$('#signup').validator(option);
+	
 	$("select[name=nationality]").change(function() {
 		var v = $("select[name=nationality]").val();
 		$.each(map, function(i, item) {

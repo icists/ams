@@ -17,18 +17,19 @@ def get_username(email):
     return ''
 
 
-def is_valid_email(email):
+def is_valid_email(email, exclude=''):
     if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
         return False
 
-    users = User.objects.filter(email=email)
+    users = User.objects.filter(email=email).exclude(email=exclude)
     if len(users) > 0:
         return False
     return True
     
 
 def vcheck(request):
-    if is_valid_email(request.GET.get('email', '')):
+    if is_valid_email(request.GET.get('email', ''),
+		request.GET.get('exclude', '')):
         return HttpResponse(status=200)
     return HttpResponse(status=400)
 
@@ -68,29 +69,20 @@ def signup(request):
         user_f = UserForm(request.POST)
         user_profile_f = UserProfileForm(request.POST, request.FILES)
         raw_email = request.POST.get('email', '')
-
+        
         if is_valid_email(raw_email) and user_f.is_valid() and user_profile_f.is_valid():
             email = user_f.cleaned_data['email']
             password = user_f.cleaned_data['password']
             first_name = user_f.cleaned_data['first_name']
             last_name = user_f.cleaned_data['last_name']
-            birthday = user_profile_f.cleaned_data['birthday']
-            nationality = user_profile_f.cleaned_data['nationality']
-            gender = user_profile_f.cleaned_data['gender']
-            major = user_profile_f.cleaned_data['major']
-            university = user_profile_f.cleaned_data['university']
-            phone = user_profile_f.cleaned_data['phone']
-            picture = user_profile_f.cleaned_data['picture']
-            how_you_found_us = user_profile_f.cleaned_data['how_you_found_us']
         
             username = os.urandom(10).encode('hex')
             user = User.objects.create_user(username=username, first_name=first_name,
                 last_name=last_name, email=email, password=password)
             user.save()
 
-            user_profile = UserProfile(user=user, birthday=birthday, nationality=nationality,
-                gender=gender, major=major, university=university, phone=phone, picture=picture,
-                how_you_found_us=how_you_found_us)
+            user_profile = user_profile_f.save(commit=False)
+            user_profile.user = user
             user_profile.save()
         else:
             raise SuspiciousOperation()
@@ -99,7 +91,7 @@ def signup(request):
     return render(request, 'session/signup.html')
 
 
-@login_required()
+@login_required
 def profile(request, uid = ''):
     cuser = request.user
     if uid == '':
@@ -112,8 +104,20 @@ def profile(request, uid = ''):
     if len(userl) < 1:
         raise Http404()
     user = userl[0]
-    
     userprofile = UserProfile.objects.get(user=user)
+    
+    if request.method == "POST":
+        user_f = UserForm(request.POST)
+        user_profile_f = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+	raw_email = request.POST.get('email', '')
+		
+	if is_valid_email(raw_email, user.email) and user_f.is_valid() and user_profile_f.is_valid():
+	    user.email = user_f.cleaned_data['email']
+	    user.first_name = user_f.cleaned_data['first_name']
+	    user.last_name = user_f.cleaned_data['last_name']
+	    user.save()
+	    userprofile = user_profile_f.save()
+			
     return render(request, 'session/profile.html', { 'user': user, 'userprofile': userprofile })
     
 
