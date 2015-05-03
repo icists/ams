@@ -7,5 +7,6 @@ class ApplicationForm(forms.Form):
     essay_text = forms.CharField(max_length=5000)
     visa_letter_required = forms.BooleanField()
     financial_aid = forms.BooleanField()
+    previously_participated = forms.BooleanField()
 
 
