@@ -18,7 +18,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Group Name</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="group_name" placeholder="junwoo_and_friends" required="required" maxlength="100">
+                <input type="text" class="form-control" name="group_name" placeholder="junwoo_and_friends" required="required" maxlength="100" value="{{application.group_name}}">
             </div>
         </div>
         <div class="form-group">
@@ -67,7 +67,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay</label>
             <div class="col-sm-9">
-                <textarea class="form-control" id='essay_textarea' rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False></textarea>
+                <textarea class="form-control" id='essay_textarea' rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False >{{application.essay_text}}</textarea>
             </div>
             <div id="result" class="col-sm-12 control-label">
                 Words used : <span id='word_count'>0</span><br/>
@@ -110,6 +110,57 @@
             </div>
         </div>
 
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#financial_aid_supplement" aria-expanded="false" aria-controls="financial_aid_supplement">
+          Financial Aid Supplement
+        </button>
+        <div class="collapse" id="financial_aid_supplement">
+          <div class="well">
+            <p>ICISTS-KAIST Financial Aid Program encourages those who currently do not reside in, or are non-permanent residents of the Republic of Korea, to participate in ICISTS-KAIST. ICISTS will be selecting a maximum of 50 applicants to be recipients of the financial aid program. The financial aid package includes a 50% discount of the application fee and free hotel accommodations.<br/> Application period for Financial Aid program is from May 5th to July 11th, within one week after your acceptance for ICISTS-KAIST has been announced. The applicants will be notified of the results via email. </p> 
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Full Address of Residence</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="address" placeholder="33 Rochester Drive, #35-06 The Rochester, Singapore" maxlength="300" value="{{user.address}}">
+                </div>
+            </div>
+
+<!--
+            <div class="form-group">
+                <label class="col-sm-12 control-label">1.   Why do you wish to participate in ICISTS-KAIST, and what ways would you be able to contribute to our conference? (within 1000 words)</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False >{{application.survey.q1}}</textarea>
+                </div>
+                <div id="result" class="col-sm-12 control-label">
+                    Words used : <span id='word_count'>0</span><br/>
+                    Total Characters : <span id='total_chars'>0</span><br/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-12 control-label">2.    Explain any special circumstances that need to be considered for your qualification of financial aid. (within 500 words)</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False >{{application.survey.q2}}</textarea>
+                </div>
+                <div id="result" class="col-sm-12 control-label">
+                    Words used : <span id='word_count'>0</span><br/>
+                    Total Characters : <span id='total_chars'>0</span><br/>
+                </div>
+            </div>
+
+--!>
+
+
+
+
+
+
+
+          </div>
+        </div>
+        <br/>
+        <br/>
+
 
         <div class="form-group">
             <div class="col-sm-12">
@@ -119,7 +170,6 @@
         </div>
     </fieldset>
 </form>
-
 <script type="text/javascript">
 counter = function() {
     var value = $('#essay_textarea').val();
