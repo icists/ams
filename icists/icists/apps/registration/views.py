@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey
 from icists.apps.registration.forms import ApplicationForm
+from icists.apps.session.models import UserProfile
+from icists.apps.session.forms import UserProfileForm
 
 # Create your views here.
 
@@ -51,15 +53,25 @@ def form(request):
     if request.method == "GET":
         print "it's a get"
         app_f = ApplicationForm(instance=application)
-        return render(request, 'registration/form.html', {'application':application, 'user':request.user})
+        if Survey.objects.filter(application=application).exists():
+            survey = Survey.objects.get(application=application)
+        else:
+            survey = Survey()
+
+        return render(request, 'registration/form.html', {'application':application, 'user':request.user, 'survey':survey})
 
     elif request.method == "POST":
+        print "it's a post"
         app_f = ApplicationForm(data=request.POST, instance=application)
+
+        user = User.objects.get(username=request.user.username)
+
+        userprofile = UserProfile.objects.get(user=user)
+        print userprofile.nationality
 
         if app_f.is_valid():
             application = app_f.save()
 
-            
             if Survey.objects.filter(application=application).exists():
                 survey = Survey.objects.get(application=application)
             else:
@@ -67,7 +79,10 @@ def form(request):
             survey.q1 = app_f.cleaned_data['financial_aid_q1']
             survey.q2 = app_f.cleaned_data['financial_aid_q2']
             survey.save()
-            
+
+            userprofile.address = app_f.cleaned_data['address']
+            userprofile.save()
+
             print "application saved!!!"
 
         return redirect('/registration/')

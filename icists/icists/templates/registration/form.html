@@ -18,7 +18,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Group Name</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="group_name" placeholder="junwoo_and_friends" required="required" maxlength="100" value="{{application.group_name}}">
+                <input type="text" class="form-control" name="group_name" placeholder="junwoo_and_friends" maxlength="100" value="{{application.group_name}}">
             </div>
         </div>
         <div class="form-group">
@@ -129,7 +129,7 @@
             <div class="form-group">
                 <label class="col-sm-12 control-label">1.   Why do you wish to participate in ICISTS-KAIST, and what ways would you be able to contribute to our conference? (within 1000 words)</label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Write here." maxlength="2000" resize=False >{{application.survey.q1}}</textarea>
+                    <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Write here." maxlength="2000" resize=False >{{survey.q1}}</textarea>
                 </div>
                 <div id="result" class="col-sm-12 control-label">
                     Words used : <span id='word_count'>0</span><br/>
@@ -140,7 +140,7 @@
             <div class="form-group">
                 <label class="col-sm-12 control-label">2.    Explain any special circumstances that need to be considered for your qualification of financial aid. (within 500 words)</label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Write here." maxlength="2000" resize=False >{{application.survey.q2}}</textarea>
+                    <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Write here." maxlength="2000" resize=False >{{survey.q2}}</textarea>
                 </div>
                 <div id="result" class="col-sm-12 control-label">
                     Words used : <span id='word_count'>0</span><br/>
