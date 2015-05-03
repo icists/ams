@@ -29,15 +29,15 @@ class Application(models.Model):
     results_embargo = models.BooleanField(default=True)
     project_topic = models.CharField(max_length=45)
     essay_topic = models.CharField(max_length=500)
-    essay_text = models.TextField(default='text')
+    essay_text = models.TextField()
     visa_letter_required = models.BooleanField(default=False)
     financial_aid = models.BooleanField(default=False)
-    year = models.IntegerField(default=2015)
-    #user = models.ForeignKey(User, related_name='application')
-    user = models.OneToOneField(User)
-    group_name = models.CharField(max_length=45, null=True)
+    #year = models.IntegerField(default=2015)   # Use last_updated_time
+    user = models.ForeignKey(User, related_name='application')
+    #user = models.OneToOneField(User, related_name='application')
+    group_name = models.CharField(max_length=45, default='')
     previously_participated =  models.BooleanField(default=False)
-    last_updated_time = models.DateTimeField(auto_now=True, null=True)
+    last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
 
 
