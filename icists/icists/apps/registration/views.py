@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from icists.apps.session.models import UserProfile
-from icists.apps.registration.models import Application, Survey
-from icists.apps.registration.forms import ApplicationForm
+from django.utils import timezone
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserProfileForm
+from icists.apps.registration.models import Application, Survey
+from icists.apps.registration.forms import ApplicationForm
 
 # Create your views here.
 
@@ -19,7 +19,7 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
     if Application.objects.filter(user=request.user).exists():
         print "app exists!"
         app = Application.objects.get(user=request.user)
-        if app.submit_status:
+        if app.submit_time is not None:
             print "submitted! pending results."
             return render(request, 'registration/status.html')
         else :
@@ -33,12 +33,9 @@ def submit(request):
     if not request.user.is_authenticated():
         return redirect('/session/login/')
     application = Application.objects.get(user=request.user)
-    application.submit_status = True
+    application.submit_time = timezone.now()
+    print 'Application saved at', application.submit_time
     application.save()
-    if application.submit_status:
-        print "submitted!"
-    else:
-        print "not submitted~!"
     return redirect('/registration/')
 
 
@@ -67,22 +64,11 @@ def form(request):
         user = User.objects.get(username=request.user.username)
 
         userprofile = UserProfile.objects.get(user=user)
-        print userprofile.nationality
 
-        if app_f.is_valid():
+        try:
             application = app_f.save()
-
-            if Survey.objects.filter(application=application).exists():
-                survey = Survey.objects.get(application=application)
-            else:
-                survey = Survey(application=application)
-            survey.q1 = app_f.cleaned_data['financial_aid_q1']
-            survey.q2 = app_f.cleaned_data['financial_aid_q2']
-            survey.save()
-
-            userprofile.address = app_f.cleaned_data['address']
-            userprofile.save()
-
-            print "application saved!!!"
+        except:
+            print 'Invalid application attempted to save'
+            raise ValidationError()
 
         return redirect('/registration/')

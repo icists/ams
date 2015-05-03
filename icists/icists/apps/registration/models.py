@@ -21,7 +21,7 @@ class Application(models.Model):
         (PENDING, 'Pending'),
     )
 
-    submit_status = models.BooleanField(default=False)
+    #submit_status = models.BooleanField(default=False)
     application_category = models.CharField(max_length=1,
                                             choices=APPLICATION_CATEGORY, default=EARLY)
     screening_result = models.CharField(max_length=1,
@@ -35,7 +35,7 @@ class Application(models.Model):
     #year = models.IntegerField(default=2015)   # Use last_updated_time
     user = models.ForeignKey(User, related_name='application')
     #user = models.OneToOneField(User, related_name='application')
-    group_name = models.CharField(max_length=45, default='')
+    group_name = models.CharField(max_length=45, blank=True)
     previously_participated =  models.BooleanField(default=False)
     last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
