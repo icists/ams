@@ -1,5 +1,5 @@
 from django import forms
-from icists.apps.registration.models import Application
+from icists.apps.registration.models import Application, Survey
 
 class ApplicationForm(forms.ModelForm):
 #    financial_aid_q1 = forms.CharField(max_length=2000)
@@ -15,3 +15,9 @@ class ApplicationForm(forms.ModelForm):
         #fields = ('group_name', 'project_topic', 'essay_topic', 'essay_text', 'visa_letter_required', 'financial_aid', 'previously_participated', 'financial_aid_q1', 'financial_aid_q2') 
         fields = ('group_name', 'project_topic', 'essay_topic', 'essay_text', 'visa_letter_required', 'financial_aid', 'previously_participated')
 
+
+class FaForm(forms.ModelForm):
+    address = forms.CharField(max_length=200)
+    class Meta:
+        model = Survey
+        fields = ('q1', 'q2')

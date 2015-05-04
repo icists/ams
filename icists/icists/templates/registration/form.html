@@ -31,18 +31,28 @@
                 <option>2. Medicine </option>
                 <option>3. Science Communication </option>
                 </select>
+                <p class="help-block">Please choose a topic you want to participate in throughout the whole conference. Your team project group will be determined based on this choice. </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-12 control-label">
-            <br>
-            <br>
-            <br>
-1. Essay Question!
-            <br>
-2. Essay Question!
-            <br>
-3. Essay Question!
+            <label class="col-sm-3 control-label">
+            </label>
+            <label class="col-sm-9 control-label" id='essay_questions'>
+                Topic 1: Robotics
+                In Isaac Asimov's novel &lt;The Bicentennial Man&gt;, an android with special skills starts his 'life' as a housekeeper. Thanks to his special intellectual qualities, he has the passion to become a human. Although he changes his external form to human skin, has intellect that closely resembles that of a human being's, and even implants human blood into his body, he is not accepted as a human by the World Court. If you were in the main character's shoes, why do you think you are not currently accepted by human society? What criteria should you, as an android, satisfy to think that you are worthy of earning basic human rights from society?
+                <hr>
+                Topic 2: Medicine
+                Personalized medicine utilizes DNA sequencing to create medicine that is engineered individually, and therefore can show greater efficiency. However, contrary to high prior expectations, this method of medical treatment has not been too popular among patients and doctors.
+                Some barriers preventing the widespread use of personalized medicine include:
+                <ol>
+                    <li>Ownership over sequenced DNA</li>
+                    <li>Expensive DNA sequencing</li>
+                    <li>Diseases unrelated to genetics</li>
+                </ol>
+                Choose one of the following (or use an exmple of your own) and write, in 500 words, about the ways in which these problems can be solved.
+                <hr>
+                Topic 3: Science Communication
+                To quote Einstein, "Everything should be made as simple as possible, but not simpler." The quote is suggesting that although science should be kept as simple, there lies danger in oversimplifying the context of science. What are the dangers of scientists oversimplifying science when communicating their discoveries to the public?
             </label>
         </div>
         <div class="form-group">
@@ -63,7 +73,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay</label>
             <div class="col-sm-9">
-                <textarea class="form-control" id='essay_textarea' rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" resize=False >{{application.essay_text}}</textarea>
+                <textarea class="form-control" id='essay_textarea' rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" style="resize:none" >{{application.essay_text}}</textarea>
             </div>
             <div id="result" class="col-sm-12 control-label">
                 Words used : <span id='word_count'>0</span><br/>
@@ -73,7 +83,9 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">Visa Supporting Letter Required</label>
+            <label class="col-sm-9 control-label">Visa Supporting Letter Required
+                <p class="help-block">Are you from a country that requires visa to stay in Korea?</p>
+            </label>
             <div class="col-sm-3">
                 <label class="radio-inline">
                     <input type="radio" id="visa-options" name="visa_letter_required" value="yes">Yes
@@ -84,7 +96,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">Applying for Financial Aid</label>
+            <label class="col-sm-9 control-label">Applying for Financial Aid
+                <p class="help-block">Are you applying for financial aid?</p>
+            </label>
             <div class="col-sm-3">
                 <label class="radio-inline">
                     <input type="radio" id="f_aid-options" name="financial_aid" value="yes">Yes
@@ -95,7 +109,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">Previous Participation in ICISTS-KAIST</label>
+            <label class="col-sm-9 control-label">Previous Participation in ICISTS-KAIST
+                <p class="help-block">Have you participated in ICISTS-KAIST before?</p>
+            </label>
             <div class="col-sm-3">
                 <label class="radio-inline">
                     <input type="radio" id="f_aid-options" name="previously_participated" value="yes">Yes
@@ -103,51 +119,6 @@
                 <label class="radio-inline">
                     <input type="radio" id="f_aid-options" name="previously_participated" value="no" checked="checked">No
                 </label>
-            </div>
-        </div>
-
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#financial_aid_supplement" aria-expanded="false" aria-controls="financial_aid_supplement">
-            Financial Aid Supplement
-        </button>
-        <div class="collapse" id="financial_aid_supplement">
-            <div class="well">
-                <p>ICISTS-KAIST Financial Aid Program encourages those who currently do not reside in, or are non-permanent residents of the Republic of Korea, to participate in ICISTS-KAIST. ICISTS will be selecting a maximum of 50 applicants to be recipients of the financial aid program. The financial aid package includes a 50% discount of the application fee and free hotel accommodations.<br/> Application period for Financial Aid program is from May 5th to July 11th, within one week after your acceptance for ICISTS-KAIST has been announced. The applicants will be notified of the results via email. </p> 
-
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Full Address of Residence</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" name="address" placeholder="33 Rochester Drive, #35-06 The Rochester, Singapore" maxlength="300" value="{{user.address}}">
-                    </div>
-                </div>
-
-                
-            <div class="form-group">
-                <label class="col-sm-12 control-label">1.   Why do you wish to participate in ICISTS-KAIST, and what ways would you be able to contribute to our conference? (within 1000 words)</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Write here." maxlength="2000" resize=False >{{survey.q1}}</textarea>
-                </div>
-                <div id="result" class="col-sm-12 control-label">
-                    Words used : <span id='word_count'>0</span><br/>
-                    Total Characters : <span id='total_chars'>0</span><br/>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-12 control-label">2.    Explain any special circumstances that need to be considered for your qualification of financial aid. (within 500 words)</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Write here." maxlength="2000" resize=False >{{survey.q2}}</textarea>
-                </div>
-                <div id="result" class="col-sm-12 control-label">
-                    Words used : <span id='word_count'>0</span><br/>
-                    Total Characters : <span id='total_chars'>0</span><br/>
-                </div>
-            </div>
-
-
-
-
-
             </div>
         </div>
         <br/>

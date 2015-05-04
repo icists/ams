@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserProfileForm
 from icists.apps.registration.models import Application, Survey
-from icists.apps.registration.forms import ApplicationForm
+from icists.apps.registration.forms import ApplicationForm, FaForm
 
 # Create your views here.
 
@@ -42,32 +42,62 @@ def submit(request):
 
 def form(request):
     if Application.objects.filter(user=request.user).exists():
-        print "this is editing"
+        print "Loaded the saved application draft."
         application = Application.objects.get(user=request.user)
     else:
-        print "this is new app."
+        print "There is no saved application"
         application = Application(user=request.user)
 
     if request.method == "GET":
-        print "it's a get"
+        print "GET method. opened the form."
         app_f = ApplicationForm(instance=application)
-        if Survey.objects.filter(application=application).exists():
-            survey = Survey.objects.get(application=application)
-        else:
-            survey = Survey()
-
-        return render(request, 'registration/form.html', {'application':application, 'user':request.user, 'survey':survey})
+        return render(request, 'registration/form.html', {'application':application})
 
     elif request.method == "POST":
-        print "it's a post"
+        print "POST method; to save the data."
         app_f = ApplicationForm(data=request.POST, instance=application)
 
-        user = User.objects.get(username=request.user.username)
-
-        userprofile = UserProfile.objects.get(user=user)
+        print app_f["essay_topic"]
 
         try:
             application = app_f.save()
+        except:
+            print 'Invalid application attempted to save'
+            raise ValidationError("app_f is not valid.")
+
+        return redirect('/registration/')
+
+
+
+
+def fa_form(request):
+    if Application.objects.filter(user=request.user).exists():
+        print "Loaded the saved application draft."
+        application = Application.objects.get(user=request.user)
+        if Survey.objects.filter(application=application).exists():
+            print "Loaded the saved fa_form draft."
+            fa_survey = Survey.objects.get(application=application)
+        else:
+            print "There is no saved fa_form. Hence creating new."
+            fa_survey = Survey(application=application)
+    else:
+        print "There is no saved application"
+        redirect('/registration/form')
+
+    user = User.objects.get(username=request.user.username)
+    userprofile = UserProfile.objects.get(user=user)
+
+    if request.method == "GET":
+        print "GET method. opened the fa_form."
+
+        return render(request, 'registration/fa_form.html', {'user':user, 'survey':fa_survey})
+
+    elif request.method == "POST":
+        print "POST method; to save the data on fa_form."
+        fa_f = FaForm(data=request.POST, instance=fa_survey)
+
+        try:
+            fa_survey = fa_f.save()
         except:
             print 'Invalid application attempted to save'
             raise ValidationError()
