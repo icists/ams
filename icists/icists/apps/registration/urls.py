@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^form/$', 'icists.apps.registration.views.form'),
     url(r'^submit/$', 'icists.apps.registration.views.submit'),
     url(r'^fa_form/$', 'icists.apps.registration.views.fa_form'),
+    url(r'^cancel/$', 'icists.apps.registration.views.cancel'),
 ]

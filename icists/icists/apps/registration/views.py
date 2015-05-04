@@ -103,3 +103,15 @@ def fa_form(request):
             raise ValidationError()
 
         return redirect('/registration/')
+
+
+def cancel(request):
+    try:
+        application = Application.objects.get(user=request.user)
+        if request.method == "GET":
+            return render(request, 'registration/cancel.html', {'application':application, 'user': request.user})
+        elif request.method == "POST":
+            application.delete()
+            return redirect('/registration/')
+    except Application.DoesNotExist:
+        return redirect('/registration/')

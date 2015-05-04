@@ -1,0 +1,41 @@
+{% extends "registration/base.html" %}
+{% block htitle %}ICISTS-KAIST 2015 Application Form{% endblock %}
+{% block header %}
+<script type="text/javascript">
+        var name = '{{user.first_name}}' + ' ' + '{{user.last_name}}';
+        var checkName = function() {
+            if (name === $("#input-name").val()) {
+                $("button.btn-danger").removeAttr('disabled');
+            } else {
+                $("button.btn-danger").attr('disabled', '');
+            }
+        };
+    $(document).ready(function() {
+        $("button.btn-danger").attr('disabled', '');
+        $("#input-name").change(checkName);
+        $("#input-name").keydown(checkName);
+        $("#input-name").keypress(checkName);
+        $("#input-name").keyup(checkName);
+        $("#input-name").focus(checkName);
+    });
+</script>
+{% endblock %}
+{% block content %} 
+<h1> ICISTS-KAIST 2015 Application Cancellation</h1>
+<p >You have previously submitted an application to ICISTS-KAIST 2015 and are about to cancel it.
+By canceling you application, you mean to withdraw your previously submitted application.
+Cancelled applications will be <strong>completely removed</strong> from our server.
+Once you cancel an application, there is no going back. So please by certain.<br /><br /><br /></p>
+<p>If you wish to cancel your application, type your name below to confirm.</p>
+<div class="form-group col-sm-8 col-sm-offset-2">
+    <form class="form-horizontal" action="/registration/cancel/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control text-center" id="input-name" placeholder="Firstname Lastname">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">I understand the consequences, cancel and delete my application</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -20,7 +20,11 @@ class Application(models.Model):
         (DISMISSED, 'Dismissed'),
         (PENDING, 'Pending'),
     )
-
+    
+    YESNO = (
+        ('Y', 'Yes'),
+        ('N', 'No'),
+    )
     #submit_status = models.BooleanField(default=False)
     application_category = models.CharField(max_length=1,
                                             choices=APPLICATION_CATEGORY, default=EARLY)
@@ -30,13 +34,13 @@ class Application(models.Model):
     project_topic = models.CharField(max_length=45)
     essay_topic = models.CharField(max_length=500)
     essay_text = models.TextField()
-    visa_letter_required = models.BooleanField(default=False)
-    financial_aid = models.BooleanField(default=False)
+    visa_letter_required = models.CharField(max_length=1, choices=YESNO, default='N')
+    financial_aid = models.CharField(max_length=1, choices=YESNO, default='N')
     #year = models.IntegerField(default=2015)   # Use last_updated_time
     user = models.ForeignKey(User, related_name='application')
     #user = models.OneToOneField(User, related_name='application')
     group_name = models.CharField(max_length=45, blank=True)
-    previously_participated =  models.BooleanField(default=False)
+    previously_participated =  models.CharField(max_length=1, choices=YESNO, default='N')
     last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
 
@@ -52,7 +56,7 @@ class Participant(models.Model):
         (LESS_PAID, 'Less Paid'),
         (OVER_PAID, 'Over Paid'),
     )
-
+    
     accommodation = models.ForeignKey('Accommodation', related_name="participant")
     application = models.OneToOneField('Application', related_name="participant")
     discount = models.ForeignKey('Discount', related_name="participant")
@@ -84,13 +88,13 @@ class Discount(models.Model):
 
 class Survey(models.Model):
     application = models.ForeignKey("Application", related_name='survey')
-    q1 = models.TextField(blank=True)
-    q2 = models.TextField(blank=True)
-    q3 = models.TextField(blank=True)
-    q4 = models.TextField(blank=True)
-    q5 = models.TextField(blank=True)
-    q6 = models.TextField(blank=True)
-    q7 = models.TextField(blank=True)
-    q8 = models.TextField(blank=True)
-    q9 = models.TextField(blank=True)
-    q10 = models.TextField(blank=True)
+    q1 = models.TextField(default='', blank=True, null=True)
+    q2 = models.TextField(default='', blank=True, null=True)
+    q3 = models.TextField(default='', blank=True, null=True)
+    q4 = models.TextField(default='', blank=True, null=True)
+    q5 = models.TextField(default='', blank=True, null=True)
+    q6 = models.TextField(default='', blank=True, null=True)
+    q7 = models.TextField(default='', blank=True, null=True)
+    q8 = models.TextField(default='', blank=True, null=True)
+    q9 = models.TextField(default='', blank=True, null=True)
+    q10 = models.TextField(default='', blank=True, null=True)
