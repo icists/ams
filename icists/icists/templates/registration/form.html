@@ -49,6 +49,11 @@
         }
     });
 </script>
+<style>
+.help-block {
+    text-align: left;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -62,11 +67,11 @@
             <label class="col-sm-3 control-label">Group Name</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="group_name" placeholder="junwoo_and_friends" maxlength="100" value="{{application.group_name}}">
+                <p class="help-block">If you are applying as a group, please specify the name of your group here. If not, leave it as blank.<br> <br></p>  
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-12 control-label">
-            If you are applying as a group, please specify the name of your group here. <br> If not, leave it as blank.<br> <br> <br> <br> 
             </label>
         </div>
 
@@ -82,27 +87,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">
-            </label>
-            <label class="col-sm-9 control-label" id='essay_questions'>
-                Topic 1: Robotics
-                In Isaac Asimov's novel &lt;The Bicentennial Man&gt;, an android with special skills starts his 'life' as a housekeeper. Thanks to his special intellectual qualities, he has the passion to become a human. Although he changes his external form to human skin, has intellect that closely resembles that of a human being's, and even implants human blood into his body, he is not accepted as a human by the World Court. If you were in the main character's shoes, why do you think you are not currently accepted by human society? What criteria should you, as an android, satisfy to think that you are worthy of earning basic human rights from society?
-                <hr>
-                Topic 2: Medicine
-                Personalized medicine utilizes DNA sequencing to create medicine that is engineered individually, and therefore can show greater efficiency. However, contrary to high prior expectations, this method of medical treatment has not been too popular among patients and doctors.
-                Some barriers preventing the widespread use of personalized medicine include:
-                <ol>
-                    <li>Ownership over sequenced DNA</li>
-                    <li>Expensive DNA sequencing</li>
-                    <li>Diseases unrelated to genetics</li>
-                </ol>
-                Choose one of the following (or use an exmple of your own) and write, in 500 words, about the ways in which these problems can be solved.
-                <hr>
-                Topic 3: Science Communication
-                To quote Einstein, "Everything should be made as simple as possible, but not simpler." The quote is suggesting that although science should be kept as simple, there lies danger in oversimplifying the context of science. What are the dangers of scientists oversimplifying science when communicating their discoveries to the public?
-            </label>
-        </div>
-        <div class="form-group">
             <label class="col-sm-3 control-label">Essay Topic</label>
             <div class="col-sm-9">
                 <select class="form-control" name="essay_topic" required="required">
@@ -110,17 +94,34 @@
                 <option>2. Medicine</option>
                 <option>3. Science Communication </option>
                 </select>
+                <p class="help-block"> Choose one of the options above and write. Your essay topic does not necessarily have to match with your project topic.</p>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-12 control-label">
-            Your essay topic does not necessarily have to match with your project topic.
+            <label class="col-sm-3 control-label">
+            </label>
+            <label class="col-sm-9 control-label" id='essay_questions'>
+                Topic 1: Robotics <br>
+                In Isaac Asimov's novel &lt;The Bicentennial Man&gt;, an android with special skills starts his 'life' as a housekeeper. Thanks to his special intellectual qualities, he has the passion to become a human. Although he changes his external form to human skin, has intellect that closely resembles that of a human being's, and even implants human blood into his body, he is not accepted as a human by the World Court. If you were in the main character's shoes, why do you think you are not currently accepted by human society? What criteria should you, as an android, satisfy to think that you are worthy of earning basic human rights from society?
+                <hr>
+                Topic 2: Medicine <br>
+                Personalized medicine utilizes DNA sequencing to create medicine that is engineered individually, and therefore can show greater efficiency. However, contrary to high prior expectations, this method of medical treatment has not been too popular among patients and doctors.
+                Some barriers preventing the widespread use of personalized medicine include:
+                <ol>
+                    <li>Ownership over sequenced DNA</li>
+                    <li>Expensive DNA sequencing</li>
+                    <li>Diseases unrelated to genetics</li>
+                </ol>
+                Choose one of the above (or use an example of your own) and write, about the ways in which these problems can be solved.
+                <hr>
+                Topic 3: Science Communication <br>
+                To quote Einstein, "Everything should be made as simple as possible, but not simpler." The quote is suggesting that although science should be kept as simple, there lies danger in oversimplifying the context of science. What are the dangers of scientists oversimplifying science when communicating their discoveries to the public? <br><br>
             </label>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay</label>
             <div class="col-sm-9">
-                <textarea class="form-control" id='essay_textarea' rows="40" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. " required="required" maxlength="2000" style="resize:none" >{{application.essay_text}}</textarea>
+                <textarea class="form-control" id='essay_textarea' rows="20" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. No more than 2000 characters (approximately 300-400 words) " required="required" maxlength="2000" style="font-size:12px; resize:none" >{{application.essay_text}}</textarea>
             </div>
             <div id="result" class="col-sm-12 control-label">
                 Words used : <span id='word_count'>0</span><br/>
@@ -129,7 +130,9 @@
 
         </div>
         <div class="form-group">
-            <label class="col-sm-9 control-label">Visa Supporting Letter Required
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-5 control-label" style='text-align:left'>Visa Supporting Letter Required
                 <p class="help-block">Are you from a country that requires visa to stay in Korea?</p>
             </label>
             <div class="col-sm-3">
@@ -142,7 +145,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-9 control-label">Applying for Financial Aid
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-5 control-label" style='text-align:left'>Applying for Financial Aid
                 <p class="help-block">Are you applying for financial aid?</p>
             </label>
             <div class="col-sm-3">
@@ -155,15 +160,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-9 control-label">Previous Participation in ICISTS-KAIST
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-5 control-label" style='text-align:left'>Previous Participation in ICISTS-KAIST
                 <p class="help-block">Have you participated in ICISTS-KAIST before?</p>
             </label>
             <div class="col-sm-3">
                 <label class="radio-inline">
-					<input type="radio" id="f_aid-options" name="previously_participated" value="Y">Yes
+					<input type="radio" id="previously_participated-options" name="previously_participated" value="Y">Yes
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="f_aid-options" name="previously_participated" value="N" checked="checked">No
+                    <input type="radio" id="previously_participated-options" name="previously_participated" value="N" checked="checked">No
                 </label>
             </div>
         </div>

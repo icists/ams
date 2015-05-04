@@ -57,7 +57,6 @@ def form(request):
         print "POST method; to save the data."
         app_f = ApplicationForm(data=request.POST, instance=application)
 
-        print app_f["essay_topic"]
 
         try:
             application = app_f.save()

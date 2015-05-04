@@ -6,18 +6,31 @@
 
 {% block content %}
 <h1>ICISTS-KAIST 2015 Application</h1>
-<p>Application has not been submitted yet. </p>
+<p>Application has been saved, but not submitted yet. </p>
 <p>You can either submit the application for approval, or edit the application.</p>
 <form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
         <div class="form-group">
             <div class="col-sm-12">
-                <a class="btn btn-warning" href="/registration/form">Edit</a>
+                <a class="btn btn-warning" href="/registration/form">View/Edit</a>
                 <a class="btn btn-warning" href="/registration/submit/">Submit</a>
-                <a class="btn btn-warning" href="/registration/fa_form/">Financial Aid Supplement</a>
             </div>
         </div>
     </fieldset>
 </form>
+
+<p>If you have applied for financial aid, please fill in the financial aid form here.</p>
+<form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="col-sm-12">
+                <a class="btn btn-warning" href="/registration/fa_form/">Financial Aid Form</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+
 {% endblock %}

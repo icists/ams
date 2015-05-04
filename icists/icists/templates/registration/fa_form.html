@@ -10,9 +10,11 @@
     <fieldset>
         {% csrf_token %}
 
-        <p>ICISTS-KAIST Financial Aid Program encourages those who currently do not reside in, or are non-permanent residents of the Republic of Korea, to participate in ICISTS-KAIST. Applicants for the financial aid program will be evaluated and the selected applicants will be provided with a grant of US$250 ~ US$400.  If you would like to be considered for financial aid, you must select "Yes" to the question asking your application for Financial Aid. Additional questions must be answered to be completely submitted as a candidate.
-        The financial aid application for Early applicants is from May 4th to May 30th, and the results will be announced on May 31st. The financial aid application for Regular applicants is from June 1st to July 12th, and the results will be announced on July 18th.</p>
-
+        <div class="form-group">
+            <span class="col-sm-1"></span>
+            <p class="col-sm-10" style='text-align:left; font-size:14px'><br>ICISTS-KAIST Financial Aid Program encourages those who currently do not reside in, or are non-permanent residents of the Republic of Korea, to participate in ICISTS-KAIST. Applicants for the financial aid program will be evaluated and the selected applicants will be provided with a grant of US$250 ~ US$400.  If you would like to be considered for financial aid, you must select "Yes" to the question asking your application for Financial Aid. Additional questions must be answered to be completely submitted as a candidate.<br><br> The financial aid application for Early applicants is from May 4th to May 30th, and the results will be announced on May 31st. The financial aid application for Regular applicants is from June 1st to July 12th, and the results will be announced on July 18th.</p>
+            <span class="col-sm-1"></span>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Full Address of Residence</label>
@@ -23,20 +25,24 @@
 
 
         <div class="form-group">
-            <label class="col-sm-9 control-label">1.   Why do you wish to participate in ICISTS-KAIST, and what ways would you be able to contribute to our conference? (within 1000 words)</label>
+            <label class="col-sm-3 control-label">Supplementary Questions</label>
+            <label class="col-sm-9 control-label" style='text-align:left'>1.   Why do you wish to participate in ICISTS-KAIST, and what ways would you be able to contribute to our conference? (within 1000 words)</label>
         </div>
         <div class="form-group">
+            <span class="col-sm-3"></span>
             <div class="col-sm-9">
-                <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Write here." maxlength="2000" style="resize=none" >{{survey.q1}}</textarea>
+                <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Write here." maxlength="7000" style="resize:none; font-size:12px" >{{survey.q1}}</textarea>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-9 control-label">2.    Explain any special circumstances that need to be considered for your qualification of financial aid. (within 500 words)</label>
+            <span class="col-sm-3"></span>
+            <label class="col-sm-9 control-label" style='text-align:left'>2.    Explain any special circumstances that need to be considered for your qualification of financial aid. (within 500 words)</label>
         </div>
         <div class="form-group">
+            <span class="col-sm-3"></span>
             <div class="col-sm-9">
-                <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Write here." maxlength="2000"  style="resize=none">{{survey.q2}}</textarea>
+                <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Write here." maxlength="3500"  style="resize:none; font-size:12px">{{survey.q2}}</textarea>
             </div>
         </div>
         <br/>
