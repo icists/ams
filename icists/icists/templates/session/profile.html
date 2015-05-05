@@ -45,7 +45,7 @@
 				</label>
 			</div>
 			<div class="form-group col-sm-6">
-				<input type="text" class="form-control" name="birthday" placeholder="Birthday" required="required" value="{{ userprofile.birthday|date:'Y-m-d' }}">
+				<input type="text" class="form-control" name="birthday" placeholder="Birthday" required="required" value="{{ userprofile.birthday|date:'Y-m-d' }}" data-vbirth="vbirth">
 			</div>
 		</div>
 		<div class="form-group">
@@ -139,10 +139,12 @@ $(function() {
 	var option = {
 		disable: true,
 		custom: {
-			vimage: function(el) { return el[0].files.length < 1 || el[0].files[0].size < 2 * 1024 * 1024 }
+			vimage: function(el) { return el[0].files.length < 1 || el[0].files[0].size < 2 * 1024 * 1024 },
+			vbirth: function(el) { var re = /^\d{4}-\d{2}-\d{2}$/; return re.test(el.val()); }
 		},
 		errors: {
-			vimage: "Size should be less than 2MB"
+			vimage: "Size should be less than 2MB",
+			vbirth: "Format should be YYYY-MM-DD"
 		}
 	};
 	$('#profile').validator(option);
