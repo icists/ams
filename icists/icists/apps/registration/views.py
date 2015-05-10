@@ -4,13 +4,26 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
+from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserProfileForm
 from icists.apps.registration.models import Application, Survey
 from icists.apps.registration.forms import ApplicationForm, FaForm
 
 # Create your views here.
+
+def process_user_select(cuser, uid=''):
+    if not cuser.is_staff:
+        raise PermissionDenied()
+
+    if uid == '':
+        uid = cuser.username
+
+    userl = User.objects.filter(username=uid)
+    if len(userl) < 1:
+        raise Http404()
+    return userl[0]
 
 
 def main(request): # write/edit/view_results for ICISTS-KAIST 2015
@@ -29,6 +42,7 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
     else:
         #print "app does not exist!" write new. welcome.html
         return render(request, 'registration/welcome.html')
+
 
 def submit(request):
     if not request.user.is_authenticated():
@@ -65,8 +79,6 @@ def form(request):
             raise ValidationError("app_f is not valid.")
 
         return redirect('/registration/')
-
-
 
 
 def fa_form(request):
@@ -114,3 +126,19 @@ def cancel(request):
             return redirect('/registration/')
     except Application.DoesNotExist:
         return redirect('/registration/')
+
+
+@login_required
+def admin_view(request, uid=''):
+    user = process_user_select(request.user, uid)
+    userprofile = UserProfile.objects.get(user=user)
+    application = Application.objects.filter(user=user).first()
+
+    return render(request, 'registration/admin_view.html', {'user': user, 'userprofile': userprofile, 'application':application})
+
+
+@login_required
+def change_status(request, uid=''):
+    if not request.user.is_staff:
+        raise PermissionDenied()
+    user = process_select_user(request.user, uid)

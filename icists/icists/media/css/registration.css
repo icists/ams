@@ -12,10 +12,19 @@ p {
     margin-bottom:5px;
 }
 
+p.form-control-static {
+    font-size:14px;
+}
 
+.form-group > div > p.form-control-static {
+    text-align:left;
+}
 
 #essay_questions {
     font-size:12px;
     text-align:left;
 }
 
+img.profile {
+    width:200px;
+}
