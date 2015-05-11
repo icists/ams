@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
-from django.core.exceptions import ValidationError, PermissionDenied
+from django.core.exceptions import ValidationError, PermissionDenied, SuspiciousOperation
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserProfileForm
@@ -139,6 +139,18 @@ def admin_view(request, uid=''):
 
 @login_required
 def change_status(request, uid=''):
-    if not request.user.is_staff:
-        raise PermissionDenied()
-    user = process_select_user(request.user, uid)
+    if request.method != 'POST':
+        raise SuspiciousOperation()
+    
+    user = process_user_select(request.user, uid)
+    application = Application.objects.filter(user=user).first()
+    result = request.POST.get('result', 'P')
+    
+    if result not in ['P', 'A', 'D']:
+        raise SuspiciousOperation()
+
+    application.screening_result = result
+    application.save()
+
+    return redirect('/registration/admin-view/' + user.username)
+

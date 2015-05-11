@@ -6,8 +6,9 @@
 
 {% block content %}
 <h1>ICISTS Application Admin View</h1>
-<form class="form-horizontal">
+<form class="form-horizontal" action="/registration/change-status/{{ user.username }}/" method="post">
 	<fieldset>
+		{% csrf_token %}
         <div class="form-group">
 			<label class="col-sm-3 control-label">Basic Info</label>
 			<div class="col-sm-9">
@@ -32,7 +33,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Application Info</label>
 			<div class="col-sm-9">
-				<p class="form-control-static">{{ application.get_application_category_display }} Registration, Submit Time: {% if application.submit_time %}{{ application.submit_time }}{% else %}<span class="text-danger">NOT SUBMITTED</span>{% endif %}</p>
+				<p class="form-control-static">{{ application.get_application_category_display }} Registration, Submit Time: {% if application.submit_time %}{{ application.submit_time }}, RESULT: <span class="text-danger">{{ application.get_screening_result_display }}</span>{% else %}<span class="text-danger">NOT SUBMITTED</span>{% endif %}</p>
 			</div>
 		</div>
         <div class="form-group">
@@ -51,15 +52,41 @@
 			<label class="col-sm-3 control-label">ETC</label>
 			<div class="col-sm-9">
 				<p class="form-control-static">VISA Required: {{ application.get_visa_letter_required_display }}, Financial Aid: {{ application.get_financial_aid_display }}, Previously Participated: {{ application.get_previously_participated_display }}</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label text-danger">STATUS</label>
+			<div class="col-sm-9" style="text-align:left">
+				<label class="checkbox-inline">
+					<input type="radio" name="result" value="P"> PENDING
+				</label>
+				<label class="checkbox-inline">
+					<input type="radio" name="result" value="A"> ACCEPT
+				</label>
+				<label class="checkbox-inline">
+					<input type="radio" name="result" value="D"> DENIED
+				</label>
+			</div>
+		</div>
 		{% else %}
 		<p style="font-size:16px;color:red;">##### Application does NOT EXIST #####</p>
 		{% endif %}
+
 		<div class="form-group">
-            <div class="col-sm-12">
+			<div class="col-sm-12">
+				{% if application %}
+				<button type="submit" class="btn btn-primary">Change Status</button>
+				{% endif %}
 				<a class="btn btn-warning" href="javascript:window.history.go(-1)">Go Back</a>
             </div>
 		</div>	
     </fieldset>
 </form>
+
+<script type="text/javascript">
+$(function() {
+	$("input[name=result][value='{{ application.screening_result }}']").prop("checked", true);
+});
+</script>
 {% endblock %}
 
