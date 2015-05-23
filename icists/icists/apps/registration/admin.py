@@ -46,6 +46,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     fields = (('get_user_info', 'group_name'), ('application_category', 'submit_time'), ('screening_result', 'results_embargo'), 'project_topic', 'essay_topic', 'essay_text', ('visa_letter_required', 'financial_aid', 'previously_participated'))
     list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
     inlines = (SurveyInline, )
+    
+    list_filter = ('project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
 
 admin.site.register(Application, ApplicationAdmin)
-admin.site.register(Survey)
