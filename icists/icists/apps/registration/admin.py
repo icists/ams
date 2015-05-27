@@ -29,6 +29,23 @@ def make_not_embargo(admin, request, qs):
     qs.update(results_embargo = False)
 make_not_embargo.short_description = "Cancel embargo selected applications"
 
+class StatusFilter(admin.SimpleListFilter):
+    title = 'submitted status'
+    parameter_name = 'status'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', 'Submitted'),
+            ('no', 'Not Yet'),
+        )
+
+    def queryset(self, request, qs):
+        if self.value() == 'yes':
+            return qs.filter(submit_time__isnull=False)
+        
+        if self.value() == 'no':
+            return qs.filter(submit_time__isnull=True)
+
 class SurveyInline(admin.StackedInline):
     model = Survey
     can_delete = False
@@ -62,12 +79,19 @@ class ApplicationAdmin(admin.ModelAdmin):
     get_phone.admin_order_field = 'user__userprofile__phone'
     get_phone.short_description = 'Phone'
 
+    def get_submitted_status(self, obj):
+        if obj.submit_time != None:
+            return 'Submitted'
+        return 'Not Yet'
+    get_submitted_status.admin_order_field = 'submit_time'
+    get_submitted_status.short_description = 'Status'
+
     readonly_fields = ('get_user_info', )
     fields = (('get_user_info', 'group_name'), ('application_category', 'submit_time'), ('screening_result', 'results_embargo'), 'project_topic', 'essay_topic', 'essay_text', ('visa_letter_required', 'financial_aid', 'previously_participated'))
-    list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
+    list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
     inlines = (SurveyInline, )
     
-    list_filter = ('project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
+    list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
 
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo]
 
