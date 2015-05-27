@@ -9,6 +9,26 @@ from icists.apps.registration.models import Survey
 def get_user_profile(obj):
     return UserProfile.objects.get(user=obj.user)
 
+def make_pending(admin, request, qs):
+    qs.update(screening_result = 'P')
+make_pending.short_description = "Mark selected applications as pending"
+
+def make_accepted(admin, request, qs):
+    qs.update(screening_result = 'A')
+make_accepted.short_description = "Mark selected applications as accepted" 
+
+def make_dismissed(admin, request, qs):
+    qs.update(screening_result = 'D')
+make_dismissed.short_description = "Mark selected applications as dismissed"
+
+def make_embargo(admin, request, qs):
+    qs.update(results_embargo = True)
+make_embargo.short_description = "Embargo selected applications"
+
+def make_not_embargo(admin, request, qs):
+    qs.update(results_embargo = False)
+make_not_embargo.short_description = "Cancel embargo selected applications"
+
 class SurveyInline(admin.StackedInline):
     model = Survey
     can_delete = False
@@ -48,5 +68,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     inlines = (SurveyInline, )
     
     list_filter = ('project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
+
+    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo]
 
 admin.site.register(Application, ApplicationAdmin)
