@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application
 from icists.apps.registration.models import Survey
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 
@@ -35,7 +37,14 @@ class SurveyInline(admin.StackedInline):
     max_num = 1
     extra = 0
 
-class ApplicationAdmin(admin.ModelAdmin):
+class ApplicationResource(resources.ModelResource):
+
+    class Meta:
+        model = Application
+        #fields = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
+        fields = ('user__first_name', 'user__last_name', 'user__userprofile__nationality', 'user__email', 'user__userprofile__phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
+
+class ApplicationAdmin(ImportExportModelAdmin):
     def get_user_info(self, obj):
         user = obj.user
         userp = get_user_profile(obj)
@@ -70,5 +79,6 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_filter = ('project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
 
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo]
+    resource_class = ApplicationResource
 
 admin.site.register(Application, ApplicationAdmin)
