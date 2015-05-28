@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'icists.apps.registration',
     'icists.apps.session',
+    'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
