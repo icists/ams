@@ -19,4 +19,4 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to='profilepicture', null=True, blank=True,
             validators=[validate_image]) #size limit to 2MB
     how_you_found_us = models.CharField(max_length=100, null=True, blank=True)
-    address = models.CharField(max_length=200, null=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
