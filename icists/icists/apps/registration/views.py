@@ -154,3 +154,5 @@ def change_status(request, uid=''):
 
     return redirect('/registration/admin-view/' + user.username)
 
+def early_closed(request):
+    return render(request, 'registration/early_closed.html')
