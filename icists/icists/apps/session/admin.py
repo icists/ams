@@ -3,6 +3,10 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from icists.apps.session.models import UserProfile
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+
 # Register your models here.
 
 class UserProfileInline(admin.StackedInline):
@@ -13,7 +17,11 @@ class UserProfileInline(admin.StackedInline):
 def get_user_profile(obj):
     return UserProfile.objects.get(user=obj)
 
-class UserAdmin(admin.ModelAdmin):
+class UserResource(resources.ModelResource):
+    class Meta:
+        model = User
+
+class UserAdmin(ImportExportModelAdmin):
     def get_name(self, obj):
         return obj.first_name + ' ' + obj.last_name
     get_name.admin_order_field = 'user__first_name'
@@ -36,6 +44,8 @@ class UserAdmin(admin.ModelAdmin):
 
     list_display = ('get_name', 'get_university', 'get_major', 'email', 'get_phone', 'is_staff')
     inlines = (UserProfileInline, )
+
+    resource_class = UserResource
     
     #list_filter = ('project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
 
