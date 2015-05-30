@@ -38,10 +38,10 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
             return render(request, 'registration/status.html')
         else :
             print "can edit the draft." #app_saved.html
-            return render(request, 'registration/app_saved.html')
+            return render(request, 'registration/early_closed.html')
     else:
         #print "app does not exist!" write new. welcome.html
-        return render(request, 'registration/welcome.html')
+        return render(request, 'registration/early_closed.html')
 
 
 def submit(request):
@@ -153,6 +153,3 @@ def change_status(request, uid=''):
     application.save()
 
     return redirect('/registration/admin-view/' + user.username)
-
-def early_closed(request):
-    return render(request, 'registration/early_closed.html')
