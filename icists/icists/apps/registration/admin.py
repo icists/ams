@@ -48,6 +48,20 @@ class StatusFilter(admin.SimpleListFilter):
         if self.value() == 'no':
             return qs.filter(submit_time__isnull=True)
 
+class UniversityFilter(admin.SimpleListFilter):
+    title = 'university'
+    parameter_name = 'university'
+
+    def lookups(self, request, model_admin):
+        universities = set([get_user_profile(u).university for u in model_admin.model.objects.all()])
+        return [(u.id, u.name) for u in universities]
+
+    def queryset(self, request, qs):
+        if self.value():
+            return qs.filter(userprofile__university__id__exact=self.value())
+        else:
+            return qs
+
 class SurveyInline(admin.StackedInline):
     model = Survey
     can_delete = False
@@ -55,7 +69,6 @@ class SurveyInline(admin.StackedInline):
     extra = 0
 
 class ApplicationResource(resources.ModelResource):
-
     class Meta:
         model = Application
         #fields = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
@@ -65,7 +78,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     def get_user_info(self, obj):
         user = obj.user
         userp = get_user_profile(obj)
-        return '%s %s (%s, %s): %s / %s - %s' % (user.first_name, user.last_name, userp.gender, userp.birthday, userp.nationality, userp.university, userp.major)
+        return '%s %s (%s, %s): %s / %s - %s' % (user.first_name, user.last_name, userp.gender, userp.birthday, userp.nationality, userp.university.name, userp.major)
     get_user_info.short_description = 'User Info'
     
     def get_name(self, obj):
@@ -100,7 +113,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
     inlines = (SurveyInline, )
     
-    list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
+    list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo]
     resource_class = ApplicationResource
