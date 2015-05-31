@@ -30,6 +30,26 @@ def make_not_embargo(admin, request, qs):
     qs.update(results_embargo = False)
 make_not_embargo.short_description = "Cancel embargo selected applications"
 
+def make_project_one(admin, request, qs):
+    qs.update(project_topic_id=1);
+make_project_one.short_description = "Set project topic to 1."
+def make_project_two(admin, request, qs):
+    qs.update(project_topic_id=2);
+make_project_two.short_description = "Set project topic to 2."
+def make_project_three(admin, request, qs):
+    qs.update(project_topic_id=3);
+make_project_three.short_description = "Set project topic to 3."
+def make_essay_one(admin, request, qs):
+    qs.update(essay_topic=1);
+make_essay_one.short_description = "Set essay topic to 1."
+def make_essay_two(admin, request, qs):
+    qs.update(essay_topic=2);
+make_essay_two.short_description = "Set essay topic to 2."
+def make_essay_three(admin, request, qs):
+    qs.update(essay_topic_id=3);
+make_essay_three.short_description = "Set essay topic to 3."
+
+
 class StatusFilter(admin.SimpleListFilter):
     title = 'submitted status'
     parameter_name = 'status'
@@ -127,7 +147,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     
     list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
-    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo]
+    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three]
     resource_class = ApplicationResource
 
 admin.site.register(EssayTopic, EssayTopicAdmin)
