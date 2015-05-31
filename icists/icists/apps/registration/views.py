@@ -38,12 +38,12 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
             return render(request, 'registration/status.html', {'screening':app.screening_result})
         else :
             print "can edit the draft." #app_saved.html
-            #return render(request, 'registration/early_closed.html')
-            return render(request, 'registration/draft.html')
+            return render(request, 'registration/early_closed.html')
+            #return render(request, 'registration/draft.html')
     else:
         #print "app does not exist!" write new. welcome.html
-        #return render(request, 'registration/early_closed.html')
-        return render(request, 'registration/welcome.html')
+        return render(request, 'registration/early_closed.html')
+        #return render(request, 'registration/welcome.html')
 
 
 def submit(request):

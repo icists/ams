@@ -12,7 +12,7 @@
         $("input:checkbox").change(function() {
             console.log('change!');
             if (this.checked) {
-                $("a").attr("href", "/registration/form");
+                $("a").attr("href", "/registration/application");
             } else {
                 $("a").removeAttr("href");
             }
@@ -36,7 +36,7 @@
 </div>
 <h1>ICISTS-KAIST 2015 Application</h1>
 <p> Welcome! You can start filling in the application form now. </p>
-<form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="/registration/application/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
 
