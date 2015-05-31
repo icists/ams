@@ -9,21 +9,32 @@
 <script>
     //var screening = document.getElementById("myVar").value;
     var screening = "{{screening}}";
+    var embargo = "{{embargo}}";
     $(document).ready(function() {
-        if (screening == 'P')
+        if (embargo == true)
         {
-            $('.screening_result').append("<h1>pending</h1>");
-            console.log("Pending!!!");
+            $('.screening_result').append("<h1>pending! embargo</h1>");
+            console.log("Still reviewing the application. Embargo!");
         }
-        else if (screening == 'A')
+        else
         {
-            $('.screening_result').append("<h1>Accepted!</h1>");
-            console.log("Accepted!!!");
-        }
-        else if (screening == 'D')
-        {
-            $('.screening_result').append("<h1>Dismissed!</h1>");
-            console.log("Dismissed!!!");
+            if (screening == 'P')
+            {
+                $('.screening_result').append("<h1>pending</h1>");
+                console.log("Pending!!!");
+            }
+            else if (screening == 'A')
+            {
+                $('.screening_result').append("<h1>Congratulations!</h1>");
+                document.getElementById("participant_button").style.display='inline';
+                console.log("Accepted!!!");
+            }
+            else if (screening == 'D')
+            {
+                $('.screening_result').append("<h1>We're sorry.</h1>");
+                document.getElementById("regular_button").style.display='inline';
+                console.log("Dismissed!!!");
+            }
         }
     });
 </script>
@@ -38,8 +49,10 @@
     </p>
 </div>
 <div class="form-group">
-    <div class="col-sm-12">
-        <a class="btn btn-primary" href="/registration/application">View Application</a>
+    <div class="col-sm-12" id="button">
+        <a class="btn btn-primary" href="/registration/application" id='view_button'>View Application</a>
+        <a class="btn btn-primary" href="/registration/participant" id='participant_button' style="display:none;">Proceed for participation</a>
+        <a class="btn btn-primary" href="/registration/cancel" id='regular_button' style="display:none;">Regular Application</a>
     </div>
 </div>
 {% endblock %}

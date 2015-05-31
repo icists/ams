@@ -35,15 +35,15 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
         app = Application.objects.get(user=request.user)
         if app.submit_time is not None:
             print "submitted! pending results."
-            return render(request, 'registration/status.html', {'screening':app.screening_result})
+            return render(request, 'registration/status.html', {'screening':app.screening_result, 'embargo':app.results_embargo})
         else :
             print "can edit the draft." #app_saved.html
-            return render(request, 'registration/early_closed.html')
-            #return render(request, 'registration/draft.html')
+            #return render(request, 'registration/early_closed.html')
+            return render(request, 'registration/draft.html')
     else:
         #print "app does not exist!" write new. welcome.html
-        return render(request, 'registration/early_closed.html')
-        #return render(request, 'registration/welcome.html')
+        #return render(request, 'registration/early_closed.html')
+        return render(request, 'registration/welcome.html')
 
 
 def submit(request):
