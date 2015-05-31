@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from icists.apps.session.models import UserProfile
+from icists.apps.session.models import UserProfile, University
 from django.contrib.auth.models import User
 
 class UserForm(ModelForm):

@@ -5,9 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation, PermissionDenied
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
-from icists.apps.session.models import UserProfile
+from icists.apps.session.models import UserProfile, University
 from icists.apps.session.forms import UserForm, UserProfileForm
-import re, os
+import re, os, json
 
 # Create your views here.
 def get_username(email):
@@ -27,10 +27,36 @@ def is_valid_email(email, exclude=''):
     return True
 
 
-def vcheck(request):
+def email_check(request):
     if is_valid_email(request.GET.get('email', ''), request.GET.get('exclude', '')):
         return HttpResponse(status=200)
     return HttpResponse(status=400)
+
+
+def get_univ_id(name):
+    univ = University.objects.filter(name=name)
+    if len(univ) > 0:
+        return univ[0].id
+    return -1
+
+
+def univ_check(request):
+    univ_id = get_univ_id(request.GET.get('university', ''))
+    if univ_id > 0:
+        return HttpResponse(status=200)
+    return HttpResponse(status=400)
+
+
+def univ_list(request):
+    univs = University.objects.filter(name__icontains = request.GET.get('term', ''))[:20]
+    results = []
+    for univ in univs:
+        j = {}
+        j['id'] = univ.id
+        j['label'] = univ.name
+        j['value'] = univ.name
+        results.append(j)
+    return HttpResponse(json.dumps(results), 'application/json')
 
 
 def login(request):
@@ -65,8 +91,11 @@ def signup(request):
         return redirect('/')
 
     if request.method == 'POST':
-        user_f = UserForm(request.POST)
-        user_profile_f = UserProfileForm(request.POST, request.FILES)
+        npost = request.POST.copy()
+        npost['university'] = get_univ_id(request.POST.get('university', ''))
+
+        user_f = UserForm(npost)
+        user_profile_f = UserProfileForm(npost, request.FILES)
         raw_email = request.POST.get('email', '')
         
         if is_valid_email(raw_email) and user_f.is_valid() and user_profile_f.is_valid():
@@ -101,7 +130,7 @@ def process_user_select(cuser, uid=''):
     if len(userl) < 1:
         raise Http404()
     return userl[0]
-	
+
 	
 @login_required
 def profile(request, uid=''):
@@ -110,10 +139,13 @@ def profile(request, uid=''):
     
     msg = ''
     if request.method == "POST":
-        user_f = UserForm(request.POST)
-        user_profile_f = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        npost = request.POST.copy()
+        npost['university'] = get_univ_id(request.POST.get('university', ''))
+
+        user_f = UserForm(npost)
+        user_profile_f = UserProfileForm(npost, request.FILES, instance=userprofile)
 	raw_email = request.POST.get('email', '')
-		
+        		
 	if is_valid_email(raw_email, user.email) and user_f.is_valid() and user_profile_f.is_valid():
 	    user.email = user_f.cleaned_data['email']
 	    user.first_name = user_f.cleaned_data['first_name']
@@ -121,7 +153,7 @@ def profile(request, uid=''):
 	    user.save()
 	    userprofile = user_profile_f.save()
             msg = 'Your profile was successfully modified!'
-			
+    
     return render(request, 'session/profile.html', { 'user': user, 'userprofile': userprofile, 'msg': msg })
     
 

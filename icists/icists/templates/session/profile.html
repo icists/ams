@@ -21,7 +21,7 @@
         <div class="form-group">
 			<label class="col-sm-3 control-label">Email <span class="required"></span></label>
 			<div class="col-sm-9">
-				<input type="email" class="form-control" name="email" placeholder="asdf@example.com" required="required" value="{{ user.email }}" maxlength="50" data-remote="/session/vcheck/?exclude={{ user.email }}">
+				<input type="email" class="form-control" name="email" placeholder="asdf@example.com" required="required" value="{{ user.email }}" maxlength="50" data-remote="/session/email-check/?exclude={{ user.email }}">
             </div>
         </div>
 		<input type="hidden" name="password" value="qwerty1234">
@@ -57,7 +57,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">University, Major <span class="required"></span></label>
 			<div class="form-group col-sm-6">
-				<input type="text" class="form-control" name="university" placeholder="University" required="required" maxlength="70" value="{{ userprofile.university }}">
+				<input type="text" class="form-control" name="university" placeholder="University" required="required" maxlength="70" value="{{ userprofile.university }}" data-remote="/session/univ-check/">
 			</div>
 			<div class="form-group col-sm-3">
 				<input type="text" class="form-control" name="major" placeholder="Major" required="required" maxlength="45" value="{{ userprofile.major }}">
@@ -135,7 +135,10 @@ $(function() {
 	$("input[name=how_you_found_us][value='{{ userprofile.how_you_found_us }}']").prop("checked", true);
 	$("select[name=nationality]").val("{{ userprofile.nationality }}").attr("selected", "selected");
 	$("input[name=phone]").val("{{ userprofile.phone }}");
-
+	$("input[name=university]").autocomplete({
+		source: "/session/univ-list/",
+		minLength: 2,
+	});
 	var option = {
 		disable: true,
 		custom: {
