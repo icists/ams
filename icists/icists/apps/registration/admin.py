@@ -147,7 +147,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     
     list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
-    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three]
+    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three]
     resource_class = ApplicationResource
 
 admin.site.register(EssayTopic, EssayTopicAdmin)

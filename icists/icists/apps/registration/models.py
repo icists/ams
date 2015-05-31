@@ -46,7 +46,7 @@ class Application(models.Model):
     )
     #submit_status = models.BooleanField(default=False)
     application_category = models.CharField(max_length=1,
-                                            choices=APPLICATION_CATEGORY, default=EARLY)
+                                            choices=APPLICATION_CATEGORY, default=REGULAR)
     screening_result = models.CharField(max_length=1,
                                         choices=SCREENING_RESULT, default=PENDING)
     results_embargo = models.BooleanField(default=True)
