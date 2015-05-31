@@ -57,7 +57,7 @@ class UniversityFilter(admin.SimpleListFilter):
 class UserAdmin(ImportExportModelAdmin):
     def get_name(self, obj):
         return obj.first_name + ' ' + obj.last_name
-    get_name.admin_order_field = 'user__first_name'
+    get_name.admin_order_field = 'first_name'
     get_name.short_description = 'Name'
 
     def get_university(self, obj):
