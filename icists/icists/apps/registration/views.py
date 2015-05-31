@@ -56,7 +56,7 @@ def submit(request):
     return redirect('/registration/')
 
 
-def form(request):
+def application(request):
     if Application.objects.filter(user=request.user).exists():
         print "Loaded the saved application draft."
         application = Application.objects.get(user=request.user)
@@ -83,15 +83,15 @@ def form(request):
         return redirect('/registration/')
 
 
-def fa_form(request):
+def financial(request):
     if Application.objects.filter(user=request.user).exists():
         print "Loaded the saved application draft."
         application = Application.objects.get(user=request.user)
         if Survey.objects.filter(application=application).exists():
-            print "Loaded the saved fa_form draft."
+            print "Loaded the saved financial draft."
             fa_survey = Survey.objects.get(application=application)
         else:
-            print "There is no saved fa_form. Hence creating new."
+            print "There is no saved financial. Hence creating new."
             fa_survey = Survey(application=application)
     else:
         print "There is no saved application"
@@ -101,12 +101,12 @@ def fa_form(request):
     userprofile = UserProfile.objects.get(user=user)
 
     if request.method == "GET":
-        print "GET method. opened the fa_form."
+        print "GET method. opened the financial."
 
-        return render(request, 'registration/fa_form.html', {'user':user, 'survey':fa_survey})
+        return render(request, 'registration/financial.html', {'user':user, 'survey':fa_survey})
 
     elif request.method == "POST":
-        print "POST method; to save the data on fa_form."
+        print "POST method; to save the data on financial."
         fa_f = FaForm(data=request.POST, instance=fa_survey)
 
         try:
@@ -143,11 +143,11 @@ def admin_view(request, uid=''):
 def change_status(request, uid=''):
     if request.method != 'POST':
         raise SuspiciousOperation()
-    
+
     user = process_user_select(request.user, uid)
     application = Application.objects.filter(user=user).first()
     result = request.POST.get('result', 'P')
-    
+
     if result not in ['P', 'A', 'D']:
         raise SuspiciousOperation()
 
@@ -155,3 +155,6 @@ def change_status(request, uid=''):
     application.save()
 
     return redirect('/registration/admin-view/' + user.username)
+
+def participant(request):
+    return render(request, 'registration/participant.html')
