@@ -38,12 +38,12 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
             return render(request, 'registration/status.html', {'screening':app.screening_result})
         else :
             print "can edit the draft." #app_saved.html
-            return render(request, 'registration/early_closed.html')
-            #return render(request, 'registration/app_saved.html')
+            #return render(request, 'registration/early_closed.html')
+            return render(request, 'registration/draft.html')
     else:
         #print "app does not exist!" write new. welcome.html
-        return render(request, 'registration/early_closed.html')
-        #return render(request, 'registration/welcome.html')
+        #return render(request, 'registration/early_closed.html')
+        return render(request, 'registration/welcome.html')
 
 
 def submit(request):
@@ -69,7 +69,7 @@ def application(request):
         app_f = ApplicationForm(instance=application)
         project_topic = ProjectTopic.objects.filter(year=2015).order_by('number')
         essay_topic = EssayTopic.objects.filter(year=2015).order_by('number')
-        return render(request, 'registration/form.html', {'application':application, 'project_topic':project_topic, 'essay_topic':essay_topic})
+        return render(request, 'registration/application.html', {'application':application, 'project_topic':project_topic, 'essay_topic':essay_topic})
 
     elif request.method == "POST":
         print "POST method; to save the data."
@@ -97,7 +97,7 @@ def financial(request):
             fa_survey = Survey(application=application)
     else:
         print "There is no saved application"
-        redirect('/registration/form')
+        redirect('/registration/application')
 
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=user)
