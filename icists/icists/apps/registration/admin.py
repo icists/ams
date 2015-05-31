@@ -57,7 +57,7 @@ class UniversityFilter(admin.SimpleListFilter):
 
     def queryset(self, request, qs):
         if self.value():
-            return qs.filter(userprofile__university__id__exact=self.value())
+            return qs.filter(user__userprofile__university__id__exact=self.value())
         else:
             return qs
 
