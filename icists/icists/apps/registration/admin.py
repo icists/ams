@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
-from icists.apps.registration.models import Application
-from icists.apps.registration.models import Survey
+from icists.apps.registration.models import Application, Survey, EssayTopic, ProjectTopic
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -62,17 +61,30 @@ class UniversityFilter(admin.SimpleListFilter):
         else:
             return qs
 
+
+class ProjectTopicAdmin(admin.ModelAdmin):
+    list_display = ('year', 'number', 'text')
+    list_filter = ('year',)
+
+
+class EssayTopicAdmin(admin.ModelAdmin):
+    list_display = ('year', 'number', 'text', 'description')
+    list_filter = ('year',)
+
+
 class SurveyInline(admin.StackedInline):
     model = Survey
     can_delete = False
     max_num = 1
     extra = 0
 
+    
 class ApplicationResource(resources.ModelResource):
     class Meta:
         model = Application
         #fields = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
         fields = ('user__first_name', 'user__last_name', 'user__userprofile__nationality', 'user__email', 'user__userprofile__phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
+
 
 class ApplicationAdmin(ImportExportModelAdmin):
     def get_user_info(self, obj):
@@ -118,4 +130,6 @@ class ApplicationAdmin(ImportExportModelAdmin):
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo]
     resource_class = ApplicationResource
 
+admin.site.register(EssayTopic, EssayTopicAdmin)
+admin.site.register(ProjectTopic, ProjectTopicAdmin)
 admin.site.register(Application, ApplicationAdmin)

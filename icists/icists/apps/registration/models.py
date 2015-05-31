@@ -3,6 +3,25 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class EssayTopic(models.Model):
+    year = models.IntegerField()
+    number = models.IntegerField()
+    text = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return "(%d) %d. %s" % (self.year, self.number, self.text)
+
+
+class ProjectTopic(models.Model):
+    year = models.IntegerField()
+    number = models.IntegerField()
+    text = models.CharField(max_length=100)
+    
+    def __unicode__(self):
+        return "(%d) %d. %s" % (self.year, self.number, self.text)
+
+
 class Application(models.Model):
     EARLY = 'E'
     REGULAR = 'R'
@@ -31,8 +50,8 @@ class Application(models.Model):
     screening_result = models.CharField(max_length=1,
                                         choices=SCREENING_RESULT, default=PENDING)
     results_embargo = models.BooleanField(default=True)
-    project_topic = models.CharField(max_length=45)
-    essay_topic = models.CharField(max_length=500)
+    project_topic = models.ForeignKey(ProjectTopic, related_name='application_project')
+    essay_topic = models.ForeignKey(EssayTopic, related_name='application_essay')
     essay_text = models.TextField()
     visa_letter_required = models.CharField(max_length=1, choices=YESNO, default='N')
     financial_aid = models.CharField(max_length=1, choices=YESNO, default='N')

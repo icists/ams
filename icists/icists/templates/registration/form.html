@@ -29,8 +29,8 @@
         $('#essay_textarea').blur(counter);
         $('#essay_textarea').focus(counter);
             
-        $('select[name=project_topic]').val('{{ application.project_topic }}').attr("selected", "selected");
-        $('select[name=essay_topic]').val('{{ application.essay_topic }}').attr("selected", "selected");
+        $('select[name=project_topic]').val('{{ application.project_topic_id }}').attr("selected", "selected");
+        $('select[name=essay_topic]').val('{{ application.essay_topic_id }}').attr("selected", "selected");
         $("input[name=visa_letter_required][value='{{ application.visa_letter_required }}']").prop("checked", true);
         $("input[name=financial_aid][value='{{ application.financial_aid }}']").prop("checked", true);
         $("input[name=previously_participated][value='{{ application.previously_participated }}']").prop("checked", true);
@@ -58,7 +58,7 @@
 
 {% block content %}
 <h1>ICISTS-KAIST 2015 Application Form</h1>
-<form class="form-horizontal" action="/registration/form/" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="/registration/application/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
 
@@ -79,9 +79,9 @@
             <label class="col-sm-3 control-label">Project Topic</label>
             <div class="col-sm-9">
                 <select class="form-control" name="project_topic" required="required">
-                <option>1. Robotics </option>
-                <option>2. Medicine </option>
-                <option>3. Science Communication </option>
+					{% for topic in project_topic %}
+					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
+					{% endfor %}
                 </select>
                 <p class="help-block">Please choose a topic you want to participate in throughout the whole conference. Your team project group will be determined based on this choice. </p>
             </div>
@@ -89,10 +89,10 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Essay Topic</label>
             <div class="col-sm-9">
-                <select class="form-control" name="essay_topic" required="required">
-                <option>1. Robotics</option>
-                <option>2. Medicine</option>
-                <option>3. Science Communication </option>
+				<select class="form-control" name="essay_topic" required="required">
+					{% for topic in essay_topic %}
+					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
+					{% endfor %}
                 </select>
                 <p class="help-block"> Choose one of the options above and write. Your essay topic does not necessarily have to match with your project topic.</p>
             </div>
@@ -101,21 +101,11 @@
             <label class="col-sm-3 control-label">
             </label>
             <label class="col-sm-9 control-label" id='essay_questions'>
-                Topic 1: Robotics <br>
-                In Isaac Asimov's novel &lt;The Bicentennial Man&gt;, an android with special skills starts his 'life' as a housekeeper. Thanks to his special intellectual qualities, he has the passion to become a human. Although he changes his external form to human skin, has intellect that closely resembles that of a human being's, and even implants human blood into his body, he is not accepted as a human by the World Court. If you were in the main character's shoes, why do you think you are not currently accepted by human society? What criteria should you, as an android, satisfy to think that you are worthy of earning basic human rights from society?
-                <hr>
-                Topic 2: Medicine <br>
-                Personalized medicine utilizes DNA sequencing to create medicine that is engineered individually, and therefore can show greater efficiency. However, contrary to high prior expectations, this method of medical treatment has not been too popular among patients and doctors.
-                Some barriers preventing the widespread use of personalized medicine include:
-                <ol>
-                    <li>Ownership over sequenced DNA</li>
-                    <li>Expensive DNA sequencing</li>
-                    <li>Diseases unrelated to genetics</li>
-                </ol>
-                Choose one of the above (or use an example of your own) and write, about the ways in which these problems can be solved.
-                <hr>
-                Topic 3: Science Communication <br>
-                To quote Einstein, "Everything should be made as simple as possible, but not simpler." The quote is suggesting that although science should be kept as simple, there lies danger in oversimplifying the context of science. What are the dangers of scientists oversimplifying science when communicating their discoveries to the public? <br><br>
+				{% for topic in essay_topic %}
+				Topic {{ topic.number }}: {{ topic.text }} <br>
+				{{ topic.description }}
+				<hr>
+				{% endfor %}
             </label>
         </div>
         <div class="form-group">

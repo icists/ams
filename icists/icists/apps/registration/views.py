@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError, PermissionDenied, Suspicious
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
 from icists.apps.session.forms import UserProfileForm
-from icists.apps.registration.models import Application, Survey
+from icists.apps.registration.models import Application, Survey, ProjectTopic, EssayTopic
 from icists.apps.registration.forms import ApplicationForm, FaForm
 
 # Create your views here.
@@ -67,7 +67,9 @@ def application(request):
     if request.method == "GET":
         print "GET method. opened the form."
         app_f = ApplicationForm(instance=application)
-        return render(request, 'registration/form.html', {'application':application})
+        project_topic = ProjectTopic.objects.filter(year=2015).order_by('number')
+        essay_topic = EssayTopic.objects.filter(year=2015).order_by('number')
+        return render(request, 'registration/form.html', {'application':application, 'project_topic':project_topic, 'essay_topic':essay_topic})
 
     elif request.method == "POST":
         print "POST method; to save the data."
