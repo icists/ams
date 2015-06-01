@@ -49,7 +49,8 @@ def make_essay_three(admin, request, qs):
     qs.update(essay_topic_id=3);
 make_essay_three.short_description = "Set essay topic to 3."
 def make_kaist(admin, request, qs):
-    qs.update(user__userprofile__university__id=4358);
+    for application in list(qs):
+        UserProfile.objects.filter(id=application.user.userprofile.id).update(university_id=4358)
 make_kaist.short_description = "university = KAIST"
 
 
@@ -148,7 +149,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
     inlines = (SurveyInline, )
     
-    list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
+    list_filter = (StatusFilter, 'project_topic', 'group_name', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist]
     resource_class = ApplicationResource
