@@ -48,6 +48,9 @@ make_essay_two.short_description = "Set essay topic to 2."
 def make_essay_three(admin, request, qs):
     qs.update(essay_topic_id=3);
 make_essay_three.short_description = "Set essay topic to 3."
+def make_kaist(admin, request, qs):
+    qs.update(user__userprofile__university__id=4358);
+make_kaist.short_description = "university = KAIST"
 
 
 class StatusFilter(admin.SimpleListFilter):
@@ -147,7 +150,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     
     list_filter = (StatusFilter, 'project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
-    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three]
+    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist]
     resource_class = ApplicationResource
 
 admin.site.register(EssayTopic, EssayTopicAdmin)
