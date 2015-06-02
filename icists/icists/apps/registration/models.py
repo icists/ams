@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class EssayTopic(models.Model):
     year = models.IntegerField()
     number = models.IntegerField()
@@ -17,7 +18,7 @@ class ProjectTopic(models.Model):
     year = models.IntegerField()
     number = models.IntegerField()
     text = models.CharField(max_length=100)
-    
+
     def __unicode__(self):
         return "(%d) %d. %s" % (self.year, self.number, self.text)
 
@@ -39,27 +40,33 @@ class Application(models.Model):
         (DISMISSED, 'Dismissed'),
         (PENDING, 'Pending'),
     )
-    
+
     YESNO = (
         ('Y', 'Yes'),
         ('N', 'No'),
     )
-    #submit_status = models.BooleanField(default=False)
+    # submit_status = models.BooleanField(default=False)
     application_category = models.CharField(max_length=1,
-                                            choices=APPLICATION_CATEGORY, default=REGULAR)
+                                            choices=APPLICATION_CATEGORY,
+                                            default=REGULAR)
     screening_result = models.CharField(max_length=1,
-                                        choices=SCREENING_RESULT, default=PENDING)
+                                        choices=SCREENING_RESULT,
+                                        default=PENDING)
     results_embargo = models.BooleanField(default=True)
-    project_topic = models.ForeignKey(ProjectTopic, related_name='application_project')
-    essay_topic = models.ForeignKey(EssayTopic, related_name='application_essay')
+    project_topic = models.ForeignKey(ProjectTopic,
+                                      related_name='application_project')
+    essay_topic = models.ForeignKey(EssayTopic,
+                                    related_name='application_essay')
     essay_text = models.TextField()
-    visa_letter_required = models.CharField(max_length=1, choices=YESNO, default='N')
+    visa_letter_required = models.CharField(max_length=1,
+                                            choices=YESNO, default='N')
     financial_aid = models.CharField(max_length=1, choices=YESNO, default='N')
-    #year = models.IntegerField(default=2015)   # Use last_updated_time
+    # year = models.IntegerField(default=2015)   # Use last_updated_time
     user = models.ForeignKey(User, related_name='application')
-    #user = models.OneToOneField(User, related_name='application')
+    # user = models.OneToOneField(User, related_name='application')
     group_name = models.CharField(max_length=45, blank=True)
-    previously_participated =  models.CharField(max_length=1, choices=YESNO, default='N')
+    previously_participated = models.CharField(max_length=1,
+                                               choices=YESNO, default='N')
     last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
 
@@ -75,17 +82,22 @@ class Participant(models.Model):
         (LESS_PAID, 'Less Paid'),
         (OVER_PAID, 'Over Paid'),
     )
-    
-    accommodation = models.ForeignKey('Accommodation', related_name="participant")
-    application = models.OneToOneField('Application', related_name="participant")
+
+    accommodation = models.ForeignKey('Accommodation',
+                                      related_name="participant")
+    is_accommodation_assigned = models.BooleanField(default=False)
+    application = models.OneToOneField('Application',
+                                       related_name="participant")
     discount = models.ForeignKey('Discount', related_name="participant")
 
     project_team_no = models.PositiveSmallIntegerField()
     payment_status = models.CharField(max_length=1,
                                       choices=PAYMENT_STATUS, default=NOT_PAID)
     required_payment = models.IntegerField()
+    remitter_name = models.CharField(max_length=45)
     breakfast_option = models.BooleanField(default=False)
-    dietary_option = models.CharField(max_length=45) # Vegetarian, Halal, Others (Optional text input)
+    # dietary_option := Vegetarian, Halal, Others (Optional text input)
+    dietary_option = models.CharField(max_length=45)
     pretour = models.BooleanField(default=False)
     posttour = models.BooleanField(default=False)
 
@@ -97,12 +109,11 @@ class Accommodation(models.Model):
     gender = models.CharField(max_length=45)
     availability = models.IntegerField()
 
-    
+
 class Discount(models.Model):
     discount_code = models.CharField(max_length=10, primary_key=True)
     discount_value = models.IntegerField()
     disocunt_percent = models.FloatField()
-
 
 
 class Survey(models.Model):
