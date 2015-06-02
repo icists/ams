@@ -177,4 +177,24 @@ def change_status(request, uid=''):
 
 
 def participation(request):
-    return render(request, 'registration/participation.html')
+    if request.method == "GET":
+        try:
+            assert Application.objects.filter(user=request.user).exists()
+            application = Application.objects.get(user=request.user)
+            category = application.application_category
+            payment_krw, payment_usd = 0, 0
+            if category == 'E':
+                payment_krw = 100000
+                payment_usd = 95
+            elif category == 'R':
+                payment_krw = 120000
+                payment_usd = 115
+            return render(request, 'registration/participation.html',
+                          {'category': category,
+                           'krw': payment_krw, 'usd': payment_usd})
+        except:
+            return render(request, 'registration/participation.html',
+                          {'error', 'Application data not found'})
+    elif request.method == "POST":
+        print request.POST
+        return render(request, 'registration/participation.html')
