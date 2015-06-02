@@ -55,6 +55,8 @@ class Application(models.Model):
     results_embargo = models.BooleanField(default=True)
     project_topic = models.ForeignKey(ProjectTopic,
                                       related_name='application_project')
+    project_topic_2nd = models.\
+        ForeignKey(ProjectTopic, related_name='application_project_2nd')
     essay_topic = models.ForeignKey(EssayTopic,
                                     related_name='application_essay')
     essay_text = models.TextField()
