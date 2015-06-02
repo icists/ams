@@ -30,12 +30,12 @@
 <div class="form-group">
     <br />
     <div class="col-sm-12" id="button">
-        <a class="btn btn-primary" href="/registration/cancel" id='regular_button' style="display:none;">Regular Application</a>
+        <a class="btn btn-primary" href="/registration/cancel/" id='regular_button' style="display:none;">Regular Application</a>
     </div>
     {% if embargo %}
-    <a class="btn btn-primary" href="/registration/application" id='view_button'>View Application</a>
+    <a class="btn btn-primary" href="/registration/application/" id='view_button'>View Application</a>
     {% elif screening == 'A' %}
-    <a class="btn btn-primary" href="/registration/participant" id='participant_button'>Proceed for Participation</a>
+    <a class="btn btn-primary" href="/registration/participation/" id='participation_button'>Proceed for Participation</a>
     {% endif %}
 </div>
 {% endblock %}

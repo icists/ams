@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.core.exceptions import ValidationError, PermissionDenied, \
     SuspiciousOperation, ObjectDoesNotExist
+from django.http import Http404
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
     EssayTopic
@@ -39,7 +40,7 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
                 return render(request, 'registration/status.html',
                               {'screening': app.screening_result,
                                'embargo': app.results_embargo})
-            except app.DoesNotExist:
+            except ObjectDoesNotExist:
                 return render(request, 'registration/status.html',
                               {'error': 'Object field does not exist'})
         else:
@@ -109,13 +110,13 @@ def financial(request):
         redirect('/registration/application')
 
     user = User.objects.get(username=request.user.username)
-    # userprofile = UserProfile.objects.get(user=user)
+    userprofile = UserProfile.objects.get(user=user)
 
     if request.method == "GET":
         print "GET method. opened the financial."
 
         return render(request, 'registration/financial.html',
-                      {'userprofile':userprofile, 'survey':fa_survey})
+                      {'userprofile': userprofile, 'survey': fa_survey})
 
     elif request.method == "POST":
         print "POST method; to save the data on financial."
@@ -175,5 +176,5 @@ def change_status(request, uid=''):
     return redirect('/registration/admin-view/' + user.username)
 
 
-def participant(request):
-    return render(request, 'registration/participant.html')
+def participation(request):
+    return render(request, 'registration/participation.html')
