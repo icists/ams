@@ -25,17 +25,20 @@
     <h1>Contratulations!</h1>
     <h1>You have been admitted to ICISTS-KAIST 2015.</h1>
     <h2>Please fill in additional information for participation.</h2>
+    {% elif screening == 'D' %}
+    <h1>Your application has been carefully reviewed by the organising committee.</h1>
+    <h2>We're sorry to tell you that we cannot offer you the invitation to ICISTS-KAIST 2015.</h2>
+    <h2>Please apply again for regular application.</h2>
     {% endif %}
 </div>
 <div class="form-group">
     <br />
-    <div class="col-sm-12" id="button">
-        <a class="btn btn-primary" href="/registration/cancel/" id='regular_button' style="display:none;">Regular Application</a>
-    </div>
     {% if embargo %}
     <a class="btn btn-primary" href="/registration/application/" id='view_button'>View Application</a>
     {% elif screening == 'A' %}
     <a class="btn btn-primary" href="/registration/participation/" id='participation_button'>Proceed for Participation</a>
+    {% elif screening == 'D' %}
+    <a class="btn btn-primary" href="/registration/cancel/" id='regular_button'>Regular Application</a>
     {% endif %}
 </div>
 {% endblock %}
