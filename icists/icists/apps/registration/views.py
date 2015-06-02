@@ -105,7 +105,7 @@ def financial(request):
     if request.method == "GET":
         print "GET method. opened the financial."
 
-        return render(request, 'registration/financial.html', {'user':user, 'survey':fa_survey})
+        return render(request, 'registration/financial.html', {'userprofile':userprofile, 'survey':fa_survey})
 
     elif request.method == "POST":
         print "POST method; to save the data on financial."
@@ -113,6 +113,8 @@ def financial(request):
 
         try:
             fa_survey = fa_f.save()
+            userprofile.address = request.POST.get('address', '')
+            userprofile.save()
         except:
             print 'Invalid application attempted to save'
             raise ValidationError()

@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1>ICISTS-KAIST 2015 Financial Aid Form</h1>
-<form class="form-horizontal" action="/registration/fa_form/" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="/registration/financial/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}
 
@@ -19,7 +19,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Full Address of Residence</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="address" placeholder="33 Rochester Drive, #35-06 The Rochester, Singapore" maxlength="300" value="{{user.address}}">
+                <input type="text" class="form-control" name="address" placeholder="33 Rochester Drive, #35-06 The Rochester, Singapore" maxlength="300" value="{{userprofile.address}}">
             </div>
         </div>
 
@@ -31,7 +31,7 @@
         <div class="form-group">
             <span class="col-sm-3"></span>
             <div class="col-sm-9">
-                <textarea class="form-control" id='financial_aid_q1' rows="20" name="financial_aid_q1" placeholder="Write here." maxlength="7000" style="resize:none; font-size:12px" >{{survey.q1}}</textarea>
+                <textarea class="form-control" id='financial_aid_q1' rows="20" name="q1" placeholder="Write here." maxlength="7000" style="resize:none; font-size:12px" >{{survey.q1}}</textarea>
             </div>
         </div>
 
@@ -42,7 +42,7 @@
         <div class="form-group">
             <span class="col-sm-3"></span>
             <div class="col-sm-9">
-                <textarea class="form-control" id='financial_aid_q2' rows="20" name="financial_aid_q2" placeholder="Write here." maxlength="3500"  style="resize:none; font-size:12px">{{survey.q2}}</textarea>
+                <textarea class="form-control" id='financial_aid_q2' rows="20" name="q2" placeholder="Write here." maxlength="3500"  style="resize:none; font-size:12px">{{survey.q2}}</textarea>
             </div>
         </div>
         <br/>
