@@ -1,17 +1,16 @@
-from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.utils import timezone
-from django.core.exceptions import ValidationError, PermissionDenied, SuspiciousOperation
-from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError, PermissionDenied, \
+    SuspiciousOperation, ObjectDoesNotExist
 from icists.apps.session.models import UserProfile
-from icists.apps.session.forms import UserProfileForm
-from icists.apps.registration.models import Application, Survey, ProjectTopic, EssayTopic
+from icists.apps.registration.models import Application, Survey, ProjectTopic, \
+    EssayTopic
 from icists.apps.registration.forms import ApplicationForm, FaForm
 
 # Create your views here.
+
 
 def process_user_select(cuser, uid=''):
     if not cuser.is_staff:
@@ -26,7 +25,7 @@ def process_user_select(cuser, uid=''):
     return userl[0]
 
 
-def main(request): # write/edit/view_results for ICISTS-KAIST 2015
+def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
     if not request.user.is_authenticated():
         return redirect('/session/login/')
 
@@ -34,15 +33,22 @@ def main(request): # write/edit/view_results for ICISTS-KAIST 2015
         print "app exists!"
         app = Application.objects.get(user=request.user)
         if app.submit_time is not None:
-            print "submitted! pending results."
-            return render(request, 'registration/status.html', {'screening':app.screening_result, 'embargo':app.results_embargo})
-        else :
-            print "can edit the draft." #app_saved.html
-            #return render(request, 'registration/early_closed.html')
+            print "submitted! pending results.",\
+                app.submit_time, app.screening_result, app.results_embargo
+            try:
+                return render(request, 'registration/status.html',
+                              {'screening': app.screening_result,
+                               'embargo': app.results_embargo})
+            except app.DoesNotExist:
+                return render(request, 'registration/status.html',
+                              {'error': 'Object field does not exist'})
+        else:
+            print "can edit the draft."     # app_saved.html
+            # return render(request, 'registration/early_closed.html')
             return render(request, 'registration/draft.html')
     else:
-        #print "app does not exist!" write new. welcome.html
-        #return render(request, 'registration/early_closed.html')
+        # print "app does not exist!" write new. welcome.html
+        # return render(request, 'registration/early_closed.html')
         return render(request, 'registration/welcome.html')
 
 
@@ -67,14 +73,17 @@ def application(request):
     if request.method == "GET":
         print "GET method. opened the form."
         app_f = ApplicationForm(instance=application)
-        project_topic = ProjectTopic.objects.filter(year=2015).order_by('number')
+        project_topic = ProjectTopic.objects.filter(year=2015)\
+            .order_by('number')
         essay_topic = EssayTopic.objects.filter(year=2015).order_by('number')
-        return render(request, 'registration/application.html', {'application':application, 'project_topic':project_topic, 'essay_topic':essay_topic})
+        return render(request, 'registration/application.html',
+                      {'application': application,
+                       'project_topic': project_topic,
+                       'essay_topic': essay_topic})
 
     elif request.method == "POST":
         print "POST method; to save the data."
         app_f = ApplicationForm(data=request.POST, instance=application)
-
 
         try:
             application = app_f.save()
@@ -100,12 +109,13 @@ def financial(request):
         redirect('/registration/application')
 
     user = User.objects.get(username=request.user.username)
-    userprofile = UserProfile.objects.get(user=user)
+    # userprofile = UserProfile.objects.get(user=user)
 
     if request.method == "GET":
         print "GET method. opened the financial."
 
-        return render(request, 'registration/financial.html', {'user':user, 'survey':fa_survey})
+        return render(request, 'registration/financial.html',
+                      {'user': user, 'survey': fa_survey})
 
     elif request.method == "POST":
         print "POST method; to save the data on financial."
@@ -124,7 +134,8 @@ def cancel(request):
     try:
         application = Application.objects.get(user=request.user)
         if request.method == "GET":
-            return render(request, 'registration/cancel.html', {'application':application, 'user': request.user})
+            return render(request, 'registration/cancel.html',
+                          {'application': application, 'user': request.user})
         elif request.method == "POST":
             application.delete()
             return redirect('/registration/')
@@ -138,7 +149,10 @@ def admin_view(request, uid=''):
     userprofile = UserProfile.objects.get(user=user)
     application = Application.objects.filter(user=user).first()
 
-    return render(request, 'registration/admin_view.html', {'user': user, 'userprofile': userprofile, 'application':application})
+    return render(request, 'registration/admin_view.html',
+                  {'user': user,
+                   'userprofile': userprofile,
+                   'application': application})
 
 
 @login_required
@@ -157,6 +171,7 @@ def change_status(request, uid=''):
     application.save()
 
     return redirect('/registration/admin-view/' + user.username)
+
 
 def participant(request):
     return render(request, 'registration/participant.html')
