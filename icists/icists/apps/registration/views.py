@@ -79,6 +79,7 @@ def application(request):
         return render(request, 'registration/application.html',
                       {'application': application,
                        'project_topic': project_topic,
+                       'project_topic_2nd' : project_topic,
                        'essay_topic': essay_topic})
 
     elif request.method == "POST":
