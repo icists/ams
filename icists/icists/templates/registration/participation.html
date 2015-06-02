@@ -1,0 +1,127 @@
+{% extends "registration/base.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/registration.css">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/participation.css">
+{% endblock %}
+{% block content %}
+<div id="section-header">
+    <h1>ICISTS-KAIST 2015</h1>
+    <h3>Participant Additional Information Form</h3>
+</div>
+<div id="section-content">
+    <div id="application-information">
+        <label class="col-sm-4 col-label text-right">Application Category</label>
+        <label>CATEGORY_INFORMATION</label>
+        <label>PRICING_INFORMATION</label>
+    </div>
+    <form class="form-horizontal" action="/registration/participation/" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <div id="additional-information">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Accommodation Option</label>
+                    <div class="col-sm-8">
+                        <select class="form-control col-sm-8" name="accommodation-option" required="required">
+                            <option value="0">-- Select --</option>
+                            <option value="1">[Option A] Standard Ondol / Capacity: 4 people / Price: 125 USD (135,000 KRW)</option>
+                            <option value="2">[Option B] Standard Ondol Twin / Capacity: 3 people / Price: 165 USD (180,000 KRW)</option>
+                            <option value="3">[Option C] Deluxe Ondol / Capacity: 6 people / Price: 110 USD (120,000 KRW)</option>
+                            <option value="4">[Option D] Suite Ondol / Capacity: 8 people (with 2 rooms of 4 people each) / Price: 105 USD (112,500 KRW)
+                        </select>
+                        <span class="help-block text-left">For more information, refer to the official website: <a href="http://www.icists.org/hotel-information/">http://www.icists.org/hotel-information/</a></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Breakfast</label>
+                    <div class="col-sm-8 text-left">
+                        <label class="radio-inline">
+                            <input type="radio" name="breakfast-options" value="True">Yes</input>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="breakfast-options" value="False">No</input>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Dietary Preferance</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="dietary-preference" required="required">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Pre-Conference Banquet Attendance</label>
+                    <div class="col-sm-8 text-left">
+                        <label class="radio-inline">
+                            <input type="radio" name="pretour-options" value="True">Yes</input>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="pretour-options" value="False">No</input>
+                        </label>
+                        <span class="help-block">USB 30 (KRW 40,000)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Post-Conference Tour Attendance</label>
+                    <div class="col-sm-8 text-left">
+                        <label class="radio-inline">
+                            <input type="radio" name="posttour-options" value="True">Yes</input>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="posttour-options" value="False">No</input>
+                        </label>
+                            <span class="help-block">USD 90 (KRW 100,000)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Total Payment</label>
+                    <span id="payment-amount" class="col-sm-8 text-right">PAYMENT</span>
+                </div>
+            </div>
+            <div id="payment-information">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Payment Option</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="payment-option" required="required">
+                            <option value="0">-- Select --</option>
+                            <option value="1">Paypal</option>
+                            <option value="2">Bank Transfer</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="placeholder" class="col-sm-4"></div>
+                <div id="paypal" class="col-sm-8 text-left">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Paypal Account</label>
+                        <p class="form-control-static">help@icists.org</p>
+                    </div>
+                </div>
+                <div id="account" class="col-sm-8 text-left">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Bank Name</label>
+                        <p class="form-control-static">Woori Bank</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Branch Name</label>
+                        <p class="form-control-static">KAIST SUBBRANCH</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Account Number</label>
+                        <p class="form-control-static">1002-953-865325</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Name of Recipient</label>
+                        <p class="form-control-static">권기량 (Ki Ryang Kwon)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Swift Code</label>
+                        <p class="form-control-static">HVBKKRSEXXX</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
