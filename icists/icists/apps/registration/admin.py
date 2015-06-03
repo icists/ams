@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
-from icists.apps.registration.models import Application, Survey, EssayTopic, ProjectTopic
+from icists.apps.registration.models import Application, Survey, EssayTopic, ProjectTopic, Participant
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -154,6 +154,34 @@ class ApplicationAdmin(ImportExportModelAdmin):
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist]
     resource_class = ApplicationResource
 
+def group_discount_enable(admin, request, qs):
+    qs.update(group_discount=True)
+    group_discount_enable.short_description = "apply group discount"
+
+def group_discount_disable(admin, request, qs):
+        qs.update(group_discount=False)
+        group_discount_enable.short_description = "apply group discount"
+
+class ParticipantAdmin(ImportExportModelAdmin):
+    readonly_fields = ('required_payment_krw', 'required_payment_usd')
+    fields =    (   ('accommodation'),
+                    ('project_team_no'),
+                    ('payment_status', 'payment_option', 'remitter_name'),
+                    ('required_payment_krw', 'required_payment_usd'),
+                    ('breakfast_option', 'dietary_option'),
+                    ('pretour', 'posttour', 'group_discount'),
+                )
+    list_display = ('accommodation', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',      
+                            'dietary_option', 'pretour', 'posttour', 'group_discount', 'submit_time')
+    actions = [group_discount_enable, group_discount_disable]
+
+class ParticipantResource(resources.ModelResource):
+    class Meta:
+        model = Participant
+
+
+
 admin.site.register(EssayTopic, EssayTopicAdmin)
 admin.site.register(ProjectTopic, ProjectTopicAdmin)
 admin.site.register(Application, ApplicationAdmin)
+admin.site.register(Participant, ParticipantAdmin)
