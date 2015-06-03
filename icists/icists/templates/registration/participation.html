@@ -80,9 +80,15 @@
                     if (rsp.success) {
                         $(".alert-danger").hide();
                         $(".alert-success").show();
+                        $("#application-information").hide();
+                        $("#additional-information").hide();
+                        $("#payment-information").hide();
                     } else {
                         $(".alert-success").hide();
                         $(".alert-danger").show();
+                        $("#application-information").show();
+                        $("#additional-information").hide();
+                        $("#payment-information").show();
                         $("#msg-error").empty();
                         for (i in rsp.error) {
                             console.log(rsp.error[i]);
