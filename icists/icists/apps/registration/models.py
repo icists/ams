@@ -98,12 +98,13 @@ class Participant(models.Model):
     )
 
     accommodation = models.ForeignKey('Accommodation',
-                                      related_name="participant")
+                                      related_name="participant", null=True)
     accommodation_choice = models.IntegerField(choices=ACCOMMODATION_CHOICES)
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
                                        related_name="participant")
-    discount = models.ForeignKey('Discount', related_name="participant")
+    discount = models.ForeignKey('Discount',
+                                 related_name="participant", null=True)
 
     project_team_no = models.PositiveSmallIntegerField()
     payment_status = models.CharField(max_length=1,

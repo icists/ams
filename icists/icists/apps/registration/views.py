@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError, PermissionDenied, \
 from django.http import Http404, HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
-    EssayTopic, Participant
+    EssayTopic, Participant, Accommodation
 from icists.apps.registration.forms import ApplicationForm, FaForm
 import json
 
@@ -221,12 +221,14 @@ def participation(request):
                 payment = int(request.POST['payment'])
                 if payment == 1:
                     payment = 'P'
+                    remitter = ''
                 if payment == 2:    # Bank Account
                     payment = 'B'
                     if 'remitter' in request.POST\
                             and len(request.POST['remitter']) > 0:
                         remitter = request.POST['remitter']
                     else:
+                        remitter = ''
                         error.append('Please indicate Remitter\'s Name for your transaction')
                     # print 'remitter', remitter
             else:
@@ -245,21 +247,22 @@ def participation(request):
                 posttour = request.POST['posttour'] == 'True'
             else:
                 error.append('Please choose whether to attend Post-Conference Banquet')
+            print 'arguments processed'
             # print 'post', posttour
             if len(error) > 0:
                 return HttpResponse(json.dumps({'success': False,
                                                 'error': error}),
                                     content_type='application/json')
             else:
+                # calculate total payment
                 krw, usd = 0, 0
                 application = Application.objects.get(user=request.user)
                 if application.application_category == 'E':
                     krw = 100000
                     usd = 95
-                if category == 'Early':
+                elif application.application_category == 'R':
                     krw = 120000
                     usd = 115
-                # calculate total payment
                 if accommodation == 1:
                     krw += 135000
                     usd += 125
@@ -281,6 +284,8 @@ def participation(request):
                 if posttour:
                     krw += 100000
                     usd += 90
+                print krw, usd
+
                 p = Participant()
                 p.accommodation_choice = accommodation
                 p.payment_option = payment
@@ -292,7 +297,11 @@ def participation(request):
                 p.required_payment_krw = krw
                 p.required_payment_usd = usd
                 p.application = application
+                p.submit_time = None
+                p.project_team_no = -1
+                print 3
                 p.save()
+                print 4
                 return HttpResponse(json.dumps({'success': True}),
                                     content_type='application/json')
         except:
