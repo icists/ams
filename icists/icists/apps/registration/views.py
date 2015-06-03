@@ -286,7 +286,11 @@ def participation(request):
                     usd += 90
                 print krw, usd
 
-                p = Participant()
+                if Participant.objects.filter(application=application).exists():
+                    print 'paricipant exists, modofication'
+                    p = Participant.objects.get(application=application)
+                else:
+                    p = Participant()
                 p.accommodation_choice = accommodation
                 p.payment_option = payment
                 p.remitter_name = remitter
@@ -299,9 +303,7 @@ def participation(request):
                 p.application = application
                 p.submit_time = None
                 p.project_team_no = -1
-                print 3
                 p.save()
-                print 4
                 return HttpResponse(json.dumps({'success': True}),
                                     content_type='application/json')
         except:
