@@ -251,6 +251,36 @@ def participation(request):
                                                 'error': error}),
                                     content_type='application/json')
             else:
+                krw, usd = 0, 0
+                application = Application.objects.get(user=request.user)
+                if application.application_category == 'E':
+                    krw = 100000
+                    usd = 95
+                if category == 'Early':
+                    krw = 120000
+                    usd = 115
+                # calculate total payment
+                if accommodation == 1:
+                    krw += 135000
+                    usd += 125
+                elif accommodation == 2:
+                    krw += 180000
+                    usd += 165
+                elif accommodation == 3:
+                    krw += 120000
+                    usd += 110
+                elif accommodation == 4:
+                    krw += 112500
+                    usd += 105
+                if breakfast:
+                    krw += 20000
+                    usd += 20
+                if pretour:
+                    krw += 40000
+                    usd += 30
+                if posttour:
+                    krw += 100000
+                    usd += 90
                 p = Participant()
                 p.accommodation_choice = accommodation
                 p.payment_option = payment
@@ -259,8 +289,8 @@ def participation(request):
                 p.dietary_option = dietary
                 p.pretour = pretour
                 p.posttour = posttour
-                p.required_payment_krw = 0
-                p.required_payment_usd = 0
+                p.required_payment_krw = krw
+                p.required_payment_usd = usd
                 p.application = application
                 p.save()
                 return HttpResponse(json.dumps({'success': True}),
