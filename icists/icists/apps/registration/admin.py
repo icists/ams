@@ -170,15 +170,29 @@ def group_discount_disable(admin, request, qs):
         group_discount_enable.short_description = "apply group discount"
 
 class ParticipantAdmin(ImportExportModelAdmin):
-    readonly_fields = ('required_payment_krw', 'required_payment_usd')
-    fields =    (   ('accommodation_choice'),
+    def get_user_info(self, obj):
+        application = obj.application
+        user = application.user
+        userp = UserProfile.objects.get(user=user)
+        return '%s %s (%s, %s): %s / %s - %s' % (user.first_name, user.last_name, userp.gender, userp.birthday, userp.nationality, userp.university.name, userp.major)
+    get_user_info.short_description = 'User Info'
+
+    def get_name(self, obj):
+        return obj.application.user.first_name + ' ' + obj.application.user.last_name
+    get_name.admin_order_field = 'user__first_name'
+    get_name.short_description = 'Name'
+
+    readonly_fields = ('required_payment_krw', 'required_payment_usd', 'get_name')
+    fields =    (   ('get_name'),
+                    #('get_user_info'),
+                    ('accommodation_choice'),
                     ('project_team_no'),
                     ('payment_status', 'payment_option', 'remitter_name'),
                     ('required_payment_krw', 'required_payment_usd'),
                     ('breakfast_option', 'dietary_option'),
                     ('pretour', 'posttour', 'group_discount'),
                 )
-    list_display = ('accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
+    list_display = ('get_name', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'group_discount', 'submit_time')
     actions = [group_discount_enable, group_discount_disable]
 
