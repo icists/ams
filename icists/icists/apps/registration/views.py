@@ -195,6 +195,9 @@ def participation(request):
             elif category == 'Regular':
                 payment_krw = 120000
                 payment_usd = 115
+            if (application.group_discount == True):
+                payment_krw -=20000
+                payment_usd -=20
             return render(request, 'registration/participation.html',
                           {'category': category,
                            'krw': payment_krw, 'usd': payment_usd})
@@ -286,7 +289,7 @@ def participation(request):
                     usd += 90
                 print krw, usd
 
-                if Participant.objects.filter(application).exists():
+                if Participant.objects.filter(application=application).exists():
                     print 'paricipant exists, modofication'
                     p = Participant.objects.get(application=application)
                 else:

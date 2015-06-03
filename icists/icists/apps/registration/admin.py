@@ -53,6 +53,13 @@ def make_kaist(admin, request, qs):
         UserProfile.objects.filter(id=application.user.userprofile.id).update(university_id=4358)
 make_kaist.short_description = "university = KAIST"
 
+def group_discount_true(admin, request, qs):
+    qs.update(group_discount=True);
+group_discount_true.short_description = 'set group discount : true'
+def group_discount_false(admin, request, qs):
+    qs.update(group_discount=False);
+group_discount_false.short_description = 'set group discount : false'
+
 
 class StatusFilter(admin.SimpleListFilter):
     title = 'submitted status'
@@ -145,13 +152,13 @@ class ApplicationAdmin(ImportExportModelAdmin):
     get_submitted_status.short_description = 'Status'
 
     readonly_fields = ('get_user_info', )
-    fields = (('get_user_info', 'group_name'), ('application_category', 'submit_time'), ('screening_result', 'results_embargo'), 'project_topic', 'project_topic_2nd', 'essay_topic', 'essay_text', ('visa_letter_required', 'financial_aid', 'previously_participated'))
-    list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'project_topic_2nd', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'submit_time')
+    fields = (('get_user_info', 'group_name'), ('application_category', 'submit_time'), ('screening_result', 'results_embargo'), 'project_topic', 'project_topic_2nd', 'essay_topic', 'essay_text', ('visa_letter_required', 'financial_aid', 'previously_participated', 'group_discount'))
+    list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'project_topic_2nd', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'submit_time', 'group_discount')
     inlines = (SurveyInline, )
 
     list_filter = (StatusFilter, 'project_topic', 'project_topic_2nd', 'group_name', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
-    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist]
+    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist, group_discount_true, group_discount_false]
     resource_class = ApplicationResource
 
 def group_discount_enable(admin, request, qs):
