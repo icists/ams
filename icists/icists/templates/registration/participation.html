@@ -5,6 +5,37 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/participation.css">
 <script>
     $(window).load(function() {
+        var calc_price = function() {
+            var krw = {{ krw }};
+            var usd = {{ usd }};
+            if ($("#accommodation").val() == 1) {
+                krw += 135000;
+                usd += 125;
+            } else if ($("#accommodation").val() == 2) {
+                krw += 180000;
+                usd += 165;
+            } else if ($("#accommodation").val() == 3) {
+                krw += 120000;
+                usd += 110;
+            } else if ($("#accommodation").val() == 4) {
+                krw += 112500;
+                usd += 105
+            }
+            if ($("#breakfast:checked").val() == 'True') {
+                krw += 20000;
+                usd += 20;
+            }
+            if ($("#pretour:checked").val() == 'True') {
+                krw += 40000;
+                usd += 30;
+            }
+            if ($("#posttour:checked").val() == 'True') {
+                krw += 100000;
+                usd += 90;
+            }
+            $("#amt-krw").text(krw);
+            $("#amt-usd").text(usd);
+        }
         $(".alert").hide();
         $("#paypal").hide();
         $("#account").hide();
@@ -20,6 +51,13 @@
                 $("#paypal").hide();
                 $("#account").show();
             }
+        });
+        $("#accommodation").on('change', function() {
+            calc_price();
+        });
+        $("input[type=radio]").on('change', function() {
+            console.log(1);
+            calc_price();
         });
         $("#btn-submit").on('click', function(e) {
             e.preventDefault();
