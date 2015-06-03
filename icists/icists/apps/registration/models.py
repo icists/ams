@@ -90,9 +90,16 @@ class Participant(models.Model):
         (PAYPAL, 'Paypal'),
         (BANK_TRANSFER, 'Bank Transfer'),
     )
+    ACCOMMODATION_CHOICES = (
+        (1, 'Standard Ondol'),
+        (2, 'Standard Ondol Twin'),
+        (3, 'Deluxe Ondol'),
+        (4, 'Suite Ondol'),
+    )
 
     accommodation = models.ForeignKey('Accommodation',
                                       related_name="participant")
+    accommodation_choice = models.IntegerField(choices=ACCOMMODATION_CHOICES)
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
                                        related_name="participant")

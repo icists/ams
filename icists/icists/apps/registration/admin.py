@@ -16,7 +16,7 @@ make_pending.short_description = "Mark selected applications as pending"
 
 def make_accepted(admin, request, qs):
     qs.update(screening_result = 'A')
-make_accepted.short_description = "Mark selected applications as accepted" 
+make_accepted.short_description = "Mark selected applications as accepted"
 
 def make_dismissed(admin, request, qs):
     qs.update(screening_result = 'D')
@@ -67,7 +67,7 @@ class StatusFilter(admin.SimpleListFilter):
     def queryset(self, request, qs):
         if self.value() == 'yes':
             return qs.filter(submit_time__isnull=False)
-        
+
         if self.value() == 'no':
             return qs.filter(submit_time__isnull=True)
 
@@ -102,7 +102,7 @@ class SurveyInline(admin.StackedInline):
     max_num = 1
     extra = 0
 
-    
+
 class ApplicationResource(resources.ModelResource):
     class Meta:
         model = Application
@@ -116,7 +116,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
         userp = get_user_profile(obj)
         return '%s %s (%s, %s): %s / %s - %s' % (user.first_name, user.last_name, userp.gender, userp.birthday, userp.nationality, userp.university.name, userp.major)
     get_user_info.short_description = 'User Info'
-    
+
     def get_name(self, obj):
         return obj.user.first_name + ' ' + obj.user.last_name
     get_name.admin_order_field = 'user__first_name'
@@ -148,7 +148,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
     fields = (('get_user_info', 'group_name'), ('application_category', 'submit_time'), ('screening_result', 'results_embargo'), 'project_topic', 'project_topic_2nd', 'essay_topic', 'essay_text', ('visa_letter_required', 'financial_aid', 'previously_participated'))
     list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'project_topic_2nd', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'submit_time')
     inlines = (SurveyInline, )
-    
+
     list_filter = (StatusFilter, 'project_topic', 'project_topic_2nd', 'group_name', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
     actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist]
@@ -171,7 +171,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
                     ('breakfast_option', 'dietary_option'),
                     ('pretour', 'posttour', 'group_discount'),
                 )
-    list_display = ('accommodation', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',      
+    list_display = ('accommodation', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'group_discount', 'submit_time')
     actions = [group_discount_enable, group_discount_disable]
 

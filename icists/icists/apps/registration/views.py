@@ -4,11 +4,12 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.core.exceptions import ValidationError, PermissionDenied, \
     SuspiciousOperation, ObjectDoesNotExist
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
-    EssayTopic
+    EssayTopic, Participant
 from icists.apps.registration.forms import ApplicationForm, FaForm
+import json
 
 # Create your views here.
 
@@ -80,7 +81,7 @@ def application(request):
         return render(request, 'registration/application.html',
                       {'application': application,
                        'project_topic': project_topic,
-                       'project_topic_2nd' : project_topic,
+                       'project_topic_2nd': project_topic,
                        'essay_topic': essay_topic})
 
     elif request.method == "POST":
@@ -178,16 +179,20 @@ def change_status(request, uid=''):
 
 
 def participation(request):
+    print request.method
     if request.method == "GET":
         try:
             assert Application.objects.filter(user=request.user).exists()
             application = Application.objects.get(user=request.user)
-            category = application.application_category
+            if application.application_category == 'E':
+                category = 'Early'
+            elif application.application_category == 'R':
+                category = 'Regular'
             payment_krw, payment_usd = 0, 0
-            if category == 'E':
+            if category == 'Early':
                 payment_krw = 100000
                 payment_usd = 95
-            elif category == 'R':
+            elif category == 'Regular':
                 payment_krw = 120000
                 payment_usd = 115
             return render(request, 'registration/participation.html',
@@ -197,5 +202,71 @@ def participation(request):
             return render(request, 'registration/participation.html',
                           {'error', 'Application data not found'})
     elif request.method == "POST":
+        error = []
         print request.POST
-        return render(request, 'registration/participation.html')
+        try:
+            if 'dietary' in request.POST:
+                dietary = request.POST['dietary']
+            else:
+                error.append('Dietary information missing')
+            # print 'dietary', dietary
+            if 'accommodation' in request.POST\
+                    and int(request.POST['accommodation']) != 0:
+                accommodation = int(request.POST['accommodation'])
+            else:
+                error.append('Please select Accommodation')
+            # print 'accommodation', accommodation
+            if 'payment' in request.POST\
+                    and int(request.POST['payment']) != 0:
+                payment = int(request.POST['payment'])
+                if payment == 1:
+                    payment = 'P'
+                if payment == 2:    # Bank Account
+                    payment = 'B'
+                    if 'remitter' in request.POST\
+                            and len(request.POST['remitter']) > 0:
+                        remitter = request.POST['remitter']
+                    else:
+                        error.append('Please indicate Remitter\'s Name for your transaction')
+                    # print 'remitter', remitter
+            else:
+                error.append('Please select Payment Method')
+            if 'breakfast' in request.POST:
+                breakfast = request.POST['breakfast'] == 'True'
+            else:
+                error.append('Please choose whether to have Breakfast')
+            # print 'breakfast', breakfast
+            if 'pretour' in request.POST:
+                pretour = request.POST['pretour'] == 'True'
+            else:
+                error.append('Please choose whether to attend Pre-Conference Banquet')
+            # print 'pre', pretour
+            if 'posttour' in request.POST:
+                posttour = request.POST['posttour'] == 'True'
+            else:
+                error.append('Please choose whether to attend Post-Conference Banquet')
+            # print 'post', posttour
+            if len(error) > 0:
+                return HttpResponse(json.dumps({'success': False,
+                                                'error': error}),
+                                    content_type='application/json')
+            else:
+                p = Participant()
+                p.accommodation_choice = accommodation
+                p.payment_option = payment
+                p.remitter_name = remitter
+                p.breakfast_option = breakfast
+                p.dietary_option = dietary
+                p.pretour = pretour
+                p.posttour = posttour
+                p.required_payment_krw = 0
+                p.required_payment_usd = 0
+                p.application = application
+                p.save()
+                return HttpResponse(json.dumps({'success': True}),
+                                    content_type='application/json')
+        except:
+            print 'exception', error
+            return HttpResponse(json.dumps({'success': False,
+                                            'error': error}),
+                                content_type='application/json')
