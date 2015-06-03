@@ -164,14 +164,14 @@ def group_discount_disable(admin, request, qs):
 
 class ParticipantAdmin(ImportExportModelAdmin):
     readonly_fields = ('required_payment_krw', 'required_payment_usd')
-    fields =    (   ('accommodation'),
+    fields =    (   ('accommodation_choice'),
                     ('project_team_no'),
                     ('payment_status', 'payment_option', 'remitter_name'),
                     ('required_payment_krw', 'required_payment_usd'),
                     ('breakfast_option', 'dietary_option'),
                     ('pretour', 'posttour', 'group_discount'),
                 )
-    list_display = ('accommodation', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
+    list_display = ('accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'group_discount', 'submit_time')
     actions = [group_discount_enable, group_discount_disable]
 
