@@ -3,6 +3,25 @@
 {% block header %}
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/registration.css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/participation.css">
+<script>
+    $(window).load(function() {
+        $("#paypal").hide();
+        $("#account").hide();
+        $("#payment-option").on('change', function() {
+            console.log(this.value);
+            if (this.value === "0") {
+                $("#paypal").hide();
+                $("#account").hide();
+            } else if (this.value === "1") {
+                $("#paypal").show();
+                $("#account").hide();
+            } else if (this.value === "2") {
+                $("#paypal").hide();
+                $("#account").show();
+            }
+        });
+    });
+</script>
 {% endblock %}
 {% block content %}
 <div id="section-header">
@@ -41,6 +60,7 @@
                         <label class="radio-inline">
                             <input type="radio" name="breakfast-options" value="False">No</input>
                         </label>
+                        <span class="help-block">USD 20 (KRW 20,000)</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -83,7 +103,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Payment Option</label>
                     <div class="col-sm-8">
-                        <select class="form-control" name="payment-option" required="required">
+                        <select id="payment-option" class="form-control" name="payment-option" required="required">
                             <option value="0">-- Select --</option>
                             <option value="1">Paypal</option>
                             <option value="2">Bank Transfer</option>
