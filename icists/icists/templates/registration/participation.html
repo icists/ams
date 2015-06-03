@@ -71,7 +71,7 @@
                     pretour: $("#pretour:checked").val(),
                     posttour: $("#posttour:checked").val(),
                     payment: $("#payment-option").val(),
-                    remitter: $("#remitter").text(),
+                    remitter: $("#remitter-name").val(),
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 }, 
                 dataType: 'json',
@@ -220,7 +220,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Remitter Name</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="remitter-name" id="remitter" name="remitter-name">
+                            <input type="text" class="form-control" id="remitter-name" name="remitter-name">
                         </div>
                     </div>
                 </div>
