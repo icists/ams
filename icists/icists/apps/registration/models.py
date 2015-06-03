@@ -56,7 +56,7 @@ class Application(models.Model):
     project_topic = models.ForeignKey(ProjectTopic,
                                       related_name='application_project')
     project_topic_2nd = models.\
-        ForeignKey(ProjectTopic, related_name='application_project_2nd')
+        ForeignKey(ProjectTopic, related_name='application_project_2nd', default="(2015) 1. Robotics")
     essay_topic = models.ForeignKey(EssayTopic,
                                     related_name='application_essay')
     essay_text = models.TextField()
@@ -84,6 +84,12 @@ class Participant(models.Model):
         (LESS_PAID, 'Less Paid'),
         (OVER_PAID, 'Over Paid'),
     )
+    PAYPAL = 'P'
+    BANK_TRANSFER = 'B'
+    PAYMENT_OPTIONS = (
+        (PAYPAL, 'Paypal'),
+        (BANK_TRANSFER, 'Bank Transfer'),
+    )
 
     accommodation = models.ForeignKey('Accommodation',
                                       related_name="participant")
@@ -95,14 +101,18 @@ class Participant(models.Model):
     project_team_no = models.PositiveSmallIntegerField()
     payment_status = models.CharField(max_length=1,
                                       choices=PAYMENT_STATUS, default=NOT_PAID)
-    required_payment = models.IntegerField()
+    payment_option = models.CharField(max_length=1,
+                                      choices=PAYMENT_OPTIONS, default=PAYPAL)
+    required_payment_krw = models.IntegerField()
+    required_payment_usd = models.IntegerField()
     remitter_name = models.CharField(max_length=45)
     breakfast_option = models.BooleanField(default=False)
     # dietary_option := Vegetarian, Halal, Others (Optional text input)
     dietary_option = models.CharField(max_length=45)
     pretour = models.BooleanField(default=False)
     posttour = models.BooleanField(default=False)
-
+    group_discount = models.BooleanField(default=False)
+    submit_time = models.DateTimeField(null=True)
 
 class Accommodation(models.Model):
     hotel_name = models.CharField(max_length=45)
