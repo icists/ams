@@ -67,6 +67,7 @@ class Application(models.Model):
     user = models.ForeignKey(User, related_name='application')
     # user = models.OneToOneField(User, related_name='application')
     group_name = models.CharField(max_length=45, blank=True)
+    group_discount = models.BooleanField(default=False)
     previously_participated = models.CharField(max_length=1,
                                                choices=YESNO, default='N')
     last_updated_time = models.DateTimeField(auto_now=True)
@@ -95,6 +96,8 @@ class Participant(models.Model):
         (2, 'Standard Ondol Twin'),
         (3, 'Deluxe Ondol'),
         (4, 'Suite Ondol'),
+        (5, 'KAIST Dormitory'),
+        (6, 'No Accommodation'),
     )
 
     accommodation = models.ForeignKey('Accommodation',

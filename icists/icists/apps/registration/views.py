@@ -196,6 +196,9 @@ def participation(request):
             elif category == 'Regular':
                 payment_krw = 120000
                 payment_usd = 115
+            if (application.group_discount == True):
+                payment_krw -=20000
+                payment_usd -=20
             return render(request, 'registration/participation.html',
                           {'category': category,
                            'krw': payment_krw, 'usd': payment_usd})
