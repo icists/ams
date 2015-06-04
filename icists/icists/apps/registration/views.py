@@ -279,6 +279,9 @@ def participation(request):
                 elif accommodation == 4:
                     krw += 112500
                     usd += 105
+                elif accommodation == 5:
+                    krw += 68000
+                    usd += 65
                 if breakfast:
                     krw += 20000
                     usd += 20
