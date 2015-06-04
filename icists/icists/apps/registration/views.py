@@ -40,7 +40,8 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
             try:
                 return render(request, 'registration/status.html',
                               {'screening': app.screening_result,
-                               'embargo': app.results_embargo})
+                               'embargo': app.results_embargo,
+                               'submitted': False})
             except ObjectDoesNotExist:
                 return render(request, 'registration/status.html',
                               {'error': 'Object field does not exist'})
@@ -305,7 +306,7 @@ def participation(request):
                 p.required_payment_usd = usd
                 p.application = application
                 p.submit_time = None
-                p.project_team_no = -1
+                p.project_team_no = 0
                 p.save()
                 return HttpResponse(json.dumps({'success': True}),
                                     content_type='application/json')
