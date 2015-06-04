@@ -7,8 +7,9 @@ from django.core.exceptions import ValidationError, PermissionDenied, \
 from django.http import Http404, HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
-    EssayTopic, Participant, Accommodation
+    EssayTopic, Participant
 from icists.apps.registration.forms import ApplicationForm, FaForm
+from datetime import datetime
 import json
 
 # Create your views here.
@@ -301,7 +302,7 @@ def participation(request):
                 p.required_payment_krw = krw
                 p.required_payment_usd = usd
                 p.application = application
-                p.submit_time = None
+                p.submit_time = datetime.now()
                 p.project_team_no = -1
                 p.save()
                 return HttpResponse(json.dumps({'success': True}),
