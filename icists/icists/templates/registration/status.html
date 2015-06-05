@@ -41,4 +41,24 @@
     <a class="btn btn-primary" href="/registration/cancel/" id='regular_button'>Regular Application</a>
     {% endif %}
 </div>
+<div class="payment_status">
+	{% if payment_status == 'N' %}
+    <h1>The payment has not been made yet. </h1>
+	{% elif payment_status == 'P' %}
+	<h1> Payment Confirmed </h1>
+	<h2> We will get back to you with more information about the conference shortly. </h2>
+	{% elif payment_status == 'L' %}
+	<h2> Your payment does not correspond to the required sum. </h2>
+	<h2> We will contact you via email shortly. </h2>
+	{% elif payment_status == 'O' %}
+	<h2> Your payment does not correspond to the required sum. </h2>
+	<h2> We will contact you via email shortly. </h2>
+	{% endif %}	
+</div>
+
+
+
+
+
+
 {% endblock %}

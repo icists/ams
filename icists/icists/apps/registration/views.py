@@ -36,13 +36,22 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
         print "app exists!"
         app = Application.objects.get(user=request.user)
         if app.submit_time is not None:
+            if Participant.objects.filter(application=app).exists():
+                print 'paricipant exists, modofication'
+                p = Participant.objects.get(application=app)
+            else:
+                p = Participant()
+            payment_status = p.payment_status
+
             print "submitted! pending results.",\
                 app.submit_time, app.screening_result, app.results_embargo
             try:
                 return render(request, 'registration/status.html',
                               {'screening': app.screening_result,
                                'embargo': app.results_embargo,
-                               'submitted': False})
+                               'submitted': False,
+                               'payment_status' : payment_status,
+                               })
             except ObjectDoesNotExist:
                 return render(request, 'registration/status.html',
                               {'error': 'Object field does not exist'})

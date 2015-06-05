@@ -83,7 +83,7 @@
                         $(".alert-success").show();
                         $("#application-information").hide();
                         $("#additional-information").hide();
-                        $("#payment-information").hide();
+                        $("#payment-information").show();
                     } else {
                         $(".alert-success").hide();
                         $(".alert-danger").show();
@@ -179,12 +179,12 @@
                         </label>
                     </div>
                 </div>
+            </div>
+            <div id="payment-information">
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Total Payment</label>
                     <span id="payment-amount" class="col-sm-8 text-right">USD <span id="amt-usd">{{ usd }}</span> / KRW <span id="amt-krw">{{ krw }}</span></span>
                 </div>
-            </div>
-            <div id="payment-information">
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Payment Option</label>
                     <div class="col-sm-8">
@@ -240,6 +240,7 @@
             <div class="alert alert-success">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <strong>Success!</strong> Your additional information has been successfully saved.
+				<br> Please make your payment as indicated above.
             </div>
             <div class="alert alert-danger">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
