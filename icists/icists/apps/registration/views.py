@@ -195,6 +195,14 @@ def participation(request):
         try:
             assert Application.objects.filter(user=request.user).exists()
             application = Application.objects.get(user=request.user)
+
+            if Participant.objects.filter(application=application).exists():
+                print 'paricipant exists, modofication'
+                p = Participant.objects.get(application=application)
+            else:
+                p = Participant()
+            
+
             if application.application_category == 'E':
                 category = 'Early'
             elif application.application_category == 'R':
@@ -210,8 +218,9 @@ def participation(request):
                 payment_krw -=20000
                 payment_usd -=20
             return render(request, 'registration/participation.html',
-                          {'category': category,
-                           'krw': payment_krw, 'usd': payment_usd})
+                        {'participant': p,
+                        'category': category,
+                        'krw': payment_krw, 'usd': payment_usd})
         except:
             return render(request, 'registration/participation.html',
                           {'error', 'Application data not found'})
@@ -277,6 +286,9 @@ def participation(request):
                 elif application.application_category == 'R':
                     krw = 120000
                     usd = 115
+                if application.group_discount:
+                    krw -= 20000
+                    usd -= 20
                 if accommodation == 1:
                     krw += 135000
                     usd += 125

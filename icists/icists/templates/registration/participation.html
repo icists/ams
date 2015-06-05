@@ -3,7 +3,8 @@
 {% block header %}
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/registration.css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/participation.css">
-<script>
+<script>	
+
     $(window).load(function() {
         var calc_price = function() {
             var krw = {{ krw }};
@@ -101,6 +102,11 @@
             });
 
         });
+        $('select[name=accommodation-option]').val('{{ participant.accommodation_choice }}').attr("selected", "selected");
+        $("input[name=breakfast-options][value='{{ participant.breakfast_option }}']").prop("checked", true);
+        $("input[name=pretour-options][value='{{ participant.pretour}}']").prop("checked", true);
+        $("input[name=posttour-options][value='{{ participant.posttour}}']").prop("checked", true);
+		calc_price();
     });
 </script>
 {% endblock %}
@@ -147,7 +153,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Dietary Preferance</label>
+                    <label class="col-sm-4 control-label">Dietary Preference</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="dietary-option" id="dietary" name="dietary-option">
                     </div>
