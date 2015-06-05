@@ -60,6 +60,18 @@ def group_discount_false(admin, request, qs):
     qs.update(group_discount=False);
 group_discount_false.short_description = 'set group discount : false'
 
+def payment_status_paid(admin, request, qs):
+    qs.update(payment_status='P');
+payment_status_paid.short_description = 'set payment_status : PAID'
+def payment_status_not_paid(admin, request, qs):
+    qs.update(payment_status='N');
+payment_status_not_paid.short_description = 'set payment_status : NOT_PAID'
+def payment_status_over_paid(admin, request, qs):
+    qs.update(payment_status='O');
+payment_status_over_paid.short_description = 'set payment_status : OVER_PAID'
+def payment_status_less_paid(admin, request, qs):
+    qs.update(payment_status='L');
+payment_status_less_paid.short_description = 'set payment_status : LESS_PAID'
 
 class StatusFilter(admin.SimpleListFilter):
     title = 'submitted status'
@@ -194,7 +206,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
                 )
     list_display = ('get_name', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'group_discount', 'submit_time')
-    actions = [group_discount_enable, group_discount_disable]
+    actions = [group_discount_enable, group_discount_disable, payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid]
 
 class ParticipantResource(resources.ModelResource):
     class Meta:
