@@ -89,7 +89,7 @@
                         $(".alert-success").hide();
                         $(".alert-danger").show();
                         $("#application-information").show();
-                        $("#additional-information").hide();
+                        $("#additional-information").show();
                         $("#payment-information").show();
                         $("#msg-error").empty();
                         for (i in rsp.error) {
@@ -104,8 +104,8 @@
         });
         $('select[name=accommodation-option]').val('{{ participant.accommodation_choice }}').attr("selected", "selected");
         $("input[name=breakfast-options][value='{{ participant.breakfast_option }}']").prop("checked", true);
-        $("input[name=pretour-options][value='{{ participant.pretour}}']").prop("checked", true);
-        $("input[name=posttour-options][value='{{ participant.posttour}}']").prop("checked", true);
+        $("input[name=pretour-options][value='{{ participant.pretour }}']").prop("checked", true);
+        $("input[name=posttour-options][value='{{ participant.posttour }}']").prop("checked", true);
 		calc_price();
     });
 </script>
