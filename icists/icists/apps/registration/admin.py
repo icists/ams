@@ -7,6 +7,7 @@ from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 
+# For application admin
 def get_user_profile(obj):
     return UserProfile.objects.get(user=obj.user)
 
@@ -29,29 +30,6 @@ make_embargo.short_description = "Embargo selected applications"
 def make_not_embargo(admin, request, qs):
     qs.update(results_embargo = False)
 make_not_embargo.short_description = "Cancel embargo selected applications"
-
-def make_project_one(admin, request, qs):
-    qs.update(project_topic_id=1);
-make_project_one.short_description = "Set project topic to 1."
-def make_project_two(admin, request, qs):
-    qs.update(project_topic_id=2);
-make_project_two.short_description = "Set project topic to 2."
-def make_project_three(admin, request, qs):
-    qs.update(project_topic_id=3);
-make_project_three.short_description = "Set project topic to 3."
-def make_essay_one(admin, request, qs):
-    qs.update(essay_topic=1);
-make_essay_one.short_description = "Set essay topic to 1."
-def make_essay_two(admin, request, qs):
-    qs.update(essay_topic=2);
-make_essay_two.short_description = "Set essay topic to 2."
-def make_essay_three(admin, request, qs):
-    qs.update(essay_topic_id=3);
-make_essay_three.short_description = "Set essay topic to 3."
-def make_kaist(admin, request, qs):
-    for application in list(qs):
-        UserProfile.objects.filter(id=application.user.userprofile.id).update(university_id=4358)
-make_kaist.short_description = "university = KAIST"
 
 def group_discount_true(admin, request, qs):
     qs.update(group_discount=True);
@@ -170,16 +148,9 @@ class ApplicationAdmin(ImportExportModelAdmin):
 
     list_filter = (StatusFilter, 'project_topic', 'project_topic_2nd', 'group_name', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
 
-    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, make_project_one, make_project_two, make_project_three, make_essay_one, make_essay_two, make_essay_three, make_kaist, group_discount_true, group_discount_false]
+    actions = [make_pending, make_accepted, make_dismissed, make_embargo, make_not_embargo, group_discount_true, group_discount_false]
     resource_class = ApplicationResource
 
-def group_discount_enable(admin, request, qs):
-    qs.update(group_discount=True)
-    group_discount_enable.short_description = "apply group discount"
-
-def group_discount_disable(admin, request, qs):
-        qs.update(group_discount=False)
-        group_discount_enable.short_description = "apply group discount"
 
 class ParticipantAdmin(ImportExportModelAdmin):
     def get_user_info(self, obj):
@@ -194,6 +165,13 @@ class ParticipantAdmin(ImportExportModelAdmin):
     get_name.admin_order_field = 'user__first_name'
     get_name.short_description = 'Name'
 
+    def get_email(self, obj):
+        application = obj.application
+        user = application.user
+        return user.email
+    get_email.admin_order_field = 'user__email'
+    get_email.short_description = 'Email'
+
     readonly_fields = ('required_payment_krw', 'required_payment_usd', 'get_name')
     fields =    (   ('get_name'),
                     #('get_user_info'),
@@ -202,11 +180,12 @@ class ParticipantAdmin(ImportExportModelAdmin):
                     ('payment_status', 'payment_option', 'remitter_name'),
                     ('required_payment_krw', 'required_payment_usd'),
                     ('breakfast_option', 'dietary_option'),
-                    ('pretour', 'posttour', 'group_discount'),
+                    ('pretour', 'posttour'),
                 )
-    list_display = ('get_name', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
-                            'dietary_option', 'pretour', 'posttour', 'group_discount', 'submit_time')
-    actions = [group_discount_enable, group_discount_disable, payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid]
+    list_display = ('get_name', 'get_email', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
+                            'dietary_option', 'pretour', 'posttour', 'submit_time')
+    list_filter = ('accommodation_choice', 'payment_status', 'payment_option')
+    actions = [payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid]
 
 class ParticipantResource(resources.ModelResource):
     class Meta:
