@@ -153,6 +153,60 @@ class ApplicationAdmin(ImportExportModelAdmin):
 
 
 class ParticipantAdmin(ImportExportModelAdmin):
+    def recalculate_payment(self, request, qs):
+
+        for q in qs:
+
+            krw, usd = 0, 0
+            application = q.application
+
+            if application.application_category == 'E':
+                krw += 100000
+                usd += 95
+            elif application.application_category == 'R':
+                krw += 120000
+                usd += 115
+            elif application.application_category == 'L':
+                krw += 140000
+                usd += 135
+
+            if application.group_discount:
+                krw -= 20000
+                usd -= 20
+
+            if (q.accommodation_choice == 1):
+                krw += 135000
+                usd += 125
+            elif (q.accommodation_choice == 2):
+                krw += 180000
+                usd += 165
+            elif (q.accommodation_choice == 3):
+                krw += 120000
+                usd += 110
+            elif (q.accommodation_choice == 4):
+                krw += 112500
+                usd += 105
+            elif (q.accommodation_choice == 5):
+                krw += 68000
+                usd += 65
+
+            if q.breakfast_option:
+                krw += 20000
+                usd += 20
+            if q.pretour:
+                krw += 40000
+                usd += 30
+            if q.posttour:
+                krw += 100000
+                usd += 90
+
+            q.required_payment_krw = krw
+            q.required_payment_usd = usd
+            q.save()
+
+    recalculate_payment.short_description = 'recalculate required payment'
+
+
     def get_user_info(self, obj):
         application = obj.application
         user = application.user
@@ -185,7 +239,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
     list_display = ('get_name', 'get_email', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'required_payment_krw', 'required_payment_usd', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'submit_time')
     list_filter = ('accommodation_choice', 'payment_status', 'payment_option')
-    actions = [payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid]
+    actions = [payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid, 'recalculate_payment']
 
 class ParticipantResource(resources.ModelResource):
     class Meta:
