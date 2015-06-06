@@ -182,7 +182,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
                     ('breakfast_option', 'dietary_option'),
                     ('pretour', 'posttour'),
                 )
-    list_display = ('get_name', 'get_email', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'remitter_name', 'breakfast_option',
+    list_display = ('get_name', 'get_email', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'required_payment_krw', 'required_payment_usd', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'submit_time')
     list_filter = ('accommodation_choice', 'payment_status', 'payment_option')
     actions = [payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid]
