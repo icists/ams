@@ -165,6 +165,14 @@ class ParticipantAdmin(ImportExportModelAdmin):
     get_name.admin_order_field = 'user__first_name'
     get_name.short_description = 'Name'
 
+    def get_gender(self, obj):
+        user = obj.application.user
+        userp = UserProfile.objects.get(user=user)
+        return userp.gender
+    get_gender.admin_order_field = 'user__gender'
+    get_gender.short_description = 'Gender'
+
+
     def get_email(self, obj):
         application = obj.application
         user = application.user
@@ -172,8 +180,8 @@ class ParticipantAdmin(ImportExportModelAdmin):
     get_email.admin_order_field = 'user__email'
     get_email.short_description = 'Email'
 
-    readonly_fields = ('required_payment_krw', 'required_payment_usd', 'get_name')
-    fields =    (   ('get_name'),
+    readonly_fields = ('required_payment_krw', 'required_payment_usd', 'get_name', 'get_gender')
+    fields =    (   ('get_name', 'get_gender'),
                     #('get_user_info'),
                     ('accommodation_choice'),
                     ('project_team_no'),
@@ -182,7 +190,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
                     ('breakfast_option', 'dietary_option'),
                     ('pretour', 'posttour'),
                 )
-    list_display = ('get_name', 'get_email', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'required_payment_krw', 'required_payment_usd', 'remitter_name', 'breakfast_option',
+    list_display = ('get_name', 'get_gender', 'get_email', 'accommodation_choice', 'project_team_no', 'payment_status', 'payment_option', 'required_payment_krw', 'required_payment_usd', 'remitter_name', 'breakfast_option',
                             'dietary_option', 'pretour', 'posttour', 'submit_time')
     list_filter = ('accommodation_choice', 'payment_status', 'payment_option')
     actions = [payment_status_paid, payment_status_not_paid, payment_status_over_paid, payment_status_less_paid]
