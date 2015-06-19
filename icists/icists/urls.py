@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^$', include('icists.apps.registration.urls')),
     url(r'^registration/', include('icists.apps.registration.urls')),
     url(r'^session/', include('icists.apps.session.urls')),
+    url(r'^statistic/', include('icists.apps.statistic.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]
