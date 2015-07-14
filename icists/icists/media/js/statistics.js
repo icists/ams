@@ -4,6 +4,20 @@ $(document).ready(function() {
 });
 
 
+var colors = [
+    '#a6cee3',
+    '#1f78b4',
+    '#b2df8a',
+    '#33a02c',
+    '#fb9a99',
+    '#e31a1c',
+    '#fdbf6f',
+    '#ff7f00',
+    '#cab2d6',
+    '#6a3d9a',
+    '#ffff99',
+    '#b15928'
+]
 var ctx = undefined;
 var chart = undefined;
 var canvasData = {
@@ -69,11 +83,14 @@ var buttonReady = function() {
         $.getJSON('/statistics/' + request_url, function(result) {
             if (request_url !== 'submit_time') {
                 var data = [];
+                var idx = 0;
                 $.each(result, function(i, field) {
                     data.push({
                         value: field,
+                        color: colors[idx%colors.length],
                         label: i
                     });
+                    idx++;
                 });
                 canvasData = data;
                 drawPie();
@@ -88,6 +105,13 @@ var buttonReady = function() {
                     labels: labels,
                     datasets: [
                         {
+                            label: $(this).text(),
+                            fillColor: "rgba(151,187,205, 0.2)",
+                            strokeColor: "rgba(151,187,205,1)",
+                            pointColor: "rgba(151,187,205,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(151,187,205,1)",
                             data: data,
                         }
                     ]
