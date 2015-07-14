@@ -1,0 +1,38 @@
+{% extends "statistics/base.html" %}
+
+{% block htitle %}ICISTS-KAIST Statistics{% endblock %}
+
+{% block header %}
+<script src="{{ MEDIA_URL }}js/Chart.min.js"></script>
+<script src="{{ MEDIA_URL }}js/statistics.js"></script>
+{% endblock %}
+
+{% block content %}
+<h1>ICISTS-KAIST Statistics</h1>
+
+<div>
+    <p>
+        <span class="dataset btn btn-link">Application Category</span>
+        /
+        <span class="dataset btn btn-link">Application Status</span>
+        /
+        <span class="dataset btn btn-link">Gender</span>
+        /
+        <span class="dataset btn btn-link">Nationality</span>
+        /
+        <span class="dataset btn btn-link">University</span>
+        /
+        <span class="dataset btn btn-link">Project Topic</span>
+        /
+        <span class="dataset btn btn-link">Visa</span>
+        /
+        <span class="dataset btn btn-link">Group Discount</span>
+        /
+        <span class="dataset btn btn-link">How You Found Us</span>
+        /
+        <span class="dataset btn btn-link">Submit Time</span>
+    </p>
+</div>
+
+<canvas id="icists-chart" width="400" height="400"></canvas>
+{% endblock %}
