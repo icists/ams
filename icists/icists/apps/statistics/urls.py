@@ -7,5 +7,6 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'icists.apps.statistics.views.main'),
-    url(r'^([^/]+)/', 'icists.apps.statistics.views.get_data'),
+    url(r'^change-status/', 'icists.apps.statistics.views.change_status'),
+    url(r'^query/([^/]+)/', 'icists.apps.statistics.views.get_data'),
 ]

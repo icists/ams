@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -73,6 +74,13 @@ class Application(models.Model):
     last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
 
+    '''
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            slef.application_category = settings.APPLICATION_CATEGORY
+        super(Application, self).save(*args, **kwargs)
+    '''
+
 
 class Participant(models.Model):
     NOT_PAID = 'N'
@@ -124,6 +132,7 @@ class Participant(models.Model):
     posttour = models.BooleanField(default=False)
     group_discount = models.BooleanField(default=False)
     submit_time = models.DateTimeField(null=True)
+
 
 class Accommodation(models.Model):
     hotel_name = models.CharField(max_length=45)

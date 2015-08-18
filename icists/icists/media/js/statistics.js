@@ -4,6 +4,28 @@ $(document).ready(function() {
 });
 
 
+function getCookie(name) {
+    varcookieValue = null;
+    if (document.cookie && document.cookey != '') {
+        var cookies = document.cookie.split(';');
+        for (var i=0; i< cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1 ) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAR|OPTIONS|TRACE)$/.test(method));
+}
+
+
+var csrftoken = getCookie('csrftoken');
 var colors = [
     '#a6cee3',
     '#1f78b4',
@@ -80,7 +102,7 @@ var buttonReady = function() {
             request_url = 'submit_time';
         }
 
-        $.getJSON('/statistics/' + request_url, function(result) {
+        $.getJSON('/statistics/query/' + request_url, function(result) {
             if (request_url !== 'submit_time') {
                 var data = [];
                 var idx = 0;
@@ -119,5 +141,47 @@ var buttonReady = function() {
                 drawLine();
             }
         });
+    });
+
+    $("#btn-application-status").on('click', function() {
+        $.getJSON('/statistics/change-status/', function(result) {
+            $("#text-application-status").text(result['status']);
+            $("#select-application-status").html('');
+            $("#select-application-status").append("<option value='Early'>Early</option>");
+            $("#select-application-status").append("<option value='Regular'>Regular</option>");
+            $("#select-application-status").append("<option value='Late'>Late</option>");
+            $("#select-application-status").val(result['status']);
+        });
+    });
+
+
+    $("#btn-save-application-status").on('click', function() {
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $.post('/statistics/change-status/',
+               {
+                   'status': $("#select-application-status").val(),
+                   'csrf_token': csrftoken
+               }
+              ).done(function(data) {
+                  if ($.parseJSON(data)['error']) {
+                      $("#modal-application-status").modal('hide');
+                      $(".alert-danger").show();
+                      setTimeout(function() {
+                          $(".alert-danger").hide();
+                      }, 3000);
+                  } else {
+                      $("#modal-application-status").modal('hide');
+                      $(".alert-success").show();
+                      setTimeout(function() {
+                          $(".alert-success").hide();
+                      }, 3000);
+                  }
+              });
     });
 }

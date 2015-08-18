@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError, PermissionDenied, \
     SuspiciousOperation, ObjectDoesNotExist
 from django.http import Http404, HttpResponse
+from django.conf import settings
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
     EssayTopic, Participant
@@ -70,6 +71,7 @@ def submit(request):
         return redirect('/session/login/')
     application = Application.objects.get(user=request.user)
     application.submit_time = timezone.now()
+    application.application_category = settings.APPLICATION_STATUS
     print 'Application saved at', application.submit_time
     application.save()
     return redirect('/registration/')
@@ -201,7 +203,6 @@ def participation(request):
                 p = Participant.objects.get(application=application)
             else:
                 p = Participant()
-            
 
             if application.application_category == 'E':
                 category = 'Early'

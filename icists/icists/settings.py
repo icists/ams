@@ -118,3 +118,7 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'icists/media')
+
+# Global Configuration Variables
+
+APPLICATION_STATUS = 'Regular'

@@ -6,6 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import SuspiciousOperation, PermissionDenied
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
+from django.conf import settings
 from icists.apps.session.models import UserProfile, University
 from icists.apps.session.forms import UserForm, UserProfileForm
 from icists.apps.registration.models import Application
@@ -120,3 +121,23 @@ def get_data(request, query):
     # No errors in request URL; Proceed to responding with JSON object
     # return render(request, 'statistic/main.html', json.dumps(data))
     return HttpResponse(json.dumps(data))
+
+
+@staff_member_required
+def change_status(request):
+    if request.method == "GET":
+        return HttpResponse(json.dumps(
+            {'status': settings.APPLICATION_STATUS}))
+    if request.is_ajax():
+        if request.method == "POST":
+            print settings.APPLICATION_STATUS
+            try:
+                status = request.POST['status']
+                print 'status', status
+                settings.APPLICATION_STATUS = status
+                print settings.APPLICATION_STATUS
+                return HttpResponse(json.dumps(
+                    {'error': 0}))
+            except:
+                return HttpResponse(json.dumps(
+                    {'error': 1}))
