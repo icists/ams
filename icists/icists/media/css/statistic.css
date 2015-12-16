@@ -1,0 +1,15 @@
+body {
+    font-family:'맑은 고딕', 'Malgun Gothic', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.container {
+    width:860px;
+    text-align:center;
+}
+
+p {
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+

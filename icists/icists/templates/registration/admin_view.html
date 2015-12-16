@@ -1,0 +1,92 @@
+{% extends "registration/base.html" %}
+
+{% block htitle %}ICISTS Application Admin View{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<h1>ICISTS Application Admin View</h1>
+<form class="form-horizontal" action="/registration/change-status/{{ user.username }}/" method="post">
+	<fieldset>
+		{% csrf_token %}
+        <div class="form-group">
+			<label class="col-sm-3 control-label">Basic Info</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{ user.first_name }} {{ user.last_name}} ({{ userprofile.gender }}, {{ userprofile.birthday|date:'Y-m-d' }}): {{ userprofile.nationality }}, {{ userprofile.university }} - {{ userprofile.major }}</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Picture</label>
+			<div class="col-sm-9">
+				{% if userprofile.picture %}
+				<p class="form-control-static"><img class="profile" src="{{ MEDIA_URL }}{{ userprofile.picture }}" alt="Profile Picture"></p>
+				{% endif %}	
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Contact</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{ user.email }}, {{ userprofile.phone }}</p>
+            </div>
+		</div>
+		{% if application %}
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Application Info</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{ application.get_application_category_display }} Registration, Submit Time: {% if application.submit_time %}{{ application.submit_time }}, RESULT: <span class="text-danger">{{ application.get_screening_result_display }}</span>{% else %}<span class="text-danger">NOT SUBMITTED</span>{% endif %}</p>
+			</div>
+		</div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Project / Essay Topic</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">{{ application.project_topic }} / {{ application.essay_topic }} (Group: {{ application.group_name}})</p>
+        	</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Essay</label>
+			<div class="col-sm-9">
+				<textarea class="form-control" rows="20" style="font-size:12px; resize:none" disabled>{{application.essay_text}}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">ETC</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">VISA Required: {{ application.get_visa_letter_required_display }}, Financial Aid: {{ application.get_financial_aid_display }}, Previously Participated: {{ application.get_previously_participated_display }}</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label text-danger">STATUS</label>
+			<div class="col-sm-9" style="text-align:left">
+				<label class="checkbox-inline">
+					<input type="radio" name="result" value="P"> PENDING
+				</label>
+				<label class="checkbox-inline">
+					<input type="radio" name="result" value="A"> ACCEPT
+				</label>
+				<label class="checkbox-inline">
+					<input type="radio" name="result" value="D"> DENIED
+				</label>
+			</div>
+		</div>
+		{% else %}
+		<p style="font-size:16px;color:red;">##### Application does NOT EXIST #####</p>
+		{% endif %}
+
+		<div class="form-group">
+			<div class="col-sm-12">
+				{% if application %}
+				<button type="submit" class="btn btn-primary">Change Status</button>
+				{% endif %}
+				<a class="btn btn-warning" href="javascript:window.history.go(-1)">Go Back</a>
+            </div>
+		</div>	
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+$(function() {
+	$("input[name=result][value='{{ application.screening_result }}']").prop("checked", true);
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends "registration/base.html" %}
+
+{% block htitle %}ICISTS-KAIST 2015 Application Form{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<h1>ICISTS-KAIST 2015 Application</h1>
+<p>Application has not been submitted yet. </p>
+<p>You can either write a new application, or edit the draft.</p>
+<form class="form-horizontal" action="/registration/application/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="col-sm-12">
+                <a class="btn btn-warning" href="/registration/application">Write/Edit</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

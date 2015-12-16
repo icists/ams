@@ -1,0 +1,30 @@
+body {
+    font-family:'맑은 고딕', 'Malgun Gothic', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.container {
+    width:860px;
+    text-align:center;
+}
+
+p {
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+p.form-control-static {
+    font-size:14px;
+}
+
+.form-group > div > p.form-control-static {
+    text-align:left;
+}
+
+#essay_questions {
+    font-size:12px;
+    text-align:left;
+}
+
+img.profile {
+    width:200px;
+}

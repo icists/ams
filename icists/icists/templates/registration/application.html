@@ -1,0 +1,194 @@
+{% extends "registration/base.html" %}
+
+{% block htitle %}ICISTS-KAIST 2015 Application Form{% endblock %}
+
+{% block header %}
+<script type="text/javascript">
+    counter = function() {
+        var value = $('#essay_textarea').val();
+
+        if (value.length == 0) {
+            $('#word_count').html(0);
+            $('#total_chars').html(0);
+            return;
+        }
+
+        var regex = /\s+/gi;
+        var word_count = value.trim().replace(regex, ' ').split(' ').length;
+        var total_chars = value.length;
+
+        $('#word_count').html(word_count);
+            $('#total_chars').html(total_chars);
+    };
+
+    $(document).ready(function() {
+        $('#essay_textarea').change(counter);
+        $('#essay_textarea').keydown(counter);
+        $('#essay_textarea').keypress(counter);
+        $('#essay_textarea').keyup(counter);
+        $('#essay_textarea').blur(counter);
+        $('#essay_textarea').focus(counter);
+            
+        $('select[name=project_topic]').val('{{ application.project_topic_id }}').attr("selected", "selected");
+        $('select[name=project_topic_2nd]').val('{{ application.project_topic_2nd_id }}').attr("selected", "selected");
+        $('select[name=essay_topic]').val('{{ application.essay_topic_id }}').attr("selected", "selected");
+        $("input[name=visa_letter_required][value='{{ application.visa_letter_required }}']").prop("checked", true);
+        $("input[name=financial_aid][value='{{ application.financial_aid }}']").prop("checked", true);
+        $("input[name=previously_participated][value='{{ application.previously_participated }}']").prop("checked", true);
+
+        var submitTime = '{{application.submit_time}}';
+        if (submitTime.length > 0 && submitTime !== 'None') {
+            $("input:text").attr('disabled', '');
+            $("input:radio").attr('disabled', '');
+            $("textarea").attr('disabled', '');
+            $("select").attr('disabled', '');
+            $("button:submit").hide();
+            $("#btn-delete").show();
+        } else {
+            $("button:submit").show();
+            $("#btn-delete").hide();
+        }
+    });
+</script>
+<style>
+.help-block {
+    text-align: left;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>ICISTS-KAIST 2015 Application Form</h1>
+<form class="form-horizontal" action="/registration/application/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Group Name</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="group_name" placeholder="group_name" maxlength="100" value="{{application.group_name}}">
+                <p class="help-block">If you are applying as a group, please specify the name of your group here to identify your colleagues. If not, leave it as blank.<br> <br></p>  
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-12 control-label">
+            </label>
+        </div>
+
+        <div class="form-group">
+			<label class="col-sm-3 control-label">Project Topic <br>1st Choice</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="project_topic" required="required">
+					{% for topic in project_topic %}
+					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
+					{% endfor %}
+                </select>
+                <p class="help-block">Please choose a topic you want to participate in throughout the whole conference. Your team project group will be determined based on this choice. </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+			<label class="col-sm-3 control-label">Project Topic <br> 2nd Choice</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="project_topic_2nd" required="required">
+					{% for topic in project_topic %}
+					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
+					{% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Essay Topic</label>
+            <div class="col-sm-9">
+				<select class="form-control" name="essay_topic" required="required">
+					{% for topic in essay_topic %}
+					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
+					{% endfor %}
+                </select>
+                <p class="help-block"> Choose one of the options above and write. Your essay topic does not necessarily have to match with your project topic.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+            </label>
+            <label class="col-sm-9 control-label" id='essay_questions'>
+				{% for topic in essay_topic %}
+				Topic {{ topic.number }}: {{ topic.text }} <br>
+				{{ topic.description }}
+				<hr>
+				{% endfor %}
+            </label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Essay</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id='essay_textarea' rows="20" name="essay_text" placeholder="Your eligibility for participation will be determined based on this essay. Write your essay here. No more than 2000 characters (approximately 300-400 words) " required="required" maxlength="2000" style="font-size:12px; resize:none" >{{application.essay_text}}</textarea>
+            </div>
+            <div id="result" class="col-sm-12 control-label">
+                Words used : <span id='word_count'>0</span><br/>
+                Total Characters : <span id='total_chars'>0</span><br/>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-5 control-label" style='text-align:left'>Visa Supporting Letter Required
+                <p class="help-block">Are you from a country that requires visa to stay in Korea?</p>
+            </label>
+            <div class="col-sm-3">
+                <label class="radio-inline">
+                    <input type="radio" id="visa-options" name="visa_letter_required" value="Y">Yes
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="visa-options" name="visa_letter_required" value="N" checked="checked">No
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-5 control-label" style='text-align:left'>Applying for Financial Aid
+                <p class="help-block">Are you applying for financial aid?</p>
+            </label>
+            <div class="col-sm-3">
+                <label class="radio-inline">
+                    <input type="radio" id="f_aid-options" name="financial_aid" value="Y">Yes
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="f_aid-options" name="financial_aid" value="N" checked="checked">No
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-5 control-label" style='text-align:left'>Previous Participation in ICISTS-KAIST
+                <p class="help-block">Have you participated in ICISTS-KAIST before?</p>
+            </label>
+            <div class="col-sm-3">
+                <label class="radio-inline">
+					<input type="radio" id="previously_participated-options" name="previously_participated" value="Y">Yes
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="previously_participated-options" name="previously_participated" value="N" checked="checked">No
+                </label>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a class="btn btn-warning" href="/registration/">Back</a>
+                <a class="btn btn-danger" id="btn-delete" href="/registration/cancel/">Delete and Cancel Registration</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

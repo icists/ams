@@ -14,30 +14,44 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+#DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '68ho06=juz#4gf%c7=!z8o3-^6smmm=uik6xs@rzh5%o^nd#4&'
+SECRET_KEY = ''
+with open(os.path.join(PROJECT_DIR, 'secret.key')) as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.icists.org',
+    '54.64.75.189',
+]
 
+LOGIN_URL = '/session/login/'
+
+LOGOUT_URL = '/session/logout/'
 
 # Application definition
 
 INSTALLED_APPS = (
+    #'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'icists.apps.registration',
+    'icists.apps.session',
+    'icists.apps.statistics',
+    'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,7 +70,7 @@ ROOT_URLCONF = 'icists.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ os.path.join(PROJECT_DIR, 'icists/templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
+                'django.core.context_processors.media',
             ],
         },
     },
@@ -77,8 +93,10 @@ WSGI_APPLICATION = 'icists.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': os.path.join(PROJECT_DIR, 'icists/mysql.cnf')
+        },
     }
 }
 
@@ -106,10 +124,8 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 # Media files (images, and other media)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'icists/media')
 
-# Template files (HTML)
+# Global Configuration Variables
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'templates'),
-)
+APPLICATION_STATUS = 'Regular'

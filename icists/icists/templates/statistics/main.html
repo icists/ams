@@ -1,0 +1,97 @@
+{% extends "statistics/base.html" %}
+
+{% block htitle %}ICISTS-KAIST Statistics{% endblock %}
+
+{% block header %}
+<script src="{{ MEDIA_URL }}js/Chart.min.js"></script>
+<script src="{{ MEDIA_URL }}js/statistics.js"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Alerts -->
+<div class="alert alert-success" role="alert" style="display: none;">
+    <strong>Success!</strong> Changes have been applied to configurations.
+</div>
+<div class="alert alert-danger" role="alert" style="display: none;">
+    <strong>Error!</strong> Changes have NOT been applied due to technical reasons. Contact site manager if error persists.
+</div>
+<h1>ICISTS-KAIST Statistics</h1>
+
+<div>
+    <p>
+        <span class="dataset btn btn-link">Application Category</span>
+        /
+        <span class="dataset btn btn-link">Application Status</span>
+        /
+        <span class="dataset btn btn-link">Gender</span>
+        /
+        <span class="dataset btn btn-link">Nationality</span>
+        /
+        <span class="dataset btn btn-link">University</span>
+        /
+        <span class="dataset btn btn-link">Project Topic</span>
+        /
+        <span class="dataset btn btn-link">Visa</span>
+        /
+        <span class="dataset btn btn-link">Group Discount</span>
+        /
+        <span class="dataset btn btn-link">How You Found Us</span>
+        /
+        <span class="dataset btn btn-link">Submit Time</span>
+    </p>
+</div>
+
+<canvas id="icists-chart" width="400" height="400"></canvas>
+
+<div style="margin-top: 200px;">
+    <h3>Admin features</h3>
+    <span style="color: #CCC;">Please beware that you know what you are doing!</span>
+    <p style="margin-top: 50px;">
+        <span class="btn btn-link" id="btn-create-application" type="button" data-toggle="modal" data-target="#modal-create-application">Create Empty User Application</span>
+        /
+        <span class="btn btn-link" id="btn-application-status" type="button" data-toggle="modal" data-target="#modal-application-status">Change Global Application Status</span>
+    </p>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal-application-status" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Change Global Application Status</h4>
+            </div>
+            <div class="modal-body">
+                <p><span>Current application status is set to </span><strong id="text-application-status"></strong></p>
+                <div class="form-inline">
+                    <span>Change this configuration to: </span>
+                    <select id="select-application-status" class="form-control"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="btn-save-application-status" type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-create-application" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create Empty User Application</span>
+            </div>
+            <div class="modal-body">
+                test
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class-"btn btn-primary" data-dismiss="modal">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
