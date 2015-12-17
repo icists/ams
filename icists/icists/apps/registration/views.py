@@ -9,24 +9,12 @@ from django.conf import settings
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
     EssayTopic, Participant
+from icists.apps.policy.models import Configuration, Price
 from icists.apps.registration.forms import ApplicationForm, FaForm
 from datetime import datetime
 import json
 
 # Create your views here.
-
-
-def process_user_select(cuser, uid=''):
-    if not cuser.is_staff:
-        raise PermissionDenied()
-
-    if uid == '':
-        uid = cuser.username
-
-    userl = User.objects.filter(username=uid)
-    if len(userl) < 1:
-        raise Http404()
-    return userl[0]
 
 
 def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
@@ -161,58 +149,38 @@ def cancel(request):
         return redirect('/registration/')
 
 
-@login_required
-def change_status(request, uid=''):
-    if request.method != 'POST':
-        raise SuspiciousOperation()
-
-    user = process_user_select(request.user, uid)
-    application = Application.objects.filter(user=user).first()
-    result = request.POST.get('result', 'P')
-
-    if result not in ['P', 'A', 'D']:
-        raise SuspiciousOperation()
-
-    application.screening_result = result
-    application.save()
-
-    return redirect('/registration/admin-view/' + user.username)
-
-
 def participation(request):
     print request.method
+    # GET : when the user opens the form page.
     if request.method == "GET":
         try:
             assert Application.objects.filter(user=request.user).exists()
             application = Application.objects.get(user=request.user)
 
             if Participant.objects.filter(application=application).exists():
-                print 'paricipant exists, modofication'
+                print 'since participation object exists, call the object for modification.'
                 p = Participant.objects.get(application=application)
             else:
+                print 'since participation object does not exist, create a new object.'
                 p = Participant()
+                p.application = application
 
-            if application.application_category == 'E':
-                category = 'Early'
-            elif application.application_category == 'R':
-                category = 'Regular'
-            payment_krw, payment_usd = 0, 0
-            if category == 'Early':
-                payment_krw = 100000
-                payment_usd = 95
-            elif category == 'Regular':
-                payment_krw = 120000
-                payment_usd = 115
-            if (application.group_discount == True):
-                payment_krw -=20000
-                payment_usd -=20
+            category =  application.get_application_category_display()
+
+            #calculate the required payment.
+            cnf = Configuration.objects.all()[0]
+            price = Price.objects.filter(year=cnf.year)[0]
+            krw, usd = p.payment()
+            print krw, usd 
             return render(request, 'registration/participation.html',
                         {'participant': p,
                         'category': category,
-                        'krw': payment_krw, 'usd': payment_usd})
+                        'krw': krw, 'usd': usd})
         except:
             return render(request, 'registration/participation.html',
                           {'error', 'Application data not found'})
+
+    # POST : when the user completed the form and submitted. 
     elif request.method == "POST":
         error = []
         print request.POST
@@ -266,9 +234,26 @@ def participation(request):
                                                 'error': error}),
                                     content_type='application/json')
             else:
+ 
+                application = Application.objects.get(user=request.user)
+                if Participant.objects.filter(application=application).exists():
+                    print 'paricipant exists, modofication'
+                    p = Participant.objects.get(application=application)
+                else:
+                    p = Participant()
+                    p.application = application
+
+
+                p.accommodation_choice = accommodation
+                p.payment_option = payment
+                p.remitter_name = remitter
+                p.breakfast_option = breakfast
+                p.dietary_option = dietary
+                p.pretour = pretour
+                p.posttour = posttour
+
                 # calculate total payment
                 krw, usd = 0, 0
-                application = Application.objects.get(user=request.user)
                 if application.application_category == 'E':
                     krw = 100000
                     usd = 95
@@ -303,22 +288,9 @@ def participation(request):
                     krw += 100000
                     usd += 90
                 print krw, usd
-
-                if Participant.objects.filter(application=application).exists():
-                    print 'paricipant exists, modofication'
-                    p = Participant.objects.get(application=application)
-                else:
-                    p = Participant()
-                p.accommodation_choice = accommodation
-                p.payment_option = payment
-                p.remitter_name = remitter
-                p.breakfast_option = breakfast
-                p.dietary_option = dietary
-                p.pretour = pretour
-                p.posttour = posttour
+                
                 p.required_payment_krw = krw
                 p.required_payment_usd = usd
-                p.application = application
                 p.submit_time = None
                 p.project_team_no = 0
                 p.save()

@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
 class Configuration(models.Model):
     """ describes the current configuration status of all the application policies """
 
@@ -31,7 +30,7 @@ class Configuration(models.Model):
 
 
 class Price(models.Model):
-    ''' the price for each application category and the discount rate for the year. '''
+    """ the price for each application category and the discount rate for the year. """
     year = models.IntegerField()
     early_price_krw = models.IntegerField()
     early_price_usd = models.IntegerField()
@@ -39,6 +38,11 @@ class Price(models.Model):
     regular_price_usd = models.IntegerField()
     late_price_krw = models.IntegerField()
     late_price_usd = models.IntegerField()
-    group_dc_usd = models.IntegerField()
     group_dc_krw = models.IntegerField()
-
+    group_dc_usd = models.IntegerField()
+    breakfast_krw = models.IntegerField()
+    breakfast_usd = models.IntegerField()
+    pretour_krw = models.IntegerField()
+    pretour_usd = models.IntegerField()
+    posttour_krw = models.IntegerField()
+    posttour_usd = models.IntegerField()

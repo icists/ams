@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 
 
 # Register your models here.
-
+"""
 class ConfigurationAdmin(ImportExportModelAdmin):
     list_display = ('application_stage', 'year')
 
@@ -15,3 +15,4 @@ class PriceAdmin(ImportExportModelAdmin):
     
 admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(Price, PriceAdmin)
+"""

@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
 class EssayTopic(models.Model):
     year = models.IntegerField()
     number = models.IntegerField()
@@ -130,6 +129,31 @@ class Participant(models.Model):
     posttour = models.BooleanField(default=False)
     group_discount = models.BooleanField(default=False)
     submit_time = models.DateTimeField(null=True)
+
+    def payment(self):
+        from icists.apps.policy.models import Configuration, Price
+        from icists.apps.registration.models import Application
+        cnf = Configuration.objects.first()
+        price = Price.objects.filter(year=cnf.year).first()
+        app = self.application
+        krw, usd = 0, 0
+        if app.application_category == 'E':
+            krw += price.early_price_krw
+            usd += price.early_price_usd
+        if app.application_category == 'R':
+            print "addition start"
+            krw += price.regular_price_krw
+            usd += price.regular_price_usd
+            print "addition done"
+        if app.application_category == 'L':
+            krw += price.late_price_krw
+            usd += price.late_price_usd
+        if app.group_discount == True:
+            krw -= price.group_dc_krw
+            usd -= price.group_dc_usd
+
+
+        return (krw, usd)
 
 
 class Accommodation(models.Model):
