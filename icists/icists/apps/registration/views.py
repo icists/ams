@@ -162,18 +162,6 @@ def cancel(request):
 
 
 @login_required
-def admin_view(request, uid=''):
-    user = process_user_select(request.user, uid)
-    userprofile = UserProfile.objects.get(user=user)
-    application = Application.objects.filter(user=user).first()
-
-    return render(request, 'registration/admin_view.html',
-                  {'user': user,
-                   'userprofile': userprofile,
-                   'application': application})
-
-
-@login_required
 def change_status(request, uid=''):
     if request.method != 'POST':
         raise SuspiciousOperation()

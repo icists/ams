@@ -114,8 +114,6 @@ class Participant(models.Model):
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
                                        related_name="participant")
-    discount = models.ForeignKey('Discount',
-                                 related_name="participant", null=True)
 
     project_team_no = models.PositiveSmallIntegerField()
     payment_status = models.CharField(max_length=1,
@@ -142,21 +140,9 @@ class Accommodation(models.Model):
     availability = models.IntegerField()
 
 
-class Discount(models.Model):
-    discount_code = models.CharField(max_length=10, primary_key=True)
-    discount_value = models.IntegerField()
-    disocunt_percent = models.FloatField()
-
-
 class Survey(models.Model):
     application = models.ForeignKey("Application", related_name='survey')
     q1 = models.TextField(default='', blank=True, null=True)
     q2 = models.TextField(default='', blank=True, null=True)
     q3 = models.TextField(default='', blank=True, null=True)
     q4 = models.TextField(default='', blank=True, null=True)
-    q5 = models.TextField(default='', blank=True, null=True)
-    q6 = models.TextField(default='', blank=True, null=True)
-    q7 = models.TextField(default='', blank=True, null=True)
-    q8 = models.TextField(default='', blank=True, null=True)
-    q9 = models.TextField(default='', blank=True, null=True)
-    q10 = models.TextField(default='', blank=True, null=True)
