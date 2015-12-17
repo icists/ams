@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'icists.apps.registration',
     'icists.apps.session',
     'icists.apps.statistics',
+    'icists.apps.policy',
     'import_export',
 )
 
