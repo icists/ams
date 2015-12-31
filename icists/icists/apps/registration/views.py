@@ -17,16 +17,35 @@ import json
 # Create your views here.
 
 
+cnf = Configuration.objects.all()[0]
+price = Price.objects.filter(year=cnf.year).first()
+app_stage = cnf.application_stage
+open_stage = {
+    'E': Configuration.EARLY,
+    'R': Configuration.REGULAR,
+    'L': Configuration.LATE,
+}
+closed_stage = {
+    'BE': Configuration.BEFORE_EARLY,
+    'EC': Configuration.EARLY_CLOSED,
+    'RC': Configuration.REGULAR_CLOSED,
+    'LC': Configuration.LATE_CLOSED,
+}
+
+
+@login_required
 def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
     if not request.user.is_authenticated():
         return redirect('/session/login/')
 
     if Application.objects.filter(user=request.user).exists():
-        print "app exists!"
+        ''' application form exists. Go on with editing. '''
         app = Application.objects.get(user=request.user)
+
         if app.submit_time is not None:
+            ''' application form exists and has been submitted. '''
             if Participant.objects.filter(application=app).exists():
-                print 'paricipant exists, modofication'
+                print 'paricipant exists, modification'
                 p = Participant.objects.get(application=app)
             else:
                 p = Participant()
@@ -39,32 +58,43 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
                               {'screening': app.screening_result,
                                'embargo': app.results_embargo,
                                'submitted': False,
-                               'payment_status' : payment_status,
+                               'payment_status': payment_status,
                                })
             except ObjectDoesNotExist:
                 return render(request, 'registration/status.html',
                               {'error': 'Object field does not exist'})
         else:
-            print "can edit the draft."     # app_saved.html
+            '''application form exists, but has not been saved. '''
+            print "can edit the draft."
             # return render(request, 'registration/early_closed.html')
-            return render(request, 'registration/draft.html')
+            if (app_stage == Configuration.BEFORE_EARLY):
+                return render(request, 'registration/app_closed.html')
+            else:
+                return render(request, 'registration/draft.html')
+
     else:
-        # print "app does not exist!" write new. welcome.html
-        # return render(request, 'registration/early_closed.html')
-        return render(request, 'registration/welcome.html')
+        ''' application form does not exist. redirected to welcome page '''
+        if (app_stage in open_stage.values()):
+            return render(request, 'registration/welcome.html')
+        elif (app_stage in closed_stage.values()):
+            return render(request, 'registration/app_closed.html')
 
-
+@login_required
 def submit(request):
     if not request.user.is_authenticated():
         return redirect('/session/login/')
     application = Application.objects.get(user=request.user)
     application.submit_time = timezone.now()
-    application.application_category = settings.APPLICATION_STATUS
+    # application.application_category = settings.APPLICATION_STATUS
+    if app_stage in closed_stage.values():
+        raise "nothing to be submitted when application_closed."
+    application.application_category = app_stage
     print 'Application saved at', application.submit_time
     application.save()
     return redirect('/registration/')
 
 
+@login_required
 def application(request):
     if Application.objects.filter(user=request.user).exists():
         print "Loaded the saved application draft."
@@ -79,7 +109,7 @@ def application(request):
         project_topic = ProjectTopic.objects.filter(year=2015)\
             .order_by('number')
         essay_topic = EssayTopic.objects.filter(year=2015).order_by('number')
-        return render(request, 'registration/application.html',
+        return render(request, 'registration/app_form.html',
                       {'application': application,
                        'project_topic': project_topic,
                        'project_topic_2nd': project_topic,
@@ -98,6 +128,7 @@ def application(request):
         return redirect('/registration/')
 
 
+@login_required
 def financial(request):
     if Application.objects.filter(user=request.user).exists():
         print "Loaded the saved application draft."
@@ -158,20 +189,19 @@ def participation(request):
             application = Application.objects.get(user=request.user)
 
             if Participant.objects.filter(application=application).exists():
-                print 'since participation object exists, call the object for modification.'
+                print 'Participation object exists'
                 p = Participant.objects.get(application=application)
             else:
-                print 'since participation object does not exist, create a new object.'
+                print 'Participation object does not exist, \
+                    hence create a new object.'
                 p = Participant()
                 p.application = application
 
-            category =  application.get_application_category_display()
+            category = application.get_application_category_display()
 
-            #calculate the required payment.
-            cnf = Configuration.objects.all()[0]
-            price = Price.objects.filter(year=cnf.year)[0]
+            # calculate the required payment.
             krw, usd = p.payment()
-            print krw, usd 
+            print krw, usd
             return render(request, 'registration/participation.html',
                         {'participant': p,
                         'category': category,
@@ -180,7 +210,7 @@ def participation(request):
             return render(request, 'registration/participation.html',
                           {'error', 'Application data not found'})
 
-    # POST : when the user completed the form and submitted. 
+    # POST : when the user completed the form and submitted.
     elif request.method == "POST":
         error = []
         print request.POST
@@ -209,7 +239,8 @@ def participation(request):
                         remitter = request.POST['remitter']
                     else:
                         remitter = ''
-                        error.append('Please indicate Remitter\'s Name for your transaction')
+                        error.append('Please indicate Remitter\'s Name \
+                                     for your transaction')
                     # print 'remitter', remitter
             else:
                 error.append('Please select Payment Method')
@@ -221,12 +252,12 @@ def participation(request):
             if 'pretour' in request.POST:
                 pretour = request.POST['pretour'] == 'True'
             else:
-                error.append('Please choose whether to attend Pre-Conference Banquet')
+                error.append('RSVP for Pre-Conference Program')
             # print 'pre', pretour
             if 'posttour' in request.POST:
                 posttour = request.POST['posttour'] == 'True'
             else:
-                error.append('Please choose whether to attend Post-Conference Banquet')
+                error.append('RSVP for Post-Conference Tour')
             print 'arguments processed'
             # print 'post', posttour
             if len(error) > 0:
@@ -234,15 +265,14 @@ def participation(request):
                                                 'error': error}),
                                     content_type='application/json')
             else:
- 
-                application = Application.objects.get(user=request.user)
-                if Participant.objects.filter(application=application).exists():
+
+                app = Application.objects.get(user=request.user)
+                if Participant.objects.filter(application=app).exists():
                     print 'paricipant exists, modofication'
-                    p = Participant.objects.get(application=application)
+                    p = Participant.objects.get(application=app)
                 else:
                     p = Participant()
-                    p.application = application
-
+                    p.application = app
 
                 p.accommodation_choice = accommodation
                 p.payment_option = payment
@@ -254,15 +284,16 @@ def participation(request):
 
                 # calculate total payment
                 krw, usd = 0, 0
-                if application.application_category == 'E':
-                    krw = 100000
-                    usd = 95
-                elif application.application_category == 'R':
-                    krw = 120000
-                    usd = 115
-                if application.group_discount:
-                    krw -= 20000
-                    usd -= 20
+                if app.application_category == 'E':
+                    krw, usd = (price.early_price_krw, price.early_price_usd)
+                elif app.application_category == 'R':
+                    krw, usd = \
+                        (price.regular_price_krw, price.regular_price_usd)
+                elif app.application_category == 'L':
+                    krw, usd = (price.late_price_krw, price.late_price_usd)
+                if app.group_discount:
+                    krw -= price.group_dc_krw
+                    usd -= price.group_dc_usd
                 if accommodation == 1:
                     krw += 135000
                     usd += 125
@@ -279,16 +310,16 @@ def participation(request):
                     krw += 68000
                     usd += 65
                 if breakfast:
-                    krw += 20000
-                    usd += 20
+                    krw += price.breakfast_krw
+                    usd += price.breakfast_usd
                 if pretour:
-                    krw += 40000
-                    usd += 30
+                    krw += price.pretour_krw
+                    usd += price.pretour_usd
                 if posttour:
-                    krw += 100000
-                    usd += 90
+                    krw += price.posttour_krw
+                    usd += price.posttour_usd
                 print krw, usd
-                
+
                 p.required_payment_krw = krw
                 p.required_payment_usd = usd
                 p.submit_time = None
