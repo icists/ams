@@ -122,7 +122,7 @@ def get_data(request, query):
     # return render(request, 'statistic/main.html', json.dumps(data))
     return HttpResponse(json.dumps(data))
 
-
+'''
 @staff_member_required
 def change_status(request):
     if request.method == "GET":
@@ -141,3 +141,4 @@ def change_status(request):
             except:
                 return HttpResponse(json.dumps(
                     {'error': 1}))
+'''

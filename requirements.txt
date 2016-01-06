@@ -5,3 +5,4 @@ wsgiref==0.1.2
 django-admin-bootstrapped==2.5.0
 django-bootstrap3==5.4.0
 django-import-export==0.2.7
+MySQL-Python==1.2.5

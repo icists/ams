@@ -2,10 +2,14 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, EssayTopic, ProjectTopic, Participant
+from icists.apps.policy.models import Configuration, Price
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
+
+cnf = Configuration.objects.all()[0]
+price = Price.objects.filter(year=cnf.year)[0]
 
 # For application admin
 def get_user_profile(obj):

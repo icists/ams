@@ -11,9 +11,6 @@ urlpatterns = [
     url(r'^financial/$', 'icists.apps.registration.views.financial'),
     url(r'^cancel/$', 'icists.apps.registration.views.cancel'),
     url(r'^participation/$', 'icists.apps.registration.views.participation'),
-    # url(r'^admin-view/$', 'icists.apps.registration.views.admin_view'),
-    # url(r'^admin-view/(?P<uid>\w+)/$',
-    #     'icists.apps.registration.views.admin_view',),
     # url(r'^change-status/(?P<uid>\w+)/$',
     #     'icists.apps.registration.views.change_status',),
 ]

@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
 class EssayTopic(models.Model):
     year = models.IntegerField()
     number = models.IntegerField()
@@ -114,8 +113,6 @@ class Participant(models.Model):
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
                                        related_name="participant")
-    discount = models.ForeignKey('Discount',
-                                 related_name="participant", null=True)
 
     project_team_no = models.PositiveSmallIntegerField()
     payment_status = models.CharField(max_length=1,
@@ -133,6 +130,31 @@ class Participant(models.Model):
     group_discount = models.BooleanField(default=False)
     submit_time = models.DateTimeField(null=True)
 
+    def payment(self):
+        from icists.apps.policy.models import Configuration, Price
+        from icists.apps.registration.models import Application
+        cnf = Configuration.objects.first()
+        price = Price.objects.filter(year=cnf.year).first()
+        app = self.application
+        krw, usd = 0, 0
+        if app.application_category == 'E':
+            krw += price.early_price_krw
+            usd += price.early_price_usd
+        if app.application_category == 'R':
+            print "addition start"
+            krw += price.regular_price_krw
+            usd += price.regular_price_usd
+            print "addition done"
+        if app.application_category == 'L':
+            krw += price.late_price_krw
+            usd += price.late_price_usd
+        if app.group_discount == True:
+            krw -= price.group_dc_krw
+            usd -= price.group_dc_usd
+
+
+        return (krw, usd)
+
 
 class Accommodation(models.Model):
     hotel_name = models.CharField(max_length=45)
@@ -142,21 +164,9 @@ class Accommodation(models.Model):
     availability = models.IntegerField()
 
 
-class Discount(models.Model):
-    discount_code = models.CharField(max_length=10, primary_key=True)
-    discount_value = models.IntegerField()
-    disocunt_percent = models.FloatField()
-
-
 class Survey(models.Model):
     application = models.ForeignKey("Application", related_name='survey')
     q1 = models.TextField(default='', blank=True, null=True)
     q2 = models.TextField(default='', blank=True, null=True)
     q3 = models.TextField(default='', blank=True, null=True)
     q4 = models.TextField(default='', blank=True, null=True)
-    q5 = models.TextField(default='', blank=True, null=True)
-    q6 = models.TextField(default='', blank=True, null=True)
-    q7 = models.TextField(default='', blank=True, null=True)
-    q8 = models.TextField(default='', blank=True, null=True)
-    q9 = models.TextField(default='', blank=True, null=True)
-    q10 = models.TextField(default='', blank=True, null=True)
