@@ -244,13 +244,23 @@ class ParticipantAdmin(ImportExportModelAdmin):
     get_email.admin_order_field = 'user__email'
     get_email.short_description = 'Email'
 
-    readonly_fields = ('required_payment_krw', 'required_payment_usd', 'get_name', 'get_gender')
+
+    def get_payment_krw(self, obj):
+        krw, usd = obj.payment()
+        return int(krw)
+    get_payment_krw.short_description = 'Payment in KRW'
+    def get_payment_usd(self, obj):
+        krw, usd = obj.payment()
+        return int(usd)
+    get_payment_usd.short_description = 'Payment in USD'
+
+    readonly_fields = ('get_name', 'get_gender', 'get_payment_krw', 'get_payment_usd')
     fields =    (   ('get_name', 'get_gender'),
                     #('get_user_info'),
                     ('accommodation_choice'),
                     ('project_team_no'),
                     ('payment_status', 'payment_option', 'remitter_name'),
-                    ('required_payment_krw', 'required_payment_usd'),
+                    ('get_payment_krw', 'get_payment_usd'),
                     ('breakfast_option', 'dietary_option'),
                     ('pretour', 'posttour'),
                 )

@@ -73,13 +73,6 @@ class Application(models.Model):
     last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
 
-    '''
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            slef.application_category = settings.APPLICATION_CATEGORY
-        super(Application, self).save(*args, **kwargs)
-    '''
-
 
 class Participant(models.Model):
     NOT_PAID = 'N'
@@ -152,7 +145,31 @@ class Participant(models.Model):
             krw -= price.group_dc_krw
             usd -= price.group_dc_usd
 
-
+        accommodation = self.accommodation_choice
+        if accommodation == 1:
+            krw += 135000
+            usd += 125
+        elif accommodation == 2:
+            krw += 180000
+            usd += 165
+        elif accommodation == 3:
+            krw += 120000
+            usd += 110
+        elif accommodation == 4:
+            krw += 112500
+            usd += 105
+        elif accommodation == 5:
+            krw += 68000
+            usd += 65
+        if self.breakfast_option:
+            krw += price.breakfast_krw
+            usd += price.breakfast_usd
+        if self.pretour:
+            krw += pretour_krw
+            usd += pretour_usd
+        if self.posttour:
+            krw += posttour_krw
+            usd += posttour_usd
         return (krw, usd)
 
 

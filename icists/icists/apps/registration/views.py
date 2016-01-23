@@ -253,42 +253,8 @@ def participation(request):
                 p.posttour = posttour
 
                 # calculate total payment
-                krw, usd = 0, 0
-                if application.application_category == 'E':
-                    krw = 100000
-                    usd = 95
-                elif application.application_category == 'R':
-                    krw = 120000
-                    usd = 115
-                if application.group_discount:
-                    krw -= 20000
-                    usd -= 20
-                if accommodation == 1:
-                    krw += 135000
-                    usd += 125
-                elif accommodation == 2:
-                    krw += 180000
-                    usd += 165
-                elif accommodation == 3:
-                    krw += 120000
-                    usd += 110
-                elif accommodation == 4:
-                    krw += 112500
-                    usd += 105
-                elif accommodation == 5:
-                    krw += 68000
-                    usd += 65
-                if breakfast:
-                    krw += 20000
-                    usd += 20
-                if pretour:
-                    krw += 40000
-                    usd += 30
-                if posttour:
-                    krw += 100000
-                    usd += 90
-                print krw, usd
-                
+                krw, usd = p.payment()
+               
                 p.required_payment_krw = krw
                 p.required_payment_usd = usd
                 p.submit_time = None
