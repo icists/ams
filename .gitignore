@@ -62,3 +62,9 @@ db.*
 
 # VIM Editor Swap Files
 *.sw[op]
+
+# secret
+secret.key
+
+# mysql
+mysql.cnf
