@@ -30,6 +30,7 @@ with open(os.path.join(PROJECT_DIR, 'secret.key')) as f:
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    'localhost',
     '.icists.org',
     '54.64.75.189',
 ]
@@ -129,4 +130,4 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'icists/media')
 
 # Global Configuration Variables
 
-APPLICATION_STATUS = 'Regular'
+# APPLICATION_STATUS = 'Regular'
