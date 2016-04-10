@@ -26,12 +26,16 @@
         </div>
 		<input type="hidden" name="password" value="qwerty1234">
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Name <span class="required"></span></label>
+			<label class="col-sm-3 control-label">Name (in English) 
+				<span class="required"></span>
+			</label>
 			<div class="form-group col-sm-6">
 				<input type="text" class="form-control" name="first_name" placeholder="First Name" required="required" maxlength="30" value="{{ user.first_name }}">
+				<p class="help-block">First Name</p>
 			</div>
 			<div class="form-group col-sm-3">
 				<input type="text" class="form-control" name="last_name" placeholder="Last Name" required="required" maxlength="30" value="{{ user.last_name }}">
+				<p class="help-block">Last Name</p>
 			</div>
 		</div>
 		<div class="form-group">

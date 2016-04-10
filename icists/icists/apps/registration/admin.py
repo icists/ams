@@ -108,9 +108,9 @@ class ApplicationResource(resources.ModelResource):
     class Meta:
         model = Application
         #fields = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
-        fields = ('user__first_name', 'user__last_name', 'user__userprofile__nationality', 'user__email', 'user__userprofile__phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
+        fields = ('user__first_name', 'user__last_name', 'user__userprofile__gender', 'user__userprofile__university', 'user__userprofile__major', 'user__userprofile__nationality', 'user__email', 'user__userprofile__phone', 'application_category', 'screening_result', 'project_topic', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated')
 
-
+   
 class ApplicationAdmin(ImportExportModelAdmin):
     def get_user_info(self, obj):
         user = obj.user
@@ -138,6 +138,11 @@ class ApplicationAdmin(ImportExportModelAdmin):
     get_phone.admin_order_field = 'user__userprofile__phone'
     get_phone.short_description = 'Phone'
 
+    def get_gender(self, obj):
+        return get_user_profile(obj).gender
+    get_gender.admin_order_field = 'user__userprofile__gender'
+    get_gender.short_description = "Gender"
+
     def get_submitted_status(self, obj):
         if obj.submit_time != None:
             return 'Submitted'
@@ -147,7 +152,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
 
     readonly_fields = ('get_user_info', )
     fields = (('get_user_info', 'group_name'), ('application_category', 'submit_time'), ('screening_result', 'results_embargo'), 'project_topic', 'project_topic_2nd', 'essay_topic', 'essay_text', ('visa_letter_required', 'financial_aid', 'previously_participated', 'group_discount'))
-    list_display = ('get_name', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'project_topic_2nd', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'submit_time', 'group_discount')
+    list_display = ('get_name', 'get_gender', 'get_nationality', 'get_email', 'get_phone', 'application_category', 'get_submitted_status', 'screening_result', 'project_topic', 'project_topic_2nd', 'essay_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'submit_time', 'group_discount')
     inlines = (SurveyInline, )
 
     list_filter = (StatusFilter, 'project_topic', 'project_topic_2nd', 'group_name', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', UniversityFilter)
