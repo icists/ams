@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+# from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from icists.apps.session.models import University, UserProfile
@@ -14,12 +14,15 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'user profile'
 
+
 def get_user_profile(obj):
     return UserProfile.objects.get(user=obj)
+
 
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
+
 
 class StatusFilter(admin.SimpleListFilter):
     title = 'application status'
@@ -34,8 +37,7 @@ class StatusFilter(admin.SimpleListFilter):
     def queryset(self, request, qs):
         if self.value() == 'yes':
             return qs.filter(application__isnull=False)
-        
-        if self.value() == 'no':
+        elif self.value() == 'no':
             return qs.filter(application__isnull=True)
 
 
@@ -44,7 +46,8 @@ class UniversityFilter(admin.SimpleListFilter):
     parameter_name = 'university'
 
     def lookups(self, request, model_admin):
-        universities = set([get_user_profile(u).university for u in model_admin.model.objects.all()])
+        universities = set([get_user_profile(u).university for
+                            u in model_admin.model.objects.all()])
         return [(u.id, u.name) for u in universities]
 
     def queryset(self, request, qs):
@@ -64,7 +67,7 @@ class UserAdmin(ImportExportModelAdmin):
         return get_user_profile(obj).university.name
     get_university.admin_order_field = 'userprofile__university__name'
     get_university.short_description = 'University'
-    
+
     def get_major(self, obj):
         return get_user_profile(obj).major
     get_major.admin_order_field = 'userprofile__major'
@@ -75,12 +78,16 @@ class UserAdmin(ImportExportModelAdmin):
     get_phone.admin_order_field = 'userprofile__phone'
     get_phone.short_description = 'Phone'
 
-    list_display = ('get_name', 'get_university', 'get_major', 'email', 'get_phone', 'is_staff')
+    list_display = ('get_name',
+                    'get_university',
+                    'get_major',
+                    'email',
+                    'get_phone',
+                    'is_staff')
     inlines = (UserProfileInline, )
     list_filter = (StatusFilter, UniversityFilter)
     resource_class = UserResource
-    
-    #list_filter = ('project_topic', 'visa_letter_required', 'financial_aid', 'previously_participated', 'screening_result', 'application_category', 'user__userprofile__university')
+
 
 class UniversityResource(resources.ModelResource):
     class Meta:
@@ -88,7 +95,8 @@ class UniversityResource(resources.ModelResource):
 
 
 class UniversityAdmin(ImportExportModelAdmin):
-    list_display = ('country', 'name')
+    list_display = ('country', 'name', 'id')
+    list_filter = ('country', )
     resource_class = UniversityResource
 
 admin.site.unregister(User)
