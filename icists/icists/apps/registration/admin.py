@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from icists.apps.session.models import UserProfile
+from icists.apps.session.models import UserProfile, University
 from icists.apps.registration.models import \
     Application, Survey, EssayTopic, ProjectTopic, Participant
 from icists.apps.policy.models import Configuration, Price
-from import_export import resources
+from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
@@ -126,16 +126,22 @@ class SurveyInline(admin.StackedInline):
 
 
 class ApplicationResource(resources.ModelResource):
+    univ_name = fields.Field()
+
+    def dehydrate_univ_name(self, Application):
+        try:
+            userp = get_user_profile(Application)
+            univ_code = userp.university
+        except:
+            print "ERROR"
+            univ_code = "ERROR"
+        return univ_code
+
     class Meta:
         model = Application
-        '''
-        fields = ('get_name', 'get_nationality', 'get_email', 'get_phone',
-        'application_category', 'screening_result', 'project_topic',
-        'essay_topic', 'visa_letter_required', 'financial_aid',
-        'previously_participated')
-        '''
         fields = ('user__first_name', 'user__last_name',
                   'user__userprofile__gender',
+                  'univ_name',
                   'user__userprofile__university', 'user__userprofile__major',
                   'user__userprofile__nationality', 'user__email',
                   'user__userprofile__phone', 'application_category',
