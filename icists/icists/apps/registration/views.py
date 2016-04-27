@@ -18,8 +18,8 @@ import json
 
 
 cnf = Configuration.objects.all()[0]
-price = Price.objects.filter(year=cnf.year).first()
 app_stage = cnf.application_stage
+price = Price.objects.filter(year=cnf.year).first()
 open_stage = {
     'E': Configuration.EARLY,
     'R': Configuration.REGULAR,
@@ -78,6 +78,7 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
             return render(request, 'registration/welcome.html')
         elif (app_stage in closed_stage.values()):
             return render(request, 'registration/app_closed.html')
+
 
 @login_required
 def submit(request):
@@ -203,9 +204,9 @@ def participation(request):
             krw, usd = p.payment()
             print krw, usd
             return render(request, 'registration/participation.html',
-                        {'participant': p,
-                        'category': category,
-                        'krw': krw, 'usd': usd})
+                          {'participant': p,
+                           'category': category,
+                           'krw': krw, 'usd': usd})
         except:
             return render(request, 'registration/participation.html',
                           {'error', 'Application data not found'})
@@ -297,3 +298,4 @@ def participation(request):
             return HttpResponse(json.dumps({'success': False,
                                             'error': error}),
                                 content_type='application/json')
+        return redirect('/registration/')
