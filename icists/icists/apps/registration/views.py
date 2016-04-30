@@ -2,17 +2,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.core.exceptions import ValidationError, PermissionDenied, \
-    SuspiciousOperation, ObjectDoesNotExist
-from django.http import Http404, HttpResponse
-from django.conf import settings
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.http import HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
     EssayTopic, Participant
 from icists.apps.policy.models import Configuration, Price
 from icists.apps.registration.forms import ApplicationForm, FaForm
-from datetime import datetime
+# from datetime import datetime
 import json
+import sys
 
 # Create your views here.
 
@@ -74,6 +73,7 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
 
     else:
         ''' application form does not exist. redirected to welcome page '''
+        print "application does not exist."
         if (app_stage in open_stage.values()):
             return render(request, 'registration/welcome.html')
         elif (app_stage in closed_stage.values()):
@@ -87,6 +87,7 @@ def submit(request):
     application = Application.objects.get(user=request.user)
     application.submit_time = timezone.now()
     # application.application_category = settings.APPLICATION_STATUS
+    print "app_stage at submission : ", app_stage
     if app_stage in closed_stage.values():
         raise "nothing to be submitted when application_closed."
     application.application_category = app_stage
@@ -107,13 +108,12 @@ def application(request):
     if request.method == "GET":
         print "GET method. opened the form."
         app_f = ApplicationForm(instance=application)
-        project_topic = ProjectTopic.objects.filter(year=2015)\
+        project_topic = ProjectTopic.objects.filter(year=2016)\
             .order_by('number')
-        essay_topic = EssayTopic.objects.filter(year=2015).order_by('number')
+        essay_topic = EssayTopic.objects.filter(year=2016).order_by('number')
         return render(request, 'registration/app_form.html',
                       {'application': application,
                        'project_topic': project_topic,
-                       'project_topic_2nd': project_topic,
                        'essay_topic': essay_topic})
 
     elif request.method == "POST":
@@ -124,6 +124,7 @@ def application(request):
             application = app_f.save()
         except:
             print 'Invalid application attempted to save'
+            print "Unexpected error:", sys.exc_info()[0]
             raise ValidationError("app_f is not valid.")
 
         return redirect('/registration/')

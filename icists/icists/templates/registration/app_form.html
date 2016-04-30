@@ -30,7 +30,6 @@
         $('#essay_textarea').focus(counter);
             
         $('select[name=project_topic]').val('{{ application.project_topic_id }}').attr("selected", "selected");
-        $('select[name=project_topic_2nd]').val('{{ application.project_topic_2nd_id }}').attr("selected", "selected");
         $('select[name=essay_topic]').val('{{ application.essay_topic_id }}').attr("selected", "selected");
         $("input[name=visa_letter_required][value='{{ application.visa_letter_required }}']").prop("checked", true);
         $("input[name=financial_aid][value='{{ application.financial_aid }}']").prop("checked", true);
@@ -77,25 +76,14 @@
         </div>
 
         <div class="form-group">
-			<label class="col-sm-3 control-label">Project Topic <br>1st Choice</label>
+			<label class="col-sm-3 control-label">Topic of Interest </label>
             <div class="col-sm-9">
                 <select class="form-control" name="project_topic" required="required">
 					{% for topic in project_topic %}
 					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
 					{% endfor %}
                 </select>
-                <p class="help-block">Please choose a topic you want to participate in throughout the whole conference. Your team project group will be determined based on this choice. </p>
-            </div>
-        </div>
-
-        <div class="form-group">
-			<label class="col-sm-3 control-label">Project Topic <br> 2nd Choice</label>
-            <div class="col-sm-9">
-                <select class="form-control" name="project_topic_2nd" required="required">
-					{% for topic in project_topic %}
-					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
-					{% endfor %}
-                </select>
+                <p class="help-block">Please choose a topic you are most interested in. The choice would not affect on your conference experience. </p>
             </div>
         </div>
 
@@ -166,8 +154,8 @@
         <div class="form-group">
             <div class="col-sm-3">
             </div>
-            <label class="col-sm-5 control-label" style='text-align:left'>Previous Participation in ICISTS 2016
-                <p class="help-block">Have you participated in ICISTS 2016 before?</p>
+            <label class="col-sm-5 control-label" style='text-align:left'>Previous Participation in ICISTS
+                <p class="help-block">Have you participated in ICISTS (former ICISTS-KAIST)  before?</p>
             </label>
             <div class="col-sm-3">
                 <label class="radio-inline">

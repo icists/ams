@@ -67,14 +67,14 @@ def login(request):
         email = request.POST.get('email', 'none')
         password = request.POST.get('password', 'asdf')
         nexturl = request.POST.get('next', '/')
-        
+
         username = get_username(email)
         user = auth.authenticate(username=username, password=password)
         if user is not None and user.is_active:
             auth.login(request, user)
             return redirect(nexturl)
         else:
-            return render(request, 'session/login.html', {'next': nexturl, 'msg': 'Invalid Account Info'})
+            return render(request, 'session/login.html', {'next': nexturl, 'msg': 'Sorry, you entered an incorrect email address or password.'})
     return render(request, 'session/login.html', {'next': request.GET.get('next', '/registration/')})
 
 
@@ -97,13 +97,13 @@ def signup(request):
         user_f = UserForm(npost)
         user_profile_f = UserProfileForm(npost, request.FILES)
         raw_email = request.POST.get('email', '')
-        
+
         if is_valid_email(raw_email) and user_f.is_valid() and user_profile_f.is_valid():
             email = user_f.cleaned_data['email']
             password = user_f.cleaned_data['password']
             first_name = user_f.cleaned_data['first_name']
             last_name = user_f.cleaned_data['last_name']
-        
+
             username = os.urandom(10).encode('hex')
             user = User.objects.create_user(username=username, first_name=first_name,
                 last_name=last_name, email=email, password=password)
@@ -122,7 +122,7 @@ def signup(request):
 def process_user_select(cuser, uid=''):
     if uid == '':
         uid = cuser.username
-    
+
     if not cuser.is_staff and cuser.username != uid:
         raise PermissionDenied()
 
@@ -131,12 +131,12 @@ def process_user_select(cuser, uid=''):
         raise Http404()
     return userl[0]
 
-	
+
 @login_required
 def profile(request, uid=''):
     user = process_user_select(request.user, uid)
     userprofile = UserProfile.objects.get(user=user)
-    
+
     msg = ''
     if request.method == "POST":
         npost = request.POST.copy()
@@ -145,7 +145,7 @@ def profile(request, uid=''):
         user_f = UserForm(npost)
         user_profile_f = UserProfileForm(npost, request.FILES, instance=userprofile)
 	raw_email = request.POST.get('email', '')
-        		
+
 	if is_valid_email(raw_email, user.email) and user_f.is_valid() and user_profile_f.is_valid():
 	    user.email = user_f.cleaned_data['email']
 	    user.first_name = user_f.cleaned_data['first_name']
@@ -153,9 +153,9 @@ def profile(request, uid=''):
 	    user.save()
 	    userprofile = user_profile_f.save()
             msg = 'Your profile was successfully modified!'
-    
+
     return render(request, 'session/profile.html', { 'user': user, 'userprofile': userprofile, 'msg': msg })
-    
+
 
 @login_required
 def changepw(request, uid=''):
@@ -165,7 +165,7 @@ def changepw(request, uid=''):
     if request.method == "POST":
         oldpw = request.POST.get('oldpassword', '')
         newpw = request.POST.get('password', 'P@55w0rd!#$')
-        
+
         if check_password(oldpw, user.password):
             user.password = make_password(newpw)
             user.save()
