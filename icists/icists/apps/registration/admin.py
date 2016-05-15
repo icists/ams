@@ -191,13 +191,19 @@ class ApplicationAdmin(ImportExportModelAdmin):
     get_submitted_status.admin_order_field = 'submit_time'
     get_submitted_status.short_description = 'Status'
 
-    readonly_fields = ('get_user_info', )
+    def get_address(self, obj):
+        return "%s" %(get_user_profile(obj).address)
+    get_address.short_description = 'Address'
+
+
+    readonly_fields = ('get_user_info', 'get_address')
     fields = (('get_user_info', 'group_name'),
               ('application_category', 'submit_time'),
               ('screening_result', 'results_embargo'), 'project_topic',
               'project_topic_2nd', 'essay_topic', 'essay_text',
               ('visa_letter_required', 'financial_aid',
-               'previously_participated', 'group_discount'))
+               'previously_participated', 'group_discount'),
+              ('get_address'))
     list_display = ('get_name', 'get_gender', 'get_nationality', 'get_email',
                     'get_phone', 'application_category', 'get_submitted_status',
                     'screening_result', 'project_topic', 'project_topic_2nd',
