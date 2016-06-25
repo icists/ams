@@ -18,7 +18,7 @@
         var total_chars = value.length;
 
         $('#word_count').html(word_count);
-            $('#total_chars').html(total_chars);
+        $('#total_chars').html(total_chars);
     };
 
     $(document).ready(function() {
@@ -47,6 +47,7 @@
             $("button:submit").show();
             $("#btn-delete").hide();
         }
+
     });
 </script>
 <style>
@@ -83,7 +84,7 @@
 					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
 					{% endfor %}
                 </select>
-                <p class="help-block">Please choose a topic you are most interested in. The choice would not affect on your conference experience. </p>
+                <p class="help-block">Please choose a topic you are most interested in. The choice will not affect your conference experience. </p>
             </div>
         </div>
 
@@ -96,7 +97,7 @@
 					<option value="{{ topic.id }}">{{ topic.number }}. {{ topic.text }}</option>
 					{% endfor %}
                 </select>
-                <p class="help-block"> Choose one of the options above and write. Your essay topic does not necessarily have to match with your project topic.</p>
+                <p class="help-block"> Choose one of the options above and write in English. Your essay topic does not necessarily have to match with the topic of interest.</p>
             </div>
         </div>
         <div class="form-group">
@@ -105,7 +106,7 @@
             <label class="col-sm-9 control-label" id='essay_questions'>
 				{% for topic in essay_topic %}
 				Topic {{ topic.number }}: {{ topic.text }} <br>
-				{{ topic.description }}
+                                {{ topic.description }}
 				<hr>
 				{% endfor %}
             </label>

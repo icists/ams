@@ -204,10 +204,30 @@ def participation(request):
             # calculate the required payment.
             krw, usd = p.payment()
             print krw, usd
+
+            category_price_krw = 0
+            category_price_usd = 0
+            if application.application_category == 'E':
+                category_price_krw += price.early_price_krw
+                category_price_usd += price.early_price_usd
+            if application.application_category == 'R':
+                category_price_krw += price.regular_price_krw
+                category_price_usd += price.regular_price_usd
+            if application.application_category == 'L':
+                category_price_krw += price.late_price_krw
+                category_price_usd += price.late_price_usd
+            if application.group_discount is True:
+                category_price_krw -= price.group_dc_krw
+                category_price_usd -= price.group_dc_usd
+
             return render(request, 'registration/participation.html',
                           {'participant': p,
                            'category': category,
-                           'krw': krw, 'usd': usd})
+                           'krw': category_price_krw, 'usd': category_price_usd,
+                           'category_price_krw': category_price_krw,
+                           'category_price_usd': category_price_usd,
+                           'group_discount_bool': application.group_discount,
+                           })
         except:
             return render(request, 'registration/participation.html',
                           {'error', 'Application data not found'})
@@ -256,10 +276,14 @@ def participation(request):
             else:
                 error.append('RSVP for Pre-Conference Program')
             # print 'pre', pretour
+            '''
             if 'posttour' in request.POST:
                 posttour = request.POST['posttour'] == 'True'
             else:
                 error.append('RSVP for Post-Conference Tour')
+            '''
+            # post tour conference set to false for all application
+            posttour = False
             print 'arguments processed'
             # print 'post', posttour
             if len(error) > 0:
@@ -281,6 +305,7 @@ def participation(request):
                 p.remitter_name = remitter
                 p.breakfast_option = breakfast
                 p.dietary_option = dietary
+                print "WOWOW : ", pretour
                 p.pretour = pretour
                 p.posttour = posttour
 

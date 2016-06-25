@@ -93,12 +93,11 @@ class Participant(models.Model):
         (BANK_TRANSFER, 'Bank Transfer'),
     )
     ACCOMMODATION_CHOICES = (
-        (1, 'Standard Ondol'),
-        (2, 'Standard Ondol Twin'),
-        (3, 'Deluxe Ondol'),
-        (4, 'Suite Ondol'),
-        (5, 'KAIST Dormitory'),
-        (6, 'No Accommodation'),
+        (1, 'Triple'),
+        (2, 'Double Twin'),
+        (3, 'Superior Ondol'),
+        (4, 'Deluxe Ondol'),
+        (5, 'No Accommodation'),
     )
 
     accommodation = models.ForeignKey('Accommodation',
@@ -135,10 +134,8 @@ class Participant(models.Model):
             krw += price.early_price_krw
             usd += price.early_price_usd
         if app.application_category == 'R':
-            print "addition start"
             krw += price.regular_price_krw
             usd += price.regular_price_usd
-            print "addition done"
         if app.application_category == 'L':
             krw += price.late_price_krw
             usd += price.late_price_usd
@@ -148,29 +145,26 @@ class Participant(models.Model):
 
         accommodation = self.accommodation_choice
         if accommodation == 1:
-            krw += 135000
-            usd += 125
+            krw += 187000
+            usd += 160
         elif accommodation == 2:
-            krw += 180000
-            usd += 165
+            krw += 141000
+            usd += 120
         elif accommodation == 3:
-            krw += 120000
+            krw += 126000
             usd += 110
         elif accommodation == 4:
-            krw += 112500
-            usd += 105
-        elif accommodation == 5:
-            krw += 68000
-            usd += 65
+            krw += 90000
+            usd += 77
         if self.breakfast_option:
             krw += price.breakfast_krw
             usd += price.breakfast_usd
         if self.pretour:
-            krw += pretour_krw
-            usd += pretour_usd
+            krw += price.pretour_krw
+            usd += price.pretour_usd
         if self.posttour:
-            krw += posttour_krw
-            usd += posttour_usd
+            krw += price.posttour_krw
+            usd += price.posttour_usd
         return (krw, usd)
 
 

@@ -10,20 +10,17 @@
             var krw = {{ krw }};
             var usd = {{ usd }};
             if ($("#accommodation").val() == 1) {
-                krw += 135000;
-                usd += 125;
+                krw += 187000;
+                usd += 160;
             } else if ($("#accommodation").val() == 2) {
-                krw += 180000;
-                usd += 165;
+                krw += 141000;
+                usd += 120;
             } else if ($("#accommodation").val() == 3) {
-                krw += 120000;
+                krw += 126000;
                 usd += 110;
             } else if ($("#accommodation").val() == 4) {
-                krw += 112500;
-                usd += 105
-            } else if ($("#accommodation").val() == 5) {
-                krw += 68000;
-                usd += 65;
+                krw += 90000;
+                usd += 77;
             }
             if ($("#breakfast:checked").val() == 'True') {
                 krw += 20000;
@@ -31,12 +28,9 @@
             }
             if ($("#pretour:checked").val() == 'True') {
                 krw += 40000;
-                usd += 30;
+                usd += 35;
             }
-            if ($("#posttour:checked").val() == 'True') {
-                krw += 100000;
-                usd += 90;
-            }
+            
             $("#amt-krw").text(krw);
             $("#amt-usd").text(usd);
         }
@@ -72,7 +66,7 @@
                     breakfast: $("#breakfast:checked").val(),
                     dietary: $("#dietary-option").val(),
                     pretour: $("#pretour:checked").val(),
-                    posttour: $("#posttour:checked").val(),
+                    //posttour: $("#posttour:checked").val(),
                     payment: $("#payment-option").val(),
                     remitter: $("#remitter-name").val(),
                     csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -105,7 +99,7 @@
         $('select[name=accommodation-option]').val('{{ participant.accommodation_choice }}').attr("selected", "selected");
         $("input[name=breakfast-options][value='{{ participant.breakfast_option }}']").prop("checked", true);
         $("input[name=pretour-options][value='{{ participant.pretour }}']").prop("checked", true);
-        $("input[name=posttour-options][value='{{ participant.posttour }}']").prop("checked", true);
+        //$("input[name=posttour-options][value='{{ participant.posttour }}']").prop("checked", true);
 		calc_price();
     });
 </script>
@@ -119,7 +113,9 @@
     <div id="application-information">
         <label class="col-sm-4 col-label text-right">Application Category</label>
         <label>{{ category }}</label>
-        <label>USD {{ usd }} / KRW {{ krw }}</label>
+        <label>USD {{ category_price_usd }} / KRW {{ category_price_krw }}</label>
+    </div>
+    <div>
     </div>
     <form class="form-horizontal" action="/registration/participation/" method="post" enctype="multipart/form-data">
         <fieldset>
@@ -130,12 +126,12 @@
                     <div class="col-sm-8">
                         <select class="form-control col-sm-8" id="accommodation" name="accommodation-option" required="required">
                             <option value="0">-- Select --</option>
-                            <option value="1">[Option A] Standard Ondol / Capacity: 4 people / Price: 125 USD (135,000 KRW)</option>
-                            <option value="2">[Option B] Standard Ondol Twin / Capacity: 3 people / Price: 165 USD (180,000 KRW)</option>
-                            <option value="3">[Option C] Deluxe Ondol / Capacity: 6 people / Price: 110 USD (120,000 KRW)</option>
-                            <option value="4">[Option D] Suite Ondol / Capacity: 8 people (with 2 rooms of 4 people each) / Price: 105 USD (112,500 KRW)</option>
-                            <option value="5">[Option E] KAIST Dormitory / Capacity: 3 people / Price: 65 USD (68,000 KRW)</option>
-                            <option value="6">[Option F] No Accommodation needed</option>
+                            <option value="1">[Option A] Triple / Capacity: 3 people / Price: 160 USD (187,000 KRW)</option>
+                            <option value="2">[Option B] Double Twin / Capacity: 4 people (two double beds) / Price: 120 USD (141,000 KRW)</option>
+                            <option value="3">[Option C] Superior Ondol / Capacity: 5 people / Price: 110 USD (126,000 KRW)</option>
+                            <option value="4">[Option D] Deluxe Ondol / Capacity: 7 people / Price: 77 USD (90,000 KRW)</option>
+                            <option value="5">[Option E] No Accommodation needed</option>
+                            <!--<option value="6">[Option F] No Accommodation needed</option>-->
                         </select>
                         <span class="help-block text-left">For more information, refer to the official website: <a href="http://www.icists.org/hotel-information/">http://www.icists.org/hotel-information/</a></span>
                     </div>
@@ -158,7 +154,7 @@
                         <input type="text" class="form-control" id="dietary-option" id="dietary" name="dietary-option">
                     </div>
 
-                    <span class="help-block">If HALAL, VEGAN or VEGETARIAN</span>
+                    <span class="help-block">If Halal, Vegan, or Vegetarian</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Pre-Conference Banquet Attendance</label>
@@ -169,9 +165,11 @@
                         <label class="radio-inline">
                             <input type="radio" id="pretour" name="pretour-options" value="False">No</input>
                         </label>
-                        <span class="help-block">USB 30 (KRW 40,000)</span>
+                        <span class="help-block">USD 35 (KRW 40,000)</span>
                     </div>
                 </div>
+
+                <!--
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Post-Conference Tour Attendance</label>
                     <div class="col-sm-8 text-left">
@@ -185,6 +183,7 @@
                         </label>
                     </div>
                 </div>
+                -->
             </div>
             <div id="payment-information">
                 <div class="form-group">
@@ -219,11 +218,11 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Account Number</label>
-                        <p class="form-control-static">1002-953-865325</p>
+                        <p class="form-control-static">1002-753-282482</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Name of Recipient</label>
-                        <p class="form-control-static">권기량 (Ki Ryang Kwon)</p>
+                        <p class="form-control-static">김건우 (Geonwoo Kim)</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Swift Code</label>
