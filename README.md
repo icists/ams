@@ -33,6 +33,8 @@ mysql -u [mysql_username] -p application_icists < [imported_sql_file]
 ```
 
 or to run on port 80 as sudo:
+```sh
 (env)$ sudo ../env/bin/python manage.py runserver 0.0.0.0:80
+```
 
 or instead, use the `run.sh`, script which contains the above command.
