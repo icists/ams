@@ -68,3 +68,11 @@ secret.key
 
 # mysql
 mysql.cnf
+*.sql
+
+#JetBrains
+.idea/
+
+#OSX
+*.DS_STORE
+*._*
