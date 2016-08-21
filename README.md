@@ -14,7 +14,7 @@ In Ubuntu, these can be installed by the following command:
 $ sudo apt-get install [package-name]
 ```
 
-At the project directory, run:
+At the project directory, run install.sh, which contains the following commands:
 ```sh
 $ virtualenv env
 $ source env/bin/activate
@@ -23,7 +23,9 @@ $ source env/bin/activate
 
 # To import MySQL sql file #
 Log in to MySQL and create a database named 'application_icists'
+```sh
 mysql -u [mysql_username] -p application_icists < [imported_sql_file]
+```
 
 # To run the program #
 ```sh
@@ -32,3 +34,5 @@ mysql -u [mysql_username] -p application_icists < [imported_sql_file]
 
 or to run on port 80 as sudo:
 (env)$ sudo ../env/bin/python manage.py runserver 0.0.0.0:80
+
+or instead, use the `run.sh`, script which contains the above command.
