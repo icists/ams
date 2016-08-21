@@ -1,0 +1,60 @@
+{% extends "registration/base.html" %}
+
+{% block htitle %}ICISTS 2016 Financial Aid Form{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<h1>ICISTS 2016 Financial Aid Form</h1>
+<form class="form-horizontal" action="/registration/financial/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+
+        <div class="form-group">
+            <span class="col-sm-1"></span>
+            <p class="col-sm-10" style='text-align:left; font-size:14px'><br>ICISTS encourages participation of those who currently do not reside in, or are non-permanent residents of the Republic of Korea. Applicants for the Financial Aid Program will be evaluated and the selected applicants will be provided with a grant of 250 USD - 400 USD. Those who wish to apply for financial aid (both early and regular applicants) must select "Yes" to the question asking your application for Financial Aid and answer to the additional questions.<br><br> The financial aid application for Early applicants is from May 1th to May 30th, and the results will be announced in June. The financial aid application for Regular applicants is from June 1st to July 10th, and the results will be announced on July 18th.</p>
+            <span class="col-sm-1"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Full Address of Residence</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="address" placeholder="33 Rochester Drive, #35-06 The Rochester, Singapore" maxlength="300" value="{{userprofile.address}}">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Supplementary Questions</label>
+            <label class="col-sm-9 control-label" style='text-align:left'>1.   Why do you wish to participate in ICISTS 2016, and what ways would you be able to contribute to our conference? (within 1000 words)</label>
+        </div>
+        <div class="form-group">
+            <span class="col-sm-3"></span>
+            <div class="col-sm-9">
+                <textarea class="form-control" id='financial_aid_q1' rows="20" name="q1" placeholder="Write here." maxlength="7000" style="resize:none; font-size:12px" >{{survey.q1}}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="col-sm-3"></span>
+            <label class="col-sm-9 control-label" style='text-align:left'>2.    Explain any special circumstances that need to be considered for your qualification of financial aid. (within 500 words)</label>
+        </div>
+        <div class="form-group">
+            <span class="col-sm-3"></span>
+            <div class="col-sm-9">
+                <textarea class="form-control" id='financial_aid_q2' rows="20" name="q2" placeholder="Write here." maxlength="3500"  style="resize:none; font-size:12px">{{survey.q2}}</textarea>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a class="btn btn-warning" href="/registration/">Back</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

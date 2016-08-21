@@ -62,3 +62,17 @@ db.*
 
 # VIM Editor Swap Files
 *.sw[op]
+
+# secret
+secret.key
+
+# mysql
+mysql.cnf
+*.sql
+
+#JetBrains
+.idea/
+
+#OSX
+*.DS_STORE
+*._*

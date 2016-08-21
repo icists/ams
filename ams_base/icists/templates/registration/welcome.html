@@ -1,0 +1,57 @@
+{% extends "registration/base.html" %}
+
+{% block htitle %}ICISTS 2016 Application Form{% endblock %}
+
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/session.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function() {
+        timeout = null;
+        $("input:checkbox").change(function() {
+            console.log('change!');
+            if (this.checked) {
+                $("a").attr("href", "/registration/application");
+            } else {
+                $("a").removeAttr("href");
+            }
+        });
+        $("#write-button>a").click(function() {
+            if (!$("input:checkbox").checked) {
+                $(".alert").fadeIn("slow", function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function() {
+                        $(".alert").fadeOut("slow");
+                    }, 3500);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+<div class="alert alert-danger" role="alert" style="display: none;">
+    <strong>Oh snap!</strong> You must agree to the terms and conditions to proceed.
+</div>
+<h1>ICISTS 2016 Application</h1>
+<p> Welcome! You can start filling in the application form now. </p>
+<form class="form-horizontal" action="/registration/application/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+
+        <iframe id="application_policy" src="https://docs.google.com/document/d/1nJXmWIxh8b0DmpCcrqmYbEhRSECNaybu_R8fFjCdqRY/pub?embedded=true" scrolling='yes'  height="400" width="90%" marginwidth="5px"></iframe>
+    </fieldset>
+</form>
+<div class="form-group">
+    <div class="col-sm-12 text-left" style="padding: 0px 40px;">
+        <input type="checkbox">
+        <span>
+            By writing and submitting an application, you agree to all the terms and conditions described in the "Application Policies for ICISTS 2016."
+        </span>
+    </div>
+    <div class="col-sm-12" id="write-button">
+        <a class="btn btn-warning">Write Application</a>
+    </div>
+</div>
+{% endblock %}
