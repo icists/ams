@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile, University
 from icists.apps.registration.models import \
-    Application, Survey, EssayTopic, ProjectTopic, Participant
+    Application, Survey, EssayTopic, ProjectTopic, Participant, FullView
 from icists.apps.policy.models import Configuration, Price
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
@@ -348,6 +348,20 @@ class ParticipantResource(resources.ModelResource):
         model = Participant
 
 
+class FullViewAdmin(ImportExportModelAdmin):
+    list_display=('first_name', 'last_name', 'email', 'application_category',\
+                  'nationality', 'gender', 'project_topic_id', \
+                  'project_team_no', 'breakfast_option', 'accommodation_id', \
+                  'required_payment_krw', 'required_payment_usd')
+    # note : the foreignkey fields are not displayed properly.
+
+class FullViewResource(resources.ModelResource):
+    class Meta:
+        model = FullView
+
+
+
+admin.site.register(FullView, FullViewAdmin)
 admin.site.register(EssayTopic, EssayTopicAdmin)
 admin.site.register(ProjectTopic, ProjectTopicAdmin)
 admin.site.register(Application, ApplicationAdmin)

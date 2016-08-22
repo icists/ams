@@ -182,3 +182,24 @@ class Survey(models.Model):
     q2 = models.TextField(default='', blank=True, null=True)
     q3 = models.TextField(default='', blank=True, null=True)
     q4 = models.TextField(default='', blank=True, null=True)
+
+
+class FullView(models.Model):
+    first_name = models.CharField(max_length=45)
+    last_name = models.CharField(max_length=45)
+    email = models.EmailField(blank=True)
+    app = models.ForeignKey(Application, related_name='full_view')
+    part = models.ForeignKey(Participant, related_name='full_view')
+    application_category = models.CharField(max_length=1)
+    nationality = models.CharField(max_length=45)
+    gender = models.CharField(max_length=45)
+    project_topic_id = models.IntegerField()
+    project_team_no = models.PositiveSmallIntegerField()
+    accommodation_id = models.IntegerField()
+    breakfast_option = models.BooleanField(default=False)
+    required_payment_krw = models.IntegerField()
+    required_payment_usd = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'full_view'
