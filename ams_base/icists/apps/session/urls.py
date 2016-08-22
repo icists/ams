@@ -1,20 +1,21 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from . import views
 
 urlpatterns = [
     # Examples:
     # url(r'^$', 'icists.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', 'icists.apps.session.views.main'),
-    url(r'^profile/$', 'icists.apps.session.views.profile'),
-    url(r'^profile/(?P<uid>\w+)/$', 'icists.apps.session.views.profile',),
-    url(r'^login/$', 'icists.apps.session.views.login'),
-    url(r'^logout/$', 'icists.apps.session.views.logout'),
-    url(r'^signup/$', 'icists.apps.session.views.signup'),
-    url(r'^email-check/$', 'icists.apps.session.views.email_check'),
-    url(r'^univ-check/$', 'icists.apps.session.views.univ_check'),
-    url(r'^univ-list/$', 'icists.apps.session.views.univ_list'),
-    url(r'^changepw/$', 'icists.apps.session.views.changepw'),
-    url(r'^changepw/(?P<uid>\w+)/$', 'icists.apps.session.views.changepw'),
+    url(r'^$', views.main),
+    url(r'^profile/$', views.profile),
+    url(r'^profile/(?P<uid>\w+)/$', views.profile),
+    url(r'^login/$', views.login),
+    url(r'^logout/$', views.logout),
+    url(r'^signup/$', views.signup),
+    url(r'^email-check/$', views.email_check),
+    url(r'^univ-check/$', views.univ_check),
+    url(r'^univ-list/$', views.univ_list),
+    url(r'^changepw/$', views.changepw),
+    url(r'^changepw/(?P<uid>\w+)/$', views.changepw),
 ]

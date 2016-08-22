@@ -1,8 +1,7 @@
-Django==1.8
+Django==1.10
 Pillow==2.8.1
 argparse==1.2.1
 wsgiref==0.1.2
-django-admin-bootstrapped==2.5.0
 django-bootstrap3==5.4.0
 django-import-export==0.4.5
 MySQL-Python==1.2.5

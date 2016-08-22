@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^session/', include('icists.apps.session.urls')),
     url(r'^statistics/', include('icists.apps.statistics.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    #url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]
 
 handler400 = lambda request: render(request, 'error/400.html')
