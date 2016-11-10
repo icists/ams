@@ -349,6 +349,8 @@ class ParticipantResource(resources.ModelResource):
 
 
 class FullViewAdmin(ImportExportModelAdmin):
+    list_max_show_all = 500
+    list_per_page = 500
     list_display=('first_name', 'last_name', 'email', 'application_category',\
                   'nationality', 'gender', 'project_topic_id', \
                   'project_team_no', 'breakfast_option', 'accommodation_id', \
