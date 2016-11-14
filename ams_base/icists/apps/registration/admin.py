@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from icists.apps.session.models import UserProfile, University
 from icists.apps.registration.models import \
-    Application, Survey, EssayTopic, ProjectTopic, Participant, FullView
+    Application, Survey, EssayTopic, ProjectTopic, Participant, FullView, Accommodation
 from icists.apps.policy.models import Configuration, Price
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
@@ -361,6 +361,13 @@ class FullViewResource(resources.ModelResource):
     class Meta:
         model = FullView
 
+class AccommodationAdmin(ImportExportModelAdmin):
+    list_display=()
+
+class AccommodationResource(resources.ModelResource):
+    class Meta:
+        model = Accommodation
+
 
 
 admin.site.register(FullView, FullViewAdmin)
@@ -368,3 +375,4 @@ admin.site.register(EssayTopic, EssayTopicAdmin)
 admin.site.register(ProjectTopic, ProjectTopicAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Participant, ParticipantAdmin)
+admin.site.register(Accommodation, AccommodationAdmin)
