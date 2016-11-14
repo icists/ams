@@ -174,6 +174,7 @@ class Accommodation(models.Model):
     accommodation_payment = models.IntegerField()
     gender = models.CharField(max_length=45)
     availability = models.IntegerField()
+    occupancy = models.IntegerField(default=0)
 
 
 class Survey(models.Model):
