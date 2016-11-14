@@ -13,4 +13,4 @@
 
 
 source env/bin/activate
-python ams_base/manage.py runserver --insecure 0.0.0.0:21034
+python ams_base/manage.py runserver 0.0.0.0:21034
