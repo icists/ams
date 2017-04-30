@@ -1,6 +1,6 @@
 {% extends "registration/base.html" %}
 
-{% block htitle %}ICISTS 2016 Application Form{% endblock %}
+{% block htitle %}ICISTS {{ current_year }} Application Form{% endblock %}
 
 {% block header %}
 <script type="text/javascript">
@@ -22,6 +22,7 @@
     };
 
     $(document).ready(function() {
+		counter.call();
         $('#essay_textarea').change(counter);
         $('#essay_textarea').keydown(counter);
         $('#essay_textarea').keypress(counter);
@@ -58,7 +59,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>ICISTS 2016 Application Form</h1>
+<h1>ICISTS {{ current_year }} Application Form</h1>
 <form class="form-horizontal" action="/registration/application/" method="post" enctype="multipart/form-data">
     <fieldset>
         {% csrf_token %}

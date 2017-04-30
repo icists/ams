@@ -108,9 +108,9 @@ def application(request):
     if request.method == "GET":
         print "GET method. opened the form."
         app_f = ApplicationForm(instance=application)
-        project_topic = ProjectTopic.objects.filter(year=2016)\
+        project_topic = ProjectTopic.objects.filter(year=cnf.year)\
             .order_by('number')
-        essay_topic = EssayTopic.objects.filter(year=2016).order_by('number')
+        essay_topic = EssayTopic.objects.filter(year=cnf.year).order_by('number')
         return render(request, 'registration/app_form.html',
                       {'application': application,
                        'project_topic': project_topic,

@@ -218,6 +218,7 @@ class ApplicationAdmin(ImportExportModelAdmin):
 
     actions = [make_pending, make_accepted, make_dismissed, make_embargo,
                make_not_embargo, group_discount_true, group_discount_false]
+    search_fields = ['user__first_name', 'user__email', 'user__userprofile__phone']
     resource_class = ApplicationResource
 
 
@@ -338,6 +339,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
                     'required_payment_usd', 'remitter_name', 'breakfast_option',
                     'dietary_option', 'pretour', 'posttour', 'submit_time')
     list_filter = ('accommodation_choice', 'payment_status', 'payment_option')
+    search_fields = ['application__user__first_name', 'application__user__email', 'application__user__userprofile__phone', 'remitter_name']
     actions = [payment_status_paid, payment_status_not_paid,
                payment_status_over_paid, payment_status_less_paid,
                'recalculate_payment']
@@ -355,6 +357,7 @@ class FullViewAdmin(ImportExportModelAdmin):
                   'nationality', 'gender', 'project_topic_id', \
                   'project_team_no', 'breakfast_option', 'accommodation_id', \
                   'required_payment_krw', 'required_payment_usd')
+    search_fields = ['first_name', 'last_name', 'email']
     # note : the foreignkey fields are not displayed properly.
 
 class FullViewResource(resources.ModelResource):
