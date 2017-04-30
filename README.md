@@ -38,3 +38,17 @@ or to run on port 80 as sudo:
 ```
 
 or instead, use the `run.sh`, script which contains the above command.
+
+
+
+
+# How to run with Docker #
+
+## run Dockerfile ##
+
+
+## 
+
+```sh
+docker run -i -v /ams:/Users/zoonoo/repo/ams -t ubuntu
+```
