@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'icists.apps.session',
     'icists.apps.statistics',
     'icists.apps.policy',
-    'import_export',
+    'import_export'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,6 +83,9 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.media',
             ],
+            'libraries':{
+                'tags': 'icists.apps.registration.templatetags.tags',
+                }
         },
     },
 ]
