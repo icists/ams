@@ -50,11 +50,7 @@ or instead, use the `run.sh`, script which contains the above command.
 
 ```sh
 docker build -t ams .
-docker run -p 127.0.0.1:80:80 ams
-```
 
-## 
-
-```sh
-docker run -i -v /ams:/Users/zoonoo/repo/ams -t ubuntu
+docker run -i -v /Users/zoonoo/repo/ams:/ams -t -p 127.0.0.1:80:80 ams \
+service mysql start && python ams_base/manage.py runserver 0.0.0.0:80
 ```

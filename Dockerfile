@@ -17,12 +17,12 @@ RUN apt-get -y update \
 
 RUN curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 WORKDIR /ams
-COPY . .
+COPY requirements.txt .
+COPY skeleton.sql .
 RUN pip install --requirement requirements.txt
 RUN service mysql start && mysql -u root --execute='CREATE DATABASE application_icists' \
-	&& mysql -u root application_icists < skeleton.sql \
-	&& python ams_base/manage.py makemigrations && python ams_base/manage.py migrate
+	&& mysql -u root application_icists < skeleton.sql
 
 EXPOSE 80
+VOLUME ["/ams"]
 
-CMD service mysql start && python ams_base/manage.py runserver 0.0.0.0:80
