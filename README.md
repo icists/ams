@@ -1,4 +1,4 @@
-ICISTS-KAIST 2015 Registration
+ICISTS AMS(Application Management System
 ==============================
 
 # Requirements for installation #
@@ -38,3 +38,23 @@ or to run on port 80 as sudo:
 ```
 
 or instead, use the `run.sh`, script which contains the above command.
+
+
+
+
+# How to run with Docker #
+
+## run Dockerfile ##
+
+본 어플리케이션은 Docker Configuration을 통해 간단히 Deploy할 수 있다.
+
+```sh
+docker build -t ams .
+docker run -p 127.0.0.1:80:80 ams
+```
+
+## 
+
+```sh
+docker run -i -v /ams:/Users/zoonoo/repo/ams -t ubuntu
+```
