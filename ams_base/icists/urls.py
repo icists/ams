@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import RedirectView
+from django.conf.urls.static import static
 
 urlpatterns = [
     # Examples:
@@ -16,7 +17,8 @@ urlpatterns = [
     url(r'^statistics/', include('icists.apps.statistics.urls')),
     url(r'^admin/', include(admin.site.urls)),
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 handler400 = lambda request: render(request, 'error/400.html')
 handler403 = lambda request: render(request, 'error/403.html')
