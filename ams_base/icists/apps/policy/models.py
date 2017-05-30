@@ -55,3 +55,9 @@ class Price(models.Model):
     pretour_usd = models.IntegerField()
     posttour_krw = models.IntegerField()
     posttour_usd = models.IntegerField()
+
+class AccommodationOption(models.Model):
+    option_name = models.CharField(max_length=45)
+    capacity_per_room = models.IntegerField()
+    total_capacity = models.IntegerField()
+    fee = models.IntegerField()

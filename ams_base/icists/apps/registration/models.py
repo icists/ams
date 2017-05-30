@@ -100,8 +100,6 @@ class Participant(models.Model):
         (5, 'No Accommodation'),
     )
 
-    accommodation = models.ForeignKey('Accommodation',
-                                      related_name="participant", null=True)
     accommodation_choice = models.IntegerField(choices=ACCOMMODATION_CHOICES)
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
@@ -166,15 +164,6 @@ class Participant(models.Model):
             krw += price.posttour_krw
             usd += price.posttour_usd
         return (krw, usd)
-
-
-class Accommodation(models.Model):
-    hotel_name = models.CharField(max_length=45)
-    hotel_room = models.CharField(max_length=45)
-    accommodation_payment = models.IntegerField()
-    gender = models.CharField(max_length=45)
-    availability = models.IntegerField()
-    occupancy = models.IntegerField(default=0)
 
 
 class Survey(models.Model):

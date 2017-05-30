@@ -1,5 +1,5 @@
 from django.contrib import admin
-from icists.apps.policy.models import Configuration, Price, PaymentInfo
+from icists.apps.policy.models import Configuration, Price, PaymentInfo, AccommodationOption
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -29,6 +29,11 @@ class PaymentInfoAdmin(ImportExportModelAdmin):
         else:
             return False
 
+class AccommodationOptionAdmin(ImportExportModelAdmin):
+    pass
+
+
 admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(PaymentInfo, PaymentInfoAdmin)
+admin.site.register(AccommodationOption, AccommodationOptionAdmin)
