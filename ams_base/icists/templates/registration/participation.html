@@ -210,23 +210,23 @@
                 <div id="account" class="col-sm-8 text-left">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Bank Name</label>
-                        <p class="form-control-static">Woori Bank</p>
+                        <p class="form-control-static">{{ payment_info.bank_name }}</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Branch Name</label>
-                        <p class="form-control-static">KAIST SUBBRANCH</p>
+                        <p class="form-control-static">{{ payment_info.bank_branch }}</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Account Number</label>
-                        <p class="form-control-static">1002-753-282482</p>
+                        <p class="form-control-static">{{ payment_info.account_number }}</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Name of Recipient</label>
-                        <p class="form-control-static">김건우 (Geonwoo Kim)</p>
+                        <p class="form-control-static">{{ payment_info.recipient_name }}</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Swift Code</label>
-                        <p class="form-control-static">HVBKKRSEXXX</p>
+                        <p class="form-control-static">{{ payment_info.swift_code }}</p>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Remitter Name</label>

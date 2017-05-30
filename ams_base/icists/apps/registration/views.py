@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
     EssayTopic, Participant
-from icists.apps.policy.models import Configuration, Price
+from icists.apps.policy.models import Configuration, Price, PaymentInfo
 from icists.apps.registration.forms import ApplicationForm, FaForm
 # from datetime import datetime
 import json
@@ -227,6 +227,7 @@ def participation(request):
                            'category_price_krw': category_price_krw,
                            'category_price_usd': category_price_usd,
                            'group_discount_bool': application.group_discount,
+                           'payment_info': PaymentInfo.objects.first(),
                            })
         except:
             return render(request, 'registration/participation.html',
