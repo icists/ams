@@ -21,7 +21,7 @@ COPY deployment/requirements.txt .
 COPY deployment/skeleton.sql .
 RUN pip install --requirement requirements.txt
 RUN service mysql start && mysql -u root --execute='CREATE DATABASE application_icists' \
-	&& mysql -u root application_icists < deployment/skeleton.sql
+	&& mysql -u root application_icists < skeleton.sql
 
 EXPOSE 80
 VOLUME ["/ams"]
