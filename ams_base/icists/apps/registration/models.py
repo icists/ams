@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from icists.apps.policy.models import Configuration, Price, AccommodationOption
+cnf = Configuration.objects.first()
+price = Price.objects.filter(year=cnf.year).first()
 
 # Create your models here.
 
@@ -45,7 +48,6 @@ class Application(models.Model):
         ('Y', 'Yes'),
         ('N', 'No'),
     )
-    # submit_status = models.BooleanField(default=False)
     application_category = models.CharField(max_length=1,
                                             choices=APPLICATION_CATEGORY,
                                             default=REGULAR)
@@ -64,15 +66,29 @@ class Application(models.Model):
     visa_letter_required = models.CharField(max_length=1,
                                             choices=YESNO, default='N')
     financial_aid = models.CharField(max_length=1, choices=YESNO, default='N')
-    # year = models.IntegerField(default=2015)   # Use last_updated_time
     user = models.ForeignKey(User, related_name='application')
-    # user = models.OneToOneField(User, related_name='application')
     group_name = models.CharField(max_length=45, blank=True)
     group_discount = models.BooleanField(default=False)
     previously_participated = models.CharField(max_length=1,
                                                choices=YESNO, default='N')
     last_updated_time = models.DateTimeField(auto_now=True)
     submit_time = models.DateTimeField(null=True)
+
+    def payment(self):
+        krw, usd = 0, 0
+        if self.application_category == 'E':
+            krw += price.early_price_krw
+            usd += price.early_price_usd
+        if self.application_category == 'R':
+            krw += price.regular_price_krw
+            usd += price.regular_price_usd
+        if self.application_category == 'L':
+            krw += price.late_price_krw
+            usd += price.late_price_usd
+        if self.group_discount == True:
+            krw -= price.group_dc_krw
+            usd -= price.group_dc_usd
+        return (krw, usd)
 
 
 class Participant(models.Model):
@@ -100,9 +116,8 @@ class Participant(models.Model):
         (5, 'No Accommodation'),
     )
 
-    accommodation = models.ForeignKey('Accommodation',
-                                      related_name="participant", null=True)
     accommodation_choice = models.IntegerField(choices=ACCOMMODATION_CHOICES)
+    accommodation_option = models.ForeignKey(AccommodationOption, related_name='participant', null=True, blank=True)
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
                                        related_name="participant")
@@ -116,7 +131,6 @@ class Participant(models.Model):
     required_payment_usd = models.IntegerField()
     remitter_name = models.CharField(max_length=45, null=True, blank=True)
     breakfast_option = models.BooleanField(default=False)
-    # dietary_option := Vegetarian, Halal, Others (Optional text input)
     dietary_option = models.CharField(max_length=45, null=True, blank=True)
     pretour = models.BooleanField(default=False)
     posttour = models.BooleanField(default=False)
@@ -124,38 +138,15 @@ class Participant(models.Model):
     submit_time = models.DateTimeField(null=True)
 
     def payment(self):
-        from icists.apps.policy.models import Configuration, Price
-        from icists.apps.registration.models import Application
-        cnf = Configuration.objects.first()
-        price = Price.objects.filter(year=cnf.year).first()
-        app = self.application
-        krw, usd = 0, 0
-        if app.application_category == 'E':
-            krw += price.early_price_krw
-            usd += price.early_price_usd
-        if app.application_category == 'R':
-            krw += price.regular_price_krw
-            usd += price.regular_price_usd
-        if app.application_category == 'L':
-            krw += price.late_price_krw
-            usd += price.late_price_usd
-        if app.group_discount == True:
-            krw -= price.group_dc_krw
-            usd -= price.group_dc_usd
+        krw, usd = self.application.payment()
+        print 'participant#payment : application payment done.'
 
-        accommodation = self.accommodation_choice
-        if accommodation == 1:
-            krw += 187000
-            usd += 160
-        elif accommodation == 2:
-            krw += 141000
-            usd += 120
-        elif accommodation == 3:
-            krw += 126000
-            usd += 110
-        elif accommodation == 4:
-            krw += 90000
-            usd += 77
+        if self.accommodation_option is not None:
+            print 'its not none!'
+            accommodation = self.accommodation_option
+            krw += accommodation.fee_krw
+            usd += accommodation.fee_usd
+
         if self.breakfast_option:
             krw += price.breakfast_krw
             usd += price.breakfast_usd
@@ -166,15 +157,6 @@ class Participant(models.Model):
             krw += price.posttour_krw
             usd += price.posttour_usd
         return (krw, usd)
-
-
-class Accommodation(models.Model):
-    hotel_name = models.CharField(max_length=45)
-    hotel_room = models.CharField(max_length=45)
-    accommodation_payment = models.IntegerField()
-    gender = models.CharField(max_length=45)
-    availability = models.IntegerField()
-    occupancy = models.IntegerField(default=0)
 
 
 class Survey(models.Model):

@@ -3,11 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.serializers import serialize
 from django.http import HttpResponse
 from icists.apps.session.models import UserProfile
 from icists.apps.registration.models import Application, Survey, ProjectTopic, \
     EssayTopic, Participant
-from icists.apps.policy.models import Configuration, Price
+from icists.apps.policy.models import Configuration, Price, PaymentInfo, AccommodationOption
 from icists.apps.registration.forms import ApplicationForm, FaForm
 # from datetime import datetime
 import json
@@ -199,34 +200,23 @@ def participation(request):
                 p = Participant()
                 p.application = application
 
-            category = application.get_application_category_display()
+            category_price_krw, category_price_usd = p.payment()
+            print 'payment success'
 
-            # calculate the required payment.
-            krw, usd = p.payment()
-            print krw, usd
-
-            category_price_krw = 0
-            category_price_usd = 0
-            if application.application_category == 'E':
-                category_price_krw += price.early_price_krw
-                category_price_usd += price.early_price_usd
-            if application.application_category == 'R':
-                category_price_krw += price.regular_price_krw
-                category_price_usd += price.regular_price_usd
-            if application.application_category == 'L':
-                category_price_krw += price.late_price_krw
-                category_price_usd += price.late_price_usd
-            if application.group_discount is True:
-                category_price_krw -= price.group_dc_krw
-                category_price_usd -= price.group_dc_usd
+            ao_qs = AccommodationOption.objects.all()
+            ao_s = serialize("json", ao_qs)
+            print ao_s
 
             return render(request, 'registration/participation.html',
                           {'participant': p,
-                           'category': category,
+                           'category': application.get_application_category_display(),
                            'krw': category_price_krw, 'usd': category_price_usd,
                            'category_price_krw': category_price_krw,
                            'category_price_usd': category_price_usd,
                            'group_discount_bool': application.group_discount,
+                           'payment_info': PaymentInfo.objects.first(),
+                           'accommodation_options': ao_qs,
+                           'ao_s': ao_s
                            })
         except:
             return render(request, 'registration/participation.html',
@@ -244,10 +234,9 @@ def participation(request):
             # print 'dietary', dietary
             if 'accommodation' in request.POST\
                     and int(request.POST['accommodation']) != 0:
-                accommodation = int(request.POST['accommodation'])
+                accommodation_id = int(request.POST['accommodation'])
             else:
                 error.append('Please select Accommodation')
-            # print 'accommodation', accommodation
             if 'payment' in request.POST\
                     and int(request.POST['payment']) != 0:
                 payment = int(request.POST['payment'])
@@ -300,12 +289,12 @@ def participation(request):
                     p = Participant()
                     p.application = app
 
-                p.accommodation_choice = accommodation
+                p.accommodation_choice = accommodation_id
+                p.accommodation_option = AccommodationOption.objects.get(id=accommodation_id)
                 p.payment_option = payment
                 p.remitter_name = remitter
                 p.breakfast_option = breakfast
                 p.dietary_option = dietary
-                print "WOWOW : ", pretour
                 p.pretour = pretour
                 p.posttour = posttour
 

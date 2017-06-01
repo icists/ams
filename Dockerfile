@@ -17,8 +17,8 @@ RUN apt-get -y update \
 
 RUN curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 WORKDIR /ams
-COPY requirements.txt .
-COPY skeleton.sql .
+COPY deployment/requirements.txt .
+COPY deployment/skeleton.sql .
 RUN pip install --requirement requirements.txt
 RUN service mysql start && mysql -u root --execute='CREATE DATABASE application_icists' \
 	&& mysql -u root application_icists < skeleton.sql

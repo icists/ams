@@ -21,6 +21,20 @@ $ source env/bin/activate
 (env)$ pip install -r requirements.txt
 ```
 
+# More items to be prepared #
+```
+ams_base/icists/mysql.cnf
+ams_base/secret.key
+```
+
+# To export sql file #
+```
+dump application_icists database
+mysqldump -u [user] -p application_icists > filename.sql
+mysql -u [user] -p application_icists < filename.sql
+```
+
+
 # To import MySQL sql file #
 Log in to MySQL and create a database named 'application_icists'
 ```sh
