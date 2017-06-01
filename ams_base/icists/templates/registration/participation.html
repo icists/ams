@@ -4,24 +4,23 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/registration.css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/participation.css">
 <script>	
-
     $(window).load(function() {
         var calc_price = function() {
             var krw = {{ krw }};
             var usd = {{ usd }};
-            if ($("#accommodation").val() == 1) {
-                krw += 187000;
-                usd += 160;
-            } else if ($("#accommodation").val() == 2) {
-                krw += 141000;
-                usd += 120;
-            } else if ($("#accommodation").val() == 3) {
-                krw += 126000;
-                usd += 110;
-            } else if ($("#accommodation").val() == 4) {
-                krw += 90000;
-                usd += 77;
+
+            var accommodation_options = {{ ao_s|safe }};
+            var selected_ao_id = $("#accommodation").val();
+            function find_ao(aos) {
+              return aos["pk"] == selected_ao_id;
             }
+            selected_ao = accommodation_options.find(find_ao);
+            
+            if (selected_ao != undefined) {
+              krw += selected_ao.fields.fee_krw;
+              usd += selected_ao.fields.fee_usd;
+            }
+
             if ($("#breakfast:checked").val() == 'True') {
                 krw += 20000;
                 usd += 20;
@@ -126,12 +125,9 @@
                     <div class="col-sm-8">
                         <select class="form-control col-sm-8" id="accommodation" name="accommodation-option" required="required">
                             <option value="0">-- Select --</option>
-                            <option value="1">[Option A] Triple / Capacity: 3 people / Price: 160 USD (187,000 KRW)</option>
-                            <option value="2">[Option B] Double Twin / Capacity: 4 people (two double beds) / Price: 120 USD (141,000 KRW)</option>
-                            <option value="3">[Option C] Superior Ondol / Capacity: 5 people / Price: 110 USD (126,000 KRW)</option>
-                            <option value="4">[Option D] Deluxe Ondol / Capacity: 7 people / Price: 77 USD (90,000 KRW)</option>
-                            <option value="5">[Option E] No Accommodation needed</option>
-                            <!--<option value="6">[Option F] No Accommodation needed</option>-->
+                            {% for ao in accommodation_options %}
+                              <option value="{{ao.id}}">{{ ao }}</option>
+                            {% endfor %}
                         </select>
                         <span class="help-block text-left">For more information, refer to the official website: <a href="http://www.icists.org/hotel-information/">http://www.icists.org/hotel-information/</a></span>
                     </div>
@@ -168,22 +164,6 @@
                         <span class="help-block">USD 35 (KRW 40,000)</span>
                     </div>
                 </div>
-
-                <!--
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">Post-Conference Tour Attendance</label>
-                    <div class="col-sm-8 text-left">
-                        <label class="radio-inline">
-                            <input type="radio" id="posttour" name="posttour-options" value="True">Yes</input>
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" id="posttour" name="posttour-options" value="False">No</input>
-                        </label>
-                            <span class="help-block">USD 90 (KRW 100,000)</span>
-                        </label>
-                    </div>
-                </div>
-                -->
             </div>
             <div id="payment-information">
                 <div class="form-group">

@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from icists.apps.policy.models import Configuration, Price
+from icists.apps.policy.models import Configuration, Price, AccommodationOption
 cnf = Configuration.objects.first()
 price = Price.objects.filter(year=cnf.year).first()
 
@@ -117,6 +117,7 @@ class Participant(models.Model):
     )
 
     accommodation_choice = models.IntegerField(choices=ACCOMMODATION_CHOICES)
+    accommodation_option = models.ForeignKey(AccommodationOption, related_name='participant', null=True, blank=True)
     is_accommodation_assigned = models.BooleanField(default=False)
     application = models.OneToOneField('Application',
                                        related_name="participant")
@@ -130,7 +131,6 @@ class Participant(models.Model):
     required_payment_usd = models.IntegerField()
     remitter_name = models.CharField(max_length=45, null=True, blank=True)
     breakfast_option = models.BooleanField(default=False)
-    # dietary_option := Vegetarian, Halal, Others (Optional text input)
     dietary_option = models.CharField(max_length=45, null=True, blank=True)
     pretour = models.BooleanField(default=False)
     posttour = models.BooleanField(default=False)
@@ -139,20 +139,14 @@ class Participant(models.Model):
 
     def payment(self):
         krw, usd = self.application.payment()
+        print 'participant#payment : application payment done.'
 
-        accommodation = self.accommodation_choice
-        if accommodation == 1:
-            krw += 187000
-            usd += 160
-        elif accommodation == 2:
-            krw += 141000
-            usd += 120
-        elif accommodation == 3:
-            krw += 126000
-            usd += 110
-        elif accommodation == 4:
-            krw += 90000
-            usd += 77
+        if self.accommodation_option is not None:
+            print 'its not none!'
+            accommodation = self.accommodation_option
+            krw += accommodation.fee_krw
+            usd += accommodation.fee_usd
+
         if self.breakfast_option:
             krw += price.breakfast_krw
             usd += price.breakfast_usd

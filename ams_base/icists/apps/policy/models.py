@@ -60,4 +60,9 @@ class AccommodationOption(models.Model):
     option_name = models.CharField(max_length=45)
     capacity_per_room = models.IntegerField()
     total_capacity = models.IntegerField()
-    fee = models.IntegerField()
+    fee_krw = models.IntegerField()
+    fee_usd = models.IntegerField()
+
+    def __str__(self):
+        return '[{}] {} - Capacity : {} people / Price : USD {}, KRW {}'.format(self.id, self.option_name, self.capacity_per_room, self.fee_usd, self.fee_krw)
+
