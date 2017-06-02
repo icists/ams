@@ -3,6 +3,15 @@
 {% block htitle %}ICISTS Signup{% endblock %}
 
 {% block header %}
+<script>
+jQuery(function($) {
+    $('a[data-confirm], input[data-confirm]').on('click', function() {
+          if (!confirm($(this).attr('data-confirm'))) {
+                  return false;
+                      }
+            });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -114,7 +123,7 @@
         <div class="form-group">
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a class="btn btn-warning" href="/session/login/">Back to Login Page</a>
+                <a class="btn btn-warning" href="/session/login/" data-confirm="Do you really wish to go back? Any unsaved data will be deleted.">Back to Login Page</a>
             </div>
         </div>
     </fieldset>

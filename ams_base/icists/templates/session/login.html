@@ -1,16 +1,17 @@
 {% extends "session/base.html" %}
 
-{% block htitle %}ICISTS Login{% endblock %}
+{% block htitle %}ICISTS Application Management System {% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block content %}
-<h1>ICISTS Login</h1>
-<p>
+<h1>ICISTS Application Management System</h1>
+<div class="col-xs-offset-2 col-xs-8">
+<p style="text-align: left">
 <br>
-Welcome to the Application Page of ICISTS {{ current_year }}.
+Welcome to ICISTS {{ current_year }}.
 <br>
-If you are new, please sign up first.
+If you are new to this page, please sign up first.
 <br>
 <br>
 </p>
@@ -19,7 +20,7 @@ If you are new, please sign up first.
 	<fieldset>
         {% if msg %}
         <div class="form-group">
-            <div class="col-xs-offset-1 col-xs-10">
+            <div class="col-xs-12">
                 <div class="alert alert-danger">
                     {{ msg }}
                 </div>
@@ -29,12 +30,12 @@ If you are new, please sign up first.
 		{% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         <div class="form-group">
-            <div class="col-xs-offset-1 col-xs-10">
+            <div class="col-xs-12">
                 <input type="email" class="form-control" name="email" placeholder="Email" required="required">
             </div>
         </div>
         <div class="form-group">
-            <div class="col-xs-offset-1 col-xs-10">
+            <div class="col-xs-12">
                 <input type="password" class="form-control" name="password" placeholder="Password" required="required">
             </div>
         </div>
@@ -46,5 +47,7 @@ If you are new, please sign up first.
         </div>
     </fieldset>
 </form>
+
+</div>
 {% endblock %}
 
