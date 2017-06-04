@@ -157,7 +157,7 @@
                     <span class="help-block">If Halal, Vegan, or Vegetarian</span>
                 </div>
 
-                {% if participant.application.user.userprofile.nationality is not "South Korea" %}
+                {% if participant.application.user.userprofile.nationality != "South Korea" %}
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Recommender's name</label>
                     <div class="col-sm-8">
