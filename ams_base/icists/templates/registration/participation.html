@@ -153,12 +153,15 @@
 
                     <span class="help-block">If Halal, Vegan, or Vegetarian</span>
                 </div>
+
+                {% if participant.application.user.userprofile.nationality is not "South Korea" %}
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Recommender's name</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="recommenders-name" name="recommenders-name">
                     </div>
                 </div>
+                {% endif %}
 
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Pre-Conference Banquet Attendance</label>
