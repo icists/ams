@@ -114,6 +114,9 @@
         <label class="col-sm-4 col-label text-right">Application Category</label>
         <label>{{ category }}</label>
         <label>USD {{ category_price_usd }} / KRW {{ category_price_krw }}</label>
+        {% if participant.application.group_discount %}
+        <span class="help-block">Group discount has been applied.</span>
+        {% endif %}
     </div>
     <div>
     </div>
