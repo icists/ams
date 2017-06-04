@@ -291,6 +291,11 @@ def participation(request):
                     p = Participant()
                     p.application = app
 
+                try:
+                    p.recommender_name = recommender_name
+                except NameError:
+                    var_exists = False
+
                 p.accommodation_choice = accommodation_id
                 p.accommodation_option = AccommodationOption.objects.get(id=accommodation_id)
                 p.payment_option = payment
@@ -299,7 +304,6 @@ def participation(request):
                 p.dietary_option = dietary
                 p.pretour = pretour
                 p.posttour = posttour
-                p.recommender_name = recommender_name
 
                 # calculate total payment
                 krw, usd = p.payment()
