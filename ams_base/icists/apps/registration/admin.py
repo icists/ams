@@ -329,6 +329,7 @@ class ParticipantAdmin(ImportExportModelAdmin):
         ('accommodation_choice'),
         ('project_team_no'),
         ('payment_status', 'payment_option', 'remitter_name'),
+        ('recommender_name'),
         ('get_payment_krw', 'get_payment_usd'),
         ('breakfast_option', 'dietary_option'),
         ('pretour', 'posttour'),

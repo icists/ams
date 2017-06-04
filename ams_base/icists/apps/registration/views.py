@@ -231,7 +231,9 @@ def participation(request):
                 dietary = request.POST['dietary']
             else:
                 error.append('Dietary information missing')
-            # print 'dietary', dietary
+
+            if 'recommender' in request.POST:
+                recommender_name = request.POST['recommender']
             if 'accommodation' in request.POST\
                     and int(request.POST['accommodation']) != 0:
                 accommodation_id = int(request.POST['accommodation'])
@@ -297,6 +299,7 @@ def participation(request):
                 p.dietary_option = dietary
                 p.pretour = pretour
                 p.posttour = posttour
+                p.recommender_name = recommender_name
 
                 # calculate total payment
                 krw, usd = p.payment()

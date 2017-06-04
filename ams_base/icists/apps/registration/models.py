@@ -130,6 +130,7 @@ class Participant(models.Model):
     required_payment_krw = models.IntegerField()
     required_payment_usd = models.IntegerField()
     remitter_name = models.CharField(max_length=45, null=True, blank=True)
+    recommender_name = models.CharField(max_length=45, null=True, blank=True)
     breakfast_option = models.BooleanField(default=False)
     dietary_option = models.CharField(max_length=45, null=True, blank=True)
     pretour = models.BooleanField(default=False)
