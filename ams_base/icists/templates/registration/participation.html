@@ -34,8 +34,14 @@
             $("#amt-usd").text(usd);
         }
         $(".alert").hide();
-        $("#paypal").hide();
-        $("#account").hide();
+
+        {% if participant.payment_option != 'P' %}
+          $("#paypal").hide();
+        {% endif %}
+        {% if participant.payment_option != 'B' %}
+          $("#account").hide();
+        {% endif %}
+
         $("#payment-option").on('change', function() {
             $(".alert").hide();
             if (this.value === "0") {
@@ -129,7 +135,7 @@
                         <select class="form-control col-sm-8" id="accommodation" name="accommodation-option" required="required">
                             <option value="0">-- Select --</option>
                             {% for ao in accommodation_options %}
-                            <option value="{{ao.id}}" {% if ao.id == p.accommodation_option.id %}selected="selected"{% endif %} >{{ ao }}</option>
+                            <option value="{{ao.id}}" {% if ao.id == participant.accommodation_option.id %}selected="selected"{% endif %} >{{ ao }}</option>
                             {% endfor %}
                         </select>
                         <span class="help-block text-left">For more information, refer to the official website: <a href="http://www.icists.org/hotel-information/">http://www.icists.org/hotel-information/</a></span>
@@ -139,10 +145,10 @@
                     <label class="col-sm-4 control-label">Breakfast</label>
                     <div class="col-sm-8 text-left">
                         <label class="radio-inline">
-                            <input type="radio" id="breakfast" name="breakfast-options" value="True" {% if p.breakfast_option %}selected="selected"{% endif %}>Yes</input>
+                            <input type="radio" id="breakfast" name="breakfast-options" value="True" {% if participant.breakfast_option %}selected="selected"{% endif %}>Yes</input>
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="breakfast" name="breakfast-options" value="False" {% if not p.breakfast_option %}selected="selected"{% endif %}>No</input>
+                            <input type="radio" id="breakfast" name="breakfast-options" value="False" {% if not participant.breakfast_option %}selected="selected"{% endif %}>No</input>
                         </label>
                         <span class="help-block">USD {{price_object.breakfast_usd}} (KRW {{ price_object.breakfast_krw }})</span>
                     </div>
@@ -169,10 +175,10 @@
                     <label class="col-sm-4 control-label">Pre-Conference Banquet Attendance</label>
                     <div class="col-sm-8 text-left">
                         <label class="radio-inline">
-                            <input type="radio" id="pretour" name="pretour-options" value="True" {% if p.pretour %}selected="selected"{% endif %} >Yes</input>
+                            <input type="radio" id="pretour" name="pretour-options" value="True" {% if participant.pretour %}selected="selected"{% endif %} >Yes</input>
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="pretour" name="pretour-options" value="False" {% if not p.pretour %}selected="selected"{% endif %}>No</input>
+                            <input type="radio" id="pretour" name="pretour-options" value="False" {% if not participant.pretour %}selected="selected"{% endif %}>No</input>
                         </label>
                         <span class="help-block">USD {{price_object.pretour_usd}}(KRW {{price_object.pretour_krw }})</span>
                     </div>
@@ -188,8 +194,8 @@
                     <div class="col-sm-8">
                         <select id="payment-option" class="form-control" id="payment" name="payment-option" required="required">
                             <option value="0">-- Select --</option>
-                            <option value="1">Paypal</option>
-                            <option value="2">Bank Transfer</option>
+                            <option value="1" {% if participant.payment_option == 'P' %}selected="selected"{% endif %}>Paypal</option>
+                            <option value="2" {% if participant.payment_option == 'B' %}selected="selected"{% endif %}>Bank Transfer</option>
                         </select>
                     </div>
                 </div>

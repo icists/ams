@@ -54,9 +54,9 @@
   {% elif payment_status == 'O' %}
   <h2> Your payment does not correspond to the required sum. </h2>
   <h2> We will contact you via email shortly. </h2>
-  {% endif %}	
+  {% endif %}
 </div>
-{% endif %}	
+{% endif %}
 {% if participant.payment_option == 'B' %}
 <div id="account" class="col-sm-offset-2 col-sm-8 text-left" style="display: block;">
   <div class="form-group">
@@ -84,7 +84,15 @@
     <p class="form-control-static">{{ participant.remitter_name }}</p>
   </div>
 </div>
-{% endif %}	
+{% endif %}
+{% if participant.payment_option == 'P' %}
+<div id="paypal" class="col-sm-offset-2 col-sm-8 text-left">
+  <div class="form-group">
+    <label class="col-sm-4 control-label" style="padding-top:7px">Paypal Account</label>
+    <p class="form-control-static">help@icists.org</p>
+  </div>
+</div>
+{% endif %}
 
 
 
