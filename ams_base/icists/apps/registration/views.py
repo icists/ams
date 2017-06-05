@@ -209,6 +209,7 @@ def participation(request):
 
             return render(request, 'registration/participation.html',
                           {'participant': p,
+                           'price_object': price,
                            'category': application.get_application_category_display(),
                            'krw': category_price_krw, 'usd': category_price_usd,
                            'category_price_krw': category_price_krw,

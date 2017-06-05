@@ -22,12 +22,12 @@
             }
 
             if ($("#breakfast:checked").val() == 'True') {
-                krw += 20000;
-                usd += 20;
+              krw += {{ price_object.breakfast_krw }};
+              usd += {{ price_object.breakfast_usd }};
             }
             if ($("#pretour:checked").val() == 'True') {
-                krw += 40000;
-                usd += 35;
+              krw += {{ price_object.pretour_krw }};
+              usd += {{ price_object.pretour_usd}};
             }
             
             $("#amt-krw").text(krw);
@@ -99,7 +99,6 @@
         $('select[name=accommodation-option]').val('{{ participant.accommodation_choice }}').attr("selected", "selected");
         $("input[name=breakfast-options][value='{{ participant.breakfast_option }}']").prop("checked", true);
         $("input[name=pretour-options][value='{{ participant.pretour }}']").prop("checked", true);
-        //$("input[name=posttour-options][value='{{ participant.posttour }}']").prop("checked", true);
 		calc_price();
     });
 </script>
@@ -130,7 +129,7 @@
                         <select class="form-control col-sm-8" id="accommodation" name="accommodation-option" required="required">
                             <option value="0">-- Select --</option>
                             {% for ao in accommodation_options %}
-                              <option value="{{ao.id}}">{{ ao }}</option>
+                            <option value="{{ao.id}}" {% if ao.id == p.accommodation_option.id %}selected="selected"{% endif %} >{{ ao }}</option>
                             {% endfor %}
                         </select>
                         <span class="help-block text-left">For more information, refer to the official website: <a href="http://www.icists.org/hotel-information/">http://www.icists.org/hotel-information/</a></span>
@@ -140,12 +139,12 @@
                     <label class="col-sm-4 control-label">Breakfast</label>
                     <div class="col-sm-8 text-left">
                         <label class="radio-inline">
-                            <input type="radio" id="breakfast" name="breakfast-options" value="True">Yes</input>
+                            <input type="radio" id="breakfast" name="breakfast-options" value="True" {% if p.breakfast_option %}selected="selected"{% endif %}>Yes</input>
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="breakfast" name="breakfast-options" value="False">No</input>
+                            <input type="radio" id="breakfast" name="breakfast-options" value="False" {% if not p.breakfast_option %}selected="selected"{% endif %}>No</input>
                         </label>
-                        <span class="help-block">USD 20 (KRW 20,000)</span>
+                        <span class="help-block">USD {{price_object.breakfast_usd}} (KRW {{ price_object.breakfast_krw }})</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -170,12 +169,12 @@
                     <label class="col-sm-4 control-label">Pre-Conference Banquet Attendance</label>
                     <div class="col-sm-8 text-left">
                         <label class="radio-inline">
-                            <input type="radio" id="pretour" name="pretour-options" value="True">Yes</input>
+                            <input type="radio" id="pretour" name="pretour-options" value="True" {% if p.pretour %}selected="selected"{% endif %} >Yes</input>
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="pretour" name="pretour-options" value="False">No</input>
+                            <input type="radio" id="pretour" name="pretour-options" value="False" {% if not p.pretour %}selected="selected"{% endif %}>No</input>
                         </label>
-                        <span class="help-block">USD 35 (KRW 40,000)</span>
+                        <span class="help-block">USD {{price_object.pretour_usd}}(KRW {{price_object.pretour_krw }})</span>
                     </div>
                 </div>
             </div>
