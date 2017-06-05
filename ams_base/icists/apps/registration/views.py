@@ -47,8 +47,10 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
             if Participant.objects.filter(application=app).exists():
                 print 'paricipant exists, modification'
                 p = Participant.objects.get(application=app)
+                participant_exists = True
             else:
                 p = Participant()
+                participant_exists = False
             payment_status = p.payment_status
 
             print "submitted! pending results.",\
@@ -59,6 +61,9 @@ def main(request):  # write/edit/view_results for ICISTS-KAIST 2015
                                'embargo': app.results_embargo,
                                'submitted': False,
                                'payment_status': payment_status,
+                               'payment_info': PaymentInfo.objects.first(),
+                               'participant_exists': participant_exists,
+                               'participant': p
                                })
             except ObjectDoesNotExist:
                 return render(request, 'registration/status.html',
@@ -200,7 +205,7 @@ def participation(request):
                 p = Participant()
                 p.application = application
 
-            category_price_krw, category_price_usd = p.payment()
+            category_price_krw, category_price_usd = p.application.payment()
             print 'payment success'
 
             ao_qs = AccommodationOption.objects.all()
