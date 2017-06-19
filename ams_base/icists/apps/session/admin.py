@@ -22,6 +22,7 @@ def get_user_profile(obj):
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
+        fields = ('id', 'last_login', 'username', 'userprofile__how_you_found_us', 'userprofile__nationality', 'userprofile__gender', 'first_name', 'last_name', 'email', 'last_login', 'date_joined')
 
 
 class StatusFilter(admin.SimpleListFilter):
