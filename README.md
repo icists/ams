@@ -1,4 +1,4 @@
-ICISTS AMS(Application Management System
+ICISTS AMS (Application Management System)
 ==============================
 
 # Requirements for installation #
