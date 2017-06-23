@@ -1,7 +1,7 @@
-ICISTS AMS (Application Management System)
+# ICISTS AMS (Application Management System)
 ==============================
 
-# Requirements for installation #
+## Requirements for installation 
 There are a few packages that need to be installed before running this django application. 
 
 * python
@@ -21,13 +21,13 @@ $ source env/bin/activate
 (env)$ pip install -r requirements.txt
 ```
 
-# More items to be prepared #
+## More items to be prepared
 ```
 ams_base/icists/mysql.cnf
 ams_base/secret.key
 ```
 
-# To export sql file #
+## To export sql file
 ```
 dump application_icists database
 mysqldump -u [user] -p application_icists > filename.sql
@@ -35,13 +35,13 @@ mysql -u [user] -p application_icists < filename.sql
 ```
 
 
-# To import MySQL sql file #
+## To import MySQL sql file
 Log in to MySQL and create a database named 'application_icists'
 ```sh
 mysql -u [mysql_username] -p application_icists < [imported_sql_file]
 ```
 
-# To run the program #
+## To run the program
 ```sh
 (env)$ python manage.py runserver 0.0.0.0:[port]
 ```
@@ -56,9 +56,9 @@ or instead, use the `run.sh`, script which contains the above command.
 
 
 
-# How to run with Docker #
+## How to run with Docker
 
-## run Dockerfile ##
+### run Dockerfile
 
 본 어플리케이션은 Docker Configuration을 통해 간단히 Deploy할 수 있다.
 
