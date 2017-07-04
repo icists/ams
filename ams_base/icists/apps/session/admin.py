@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 
 from icists.apps.session.models import University, UserProfile
-from import_export import resources
+from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
 
 
@@ -20,9 +20,20 @@ def get_user_profile(obj):
 
 
 class UserResource(resources.ModelResource):
+    univ_name = fields.Field()
+
+    def dehydrate_univ_name(self, Application):
+        try:
+            userp = get_user_profile(Application)
+            univ_code = userp.university
+        except:
+            print "ERROR"
+            univ_code = "ERROR"
+        return univ_code
+
     class Meta:
         model = User
-        fields = ('id', 'last_login', 'username', 'userprofile__how_you_found_us', 'userprofile__nationality', 'userprofile__gender', 'first_name', 'last_name', 'email', 'last_login', 'date_joined')
+        fields = ('id', 'last_login', 'username', 'userprofile__how_you_found_us', 'userprofile__nationality', 'userprofile__university', 'univ_name', 'userprofile__gender', 'first_name', 'last_name', 'email', 'last_login', 'date_joined')
 
 
 class StatusFilter(admin.SimpleListFilter):
