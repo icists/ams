@@ -1,5 +1,4 @@
 # ICISTS AMS (Application Management System)
-==============================
 
 ## Requirements for installation 
 There are a few packages that need to be installed before running this django application. 
